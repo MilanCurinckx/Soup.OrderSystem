@@ -7,10 +7,4 @@
         public string City { get; set; }
         public int PostalNumber {  get; set; }
     }
-
-    public class Order
-    {
-        public int OrderId { get; set; }
-        
-    }
 }
