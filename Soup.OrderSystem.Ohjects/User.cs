@@ -1,4 +1,4 @@
-﻿namespace Soup.OrderSystem.Ohjects
+﻿namespace Soup.OrderSystem.Objects
 {
     public class User
     {

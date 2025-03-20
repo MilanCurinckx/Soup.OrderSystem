@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Ohjects", "Soup.OrderSystem.Ohjects\Soup.OrderSystem.Ohjects.csproj", "{7CF0BE2A-2F9B-49E5-8DDA-0B05F18B5529}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Objects", "Soup.OrderSystem.Ohjects\Soup.OrderSystem.Objects.csproj", "{7CF0BE2A-2F9B-49E5-8DDA-0B05F18B5529}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Data", "Soup.OrderSystem.Data\Soup.OrderSystem.Data.csproj", "{2B14EF9A-9525-48FD-9B42-7D0C26AA5DB0}"
 EndProject
