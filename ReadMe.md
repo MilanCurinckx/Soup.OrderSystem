@@ -12,3 +12,5 @@ Creating the different objects, put them in different folders because it was ann
 		  Same story goes for the userID and the Userdetails. 
 		  In order to prevent having to save a postal code multiple times, a postal code object is created. 
 		  Not entirely sure whether I have to save the password as an int or a string because we haven't seen how C# does hashing yet, for now it is just saved as a string but this will likely change later.
+		  Another thing, I will be making the database code-first, I trust entityframework more than I do myself in the creation of a database.
+		  Successfully created the database through EF

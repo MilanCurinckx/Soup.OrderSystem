@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.OrderSystem.Objects.Order
@@ -9,6 +10,7 @@ namespace Soup.OrderSystem.Objects.Order
         Delivered,
         Canceled
     }
+    [Keyless]
     public class OrderDetails 
     {
         [ForeignKey("Order_Id")]

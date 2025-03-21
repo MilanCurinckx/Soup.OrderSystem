@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.OrderSystem.Objects.Customer
 {
+    [Keyless]
     public class Address
     {
         [ForeignKey("Customer_Id")]
