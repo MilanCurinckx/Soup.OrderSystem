@@ -1,6 +1,6 @@
 ﻿namespace Soup.OrderSystem.Data
 {
-    public class Class1
+    public class Context
     {
 
     }
