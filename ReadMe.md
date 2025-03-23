@@ -14,3 +14,6 @@ Creating the different objects, put them in different folders because it was ann
 		  Not entirely sure whether I have to save the password as an int or a string because we haven't seen how C# does hashing yet, for now it is just saved as a string but this will likely change later.
 		  Another thing, I will be making the database code-first, I trust entityframework more than I do myself in the creation of a database.
 		  Successfully created the database through EF
+*23/03*
+
+Slight oversight, forgot to make classes that combine the Details & id class. As for how I'm creating the object, I'm not entirely sure yet. Once I get inspiration I'll work it out.
