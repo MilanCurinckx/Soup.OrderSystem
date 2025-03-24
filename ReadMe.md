@@ -1,4 +1,12 @@
 TODO: make proper layout for this
+Going to keep track of the design patterns used here:
+Constructor Injection
+Architecture
+Dependency Injection => Singleton vs Scoped vs Transient 
+Lazy loading vs eager loading 
+Repository => EF
+DTO for easy data transfer between front & back-end
+
 *19/03*: 
 Creation of the project
 *20/03*: 
@@ -16,4 +24,4 @@ Creating the different objects, put them in different folders because it was ann
 		  Successfully created the database through EF
 *23/03*
 
-Slight oversight, forgot to make classes that combine the Details & id class. As for how I'm creating the object, I'm not entirely sure yet. Once I get inspiration I'll work it out.
+Slight oversight, forgot to make classes that combine the Details & id class. I kept things simple and just combined the two classes into a bigger class, with the classes being instantiated in the constructor and then tied to properties. Kind of similar to property injection really. 

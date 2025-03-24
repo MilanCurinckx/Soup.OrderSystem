@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Objects.Customer
 {
-    internal class Customer
+    public class Customer
     {
+        public Customer() 
+        {
+            CustomerId customerId = new CustomerId();
+            CustomerDetails customerDetails = new CustomerDetails();
+            Address address = new Address();
+            CustomerId = customerId;
+            CustomerDetails = customerDetails;
+            Address = address;
+        }
+        public CustomerId CustomerId { get; set; }
+        public CustomerDetails CustomerDetails { get; set; }
+        public Address Address { get; set; }
     }
 }

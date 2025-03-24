@@ -10,11 +10,13 @@ namespace Soup.OrderSystem.Objects.User
     {
         public User()
         {
-            UserDetails userDetails = new UserDetails {};
+            UserDetails userDetails = new();
+            UserId userId = new ();
+            User_Id = userId;
             Details = userDetails;
-            Details.User_Id = User_Id;
+ 
         }
-        public int User_Id { get; set; }
+        public UserId User_Id { get; set; }
         public UserDetails Details { get; set; }
     }
 }

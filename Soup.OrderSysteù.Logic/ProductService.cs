@@ -1,6 +1,6 @@
 ﻿namespace Soup.OrderSystem.Logic
 {
-    public class UserService 
+    public class ProductService 
     {
     }
     
