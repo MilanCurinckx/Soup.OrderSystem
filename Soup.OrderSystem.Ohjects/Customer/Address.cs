@@ -6,6 +6,7 @@ namespace Soup.OrderSystem.Objects.Customer
     [Keyless]
     public class Address
     {
+
         [ForeignKey("Customer_Id")]
         public int Customer_Id { get; set; }
         public string? StreetName { get; set; }

@@ -10,12 +10,11 @@ namespace Soup.OrderSystem.Objects.Customer
     {
         public Customer() 
         {
-            CustomerId customerId = new CustomerId();
-            CustomerDetails customerDetails = new CustomerDetails();
-            Address address = new Address();
-            CustomerId = customerId;
-            CustomerDetails = customerDetails;
-            Address = address;
+           
+            CustomerDetails = new CustomerDetails();
+            Address = new Address();
+            CustomerId = new CustomerId();
+         
         }
         public CustomerId CustomerId { get; set; }
         public CustomerDetails CustomerDetails { get; set; }

@@ -24,9 +24,8 @@ namespace Soup.OrderSystem.Logic
             customer.CustomerDetails.FirstName = customerDTO.FirstName;
             customer.CustomerDetails.LastName = customerDTO.LastName;
             customer.CustomerDetails.Email = customerDTO.Email;
-            
-                        
         }
+        
     }
     
 }
