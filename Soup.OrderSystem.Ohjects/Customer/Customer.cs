@@ -17,7 +17,7 @@ namespace Soup.OrderSystem.Objects.Customer
          
         }
         public CustomerId CustomerId { get; set; }
-        public CustomerDetails CustomerDetails { get; set; }
+        public CustomerDetails? CustomerDetails { get; set; }
         public Address Address { get; set; }
     }
 }
