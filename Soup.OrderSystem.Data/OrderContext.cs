@@ -1,23 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.OrderSystem.Objects.Customer;
-using Soup.OrderSystem.Objects.Order;
-using Soup.OrderSystem.Objects.Product;
-using Soup.OrderSystem.Objects.User;
+using Soup.Ordersystem.Objects;
+using Soup.Ordersystem.Objects.Customer;
+using Soup.Ordersystem.Objects.Order;
+using Soup.Ordersystem.Objects.User;
+
 
 namespace Soup.OrderSystem.Data
 {
     public class OrderContext:DbContext
     {
+        //these are all the tables for customer
+        public DbSet<Customer> Customer { get; set; }
         public DbSet<CustomerDetails> CustomerDetails { get; set; }
-        public DbSet<CustomerId> CustomerIds { get; set; }
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<PostalCode> PostalCodes { get; set; }
-        public DbSet<OrderId> OrderIds { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<UserId> UserIds { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<PostalCode> PostalCode { get; set; }
+        //these are all the tables for users
+        public DbSet<Users> Users { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
-
+        //these are all the tables for Orders
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Products> OrderProducts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -30,7 +33,5 @@ namespace Soup.OrderSystem.Data
     /*because I'm bound to forget next time I have to use EF, go to the project folder, dotnet ef, check if it's installed, if installed do: dotnet ef migrations add ExampleOfAMigrationName 
      * then do dotnet ef database update --verbose & pray that you did things correctly
      * add
-     
-     
      */
 }

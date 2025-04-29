@@ -16,8 +16,10 @@ namespace Soup.OrderSystem.Objects.Customer
             CustomerId = new CustomerId();
          
         }
+        public int Customer_Id { get; set; }
         public CustomerId CustomerId { get; set; }
-        public CustomerDetails? CustomerDetails { get; set; }
+        public virtual CustomerDetails CustomerDetails { get; set; }
+        public int Address_Id { get; set; }
         public Address Address { get; set; }
     }
 }

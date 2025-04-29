@@ -4,8 +4,10 @@ namespace Soup.OrderSystem.Objects.Customer
 {
     public class PostalCode
     {
+
         [Key]
         public int Postal_Code { get; set; }
         public string Municipality { get; set; }
+        public int Customer_id {  get; set; }
     }
 }

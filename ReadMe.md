@@ -28,3 +28,8 @@ Slight oversight, forgot to make classes that combine the Details & id class. I 
 
 *24/03*
 Finished the first service, wanted to make CustomerService but realised I'd have to make address & postalcode services first. Didn't mention this yesterday, but I made a customer DTO to pass along, seeing as the front-end doesn't need to bother with ID generation. Unit testing will show if this works. 
+
+*26/04*
+Realised that I completely messed up the database trying to make it through EF, so I decided to recreate it through SQL instead, but that means that I'm basically starting from scratch again. 
+*29/04*
+Finished the objects layer, I sorted the classes into folders based on how my DB is structured. 
