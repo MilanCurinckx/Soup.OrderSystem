@@ -33,3 +33,5 @@ Finished the first service, wanted to make CustomerService but realised I'd have
 Realised that I completely messed up the database trying to make it through EF, so I decided to recreate it through SQL instead, but that means that I'm basically starting from scratch again. 
 *29/04*
 Finished the objects layer, I sorted the classes into folders based on how my DB is structured. 
+*04/05*
+Created some of the logic layer alongside a bunch of DTO objects, so now Address-, Order-, PostalCode- & ProductService have some CRUD methods. Just need to make the customer one which required the AddressService & PostalCodeService to be made first. Oh and I also had a change with the Address & PostalCode tables in the database, because I mixed up the foreign key between them which means that I actually had then also go change it in the objects. Thankfully I caught that before I made any of those services.

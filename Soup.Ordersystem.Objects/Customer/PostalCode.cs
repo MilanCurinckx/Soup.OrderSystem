@@ -8,9 +8,6 @@ namespace Soup.Ordersystem.Objects.Customer
         [Key]
         [Column("PostalCode")]
         public string PostalCodeID { get; set; }
-        [ForeignKey(nameof(Address))]
-        public int AddressID { get; set; }
         public string NameOfPlace { get; set; }
-        public virtual Address Address { get; set; }
     }
 }

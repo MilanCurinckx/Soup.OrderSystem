@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.Ordersystem.Objects", "Soup.Ordersystem.Objects\Soup.Ordersystem.Objects.csproj", "{64BE5C2C-A620-4AEB-8007-E79AABCE259D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Logic", "Soup.OrderSystem.Logic\Soup.OrderSystem.Logic.csproj", "{7FBE93FC-4522-469C-AD50-EF101AFB9F77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{64BE5C2C-A620-4AEB-8007-E79AABCE259D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64BE5C2C-A620-4AEB-8007-E79AABCE259D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64BE5C2C-A620-4AEB-8007-E79AABCE259D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FBE93FC-4522-469C-AD50-EF101AFB9F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBE93FC-4522-469C-AD50-EF101AFB9F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBE93FC-4522-469C-AD50-EF101AFB9F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBE93FC-4522-469C-AD50-EF101AFB9F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

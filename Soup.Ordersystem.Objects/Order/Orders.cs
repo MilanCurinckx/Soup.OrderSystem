@@ -10,7 +10,7 @@ namespace Soup.Ordersystem.Objects.Order
         [ForeignKey(nameof(Customer))]
         public string CustomerID { get; set; }
         public OrderStatusEnum OrderStatus { get; set; }
-        public virtual Customer Customer { get; set; }
+        public virtual Customer.Customer Customer { get; set; }
         public enum OrderStatusEnum 
         {
             New = 1,
