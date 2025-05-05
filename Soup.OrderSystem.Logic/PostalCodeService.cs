@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class PostalCodeService()
+    public class PostalCodeService() : IPostalCodeService
     {
         private OrderContext _orderContext = new();
         public async Task CreatePostalCodeAsync(string nameOfPlace, string postalCode)
@@ -32,11 +32,11 @@ namespace Soup.OrderSystem.Logic
             var postalCodeToUpdate = await GetPostalCodeAsync(nameOfPlace);
             if (postalCodeToUpdate.PostalCodeID != postalCodeId)
             {
-                postalCodeToUpdate.PostalCodeID=postalCodeId;
+                postalCodeToUpdate.PostalCodeID = postalCodeId;
             }
             if (postalCodeToUpdate.NameOfPlace != nameOfPlace)
             {
-                postalCodeToUpdate.NameOfPlace=nameOfPlace;
+                postalCodeToUpdate.NameOfPlace = nameOfPlace;
             }
             await _orderContext.SaveChangesAsync();
         }

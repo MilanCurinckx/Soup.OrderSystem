@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -59,7 +59,7 @@ namespace Soup.OrderSystem.Logic
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task DeleteProductAsync(int id) 
+        public async Task DeleteProductAsync(int id)
         {
             var productToDelete = GetProductAsync(id);
             if (productToDelete == null)

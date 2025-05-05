@@ -5,7 +5,7 @@ using Soup.OrderSystem.Logic.DTO;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class AddressService()
+    public class AddressService() : IAddressService
     {
         private OrderContext _orderContext = new();
         public async Task CreateAddress(AddressDTO addressDTO)

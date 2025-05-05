@@ -9,7 +9,7 @@ namespace Soup.OrderSystem.Logic
     //this service is responsible for the CRUD of the Order & OrderDetails tables
     // each entry in Orderdetails is a single item from an order with the amount that was requested
     // because order only contains the Id in the database, we need to create it first, and then use that Id in orderdetails to link both of them
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -22,8 +22,8 @@ namespace Soup.OrderSystem.Logic
             Orders order = new();
             _orderContext.Orders.Add(order);
             await _orderContext.SaveChangesAsync();
-            OrderDetails orderDetails = new(); 
-            orderDetails.OrderID =order.OrderId;
+            OrderDetails orderDetails = new();
+            orderDetails.OrderID = order.OrderId;
             orderDetails.ProductID = orderDTO.ProductID;
             orderDetails.ProductAmount = orderDTO.ProductAmount;
             _orderContext.OrderDetails.Add(orderDetails);
@@ -73,7 +73,7 @@ namespace Soup.OrderSystem.Logic
         /// <returns></returns>
         public async Task UpdateProductAmount(OrderDTO orderDTO)
         {
-            var OrderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID,orderDTO.ProductID);
+            var OrderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID, orderDTO.ProductID);
             if (OrderToUpdate.ProductAmount != orderDTO.ProductAmount)
             {
                 OrderToUpdate.ProductAmount = orderDTO.ProductAmount;
@@ -95,5 +95,5 @@ namespace Soup.OrderSystem.Logic
             }
         }
     }
-    
+
 }
