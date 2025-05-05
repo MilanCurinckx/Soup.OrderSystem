@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class Userservice
+    public class Userservice : IUserservice
     {
         private OrderContext _context = new();
         /// <summary>
@@ -82,7 +82,7 @@ namespace Soup.OrderSystem.Logic
         /// <exception cref="Exception"></exception>
         public async Task DeleteUserAsync(int id)
         {
-            var userToDelete =await _context.UserDetails.Where(u => u.UserId == id).FirstOrDefaultAsync();
+            var userToDelete = await _context.UserDetails.Where(u => u.UserId == id).FirstOrDefaultAsync();
             if (userToDelete == null)
             {
                 throw new Exception("User couldn't be found, are you sure you have the right id?");
