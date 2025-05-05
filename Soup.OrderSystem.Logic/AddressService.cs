@@ -11,8 +11,17 @@ namespace Soup.OrderSystem.Logic
         public async Task CreateAddress(AddressDTO addressDTO)
         {
             Address address = new();
-            address.StreetHouse = addressDTO.StreetHouse;
-            address.BusNumber = addressDTO.BusNumber;
+            var duplicateAddressCheck = await GetAddressByLocationAsync(addressDTO.StreetHouse);
+            if (duplicateAddressCheck == null)
+            {
+                address.StreetHouse = addressDTO.StreetHouse;
+                address.BusNumber = addressDTO.BusNumber;
+            }
+            else
+            {
+                address.StreetHouse = duplicateAddressCheck.StreetHouse;
+                address.BusNumber = duplicateAddressCheck.BusNumber;
+            }
             address.CustomerID = addressDTO.CustomerID;
             address.PostalCodeId = addressDTO.PostalCodeId;
             _orderContext.Address.Add(address);
@@ -21,6 +30,11 @@ namespace Soup.OrderSystem.Logic
         public async Task<Address> GetAddressAsync(string CustomerId)
         {
             var address = await _orderContext.Address.Where(a => a.CustomerID == CustomerId).FirstOrDefaultAsync();
+            return address;
+        }
+        public async Task<Address> GetAddressByLocationAsync(string location)
+        {
+            var address = await _orderContext.Address.Where(a => a.StreetHouse == location).FirstOrDefaultAsync();
             return address;
         }
         public async Task UpdateAddressAsync(AddressDTO addressDTO)

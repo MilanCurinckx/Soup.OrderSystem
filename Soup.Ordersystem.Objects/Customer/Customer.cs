@@ -8,5 +8,9 @@ namespace Soup.Ordersystem.Objects.Customer
     {
         [Key]
         public string CustomerID { get; set; }
+        [ForeignKey(nameof(Address))]
+        [Column("addressId")]
+        public int AddressId { get; set; }
+        public virtual Address Address { get; set; }
     }
 }
