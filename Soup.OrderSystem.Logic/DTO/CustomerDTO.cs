@@ -1,6 +1,6 @@
 ﻿using Soup.OrderSystem.Logic.DTO;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.DTO
 {
     public class CustomerDTO
     {
@@ -8,7 +8,7 @@ namespace Soup.OrderSystem.Logic
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string AddressId { get; set; }
-        public AddressDTO AddressDTO { get; set; }
+        public int AddressId { get; set; }
+        public AddressDTO AddressDTO { get; set; } = new();
     }
 }

@@ -8,7 +8,7 @@ namespace Soup.OrderSystem.Logic
     public class AddressService() : IAddressService
     {
         private OrderContext _orderContext = new();
-        public async Task CreateAddress(AddressDTO addressDTO)
+        public async Task<Address> CreateAddress(AddressDTO addressDTO)
         {
             Address address = new();
             var duplicateAddressCheck = await GetAddressByLocationAsync(addressDTO.StreetHouse);
@@ -26,6 +26,7 @@ namespace Soup.OrderSystem.Logic
             address.PostalCodeId = addressDTO.PostalCodeId;
             _orderContext.Address.Add(address);
             await _orderContext.SaveChangesAsync();
+            return address;
         }
         public async Task<Address> GetAddressAsync(string CustomerId)
         {

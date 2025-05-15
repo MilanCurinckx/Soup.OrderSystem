@@ -5,7 +5,7 @@ namespace Soup.OrderSystem.Logic
 {
     public interface IAddressService
     {
-        Task CreateAddress(AddressDTO addressDTO);
+        Task<Address> CreateAddress(AddressDTO addressDTO);
         Task DeleteAddressAsync(string customerId);
         Task<Address> GetAddressAsync(string CustomerId);
         Task<Address> GetAddressByLocationAsync(string location);

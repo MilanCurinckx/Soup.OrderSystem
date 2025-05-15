@@ -7,10 +7,15 @@ namespace Soup.Ordersystem.Objects.Customer
     public class Customer
     {
         [Key]
-        public string CustomerID { get; set; }
+        public string CustomerId  { get; set; }
         [ForeignKey(nameof(Address))]
         [Column("addressId")]
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
+        //ctor to concat the customerId properly
+        public Customer(int customerId)
+        {  
+            CustomerId = string.Concat('k'+customerId);
+        }
     }
 }
