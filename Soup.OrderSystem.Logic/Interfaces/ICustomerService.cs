@@ -1,7 +1,7 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Logic.DTO;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface ICustomerService
     {
