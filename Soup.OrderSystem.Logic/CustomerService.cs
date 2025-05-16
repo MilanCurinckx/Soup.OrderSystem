@@ -5,17 +5,20 @@ using Soup.OrderSystem.Logic.DTO;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class CustomerService 
+    public class CustomerService
     {
         private OrderContext _context = new();
         private IAddressService _addressService;
-
+        //constructor injection for addressService
         public CustomerService(IAddressService addressService)
         {
             _addressService = addressService;
         }
-
-        public async Task<int> CreateCustomerID()
+        /// <summary>
+        /// generates a new customerId by looking at the last one in the DB and increasing that by one. this would've been done by EF except for the fact that it's not complete without a 'k' added in front. 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<int> CreateCustomerID()
         {
             var customerList = await GetCustomersAsync();
             var latestCustomer = customerList.LastOrDefault().CustomerId;
@@ -24,6 +27,11 @@ namespace Soup.OrderSystem.Logic
             newCustomerId++;
             return newCustomerId;          
         }
+        /// <summary>
+        /// Creates a new customer to be added, calls upon CreateCustomerId to create a new Id to pass along in the customer constructor where it will add the required char for the id. Also immediately creates a customerDetails which is linked to CustomerId & calls on addressService to create a new Address for the customer (unless the aedress already exists => look at addressservice for that)
+        /// </summary>
+        /// <param name="customerDTO"></param>
+        /// <returns></returns>
         public async Task CreateCustomer(CustomerDTO customerDTO)
         {
             int customerId = await CreateCustomerID();
@@ -37,30 +45,50 @@ namespace Soup.OrderSystem.Logic
             Address newAddress =await _addressService.CreateAddress(customerDTO.AddressDTO);
             customer.AddressId= newAddress.AddressID; 
             await _context.SaveChangesAsync();
-
         }
+        /// <summary>
+        /// returns a customer by their id, use this if you want to know what addressId is tied to this customer
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public async Task<Customer> GetCustomerAsync(string customerId)
         {
             var customer = await _context.Customer.Where(c => c.CustomerId == customerId).FirstOrDefaultAsync();
             return customer;
         }
+        /// <summary>
+        /// returns a list of every customer in the Customer table. This does NOT returns their details, only Id and and addressId for each. Use GetCustomerDetailsList for more details on each customer
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Customer>> GetCustomersAsync()
         {
             var customer = await _context.Customer.ToListAsync();
             return customer;
         }
-
+        /// <summary>
+        /// returns the customerdetails of a specific customer by their id
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public async Task<CustomerDetails> GetCustomerDetailsAsync(string customerId)
         {
             var customerDetails = await _context.CustomerDetails.Where(c => c.CustomerID == customerId).FirstOrDefaultAsync();
             return customerDetails;
         }
+        /// <summary>
+        /// return a list of overy customerdetails in the CustomerDetails table 
+        /// </summary>
+        /// <returns></returns>
         public async  Task<IEnumerable<CustomerDetails>>GetCustomerDetailsListAsync()
         {
            var customerDetailsList = await _context.CustomerDetails.ToListAsync(); 
             return customerDetailsList;
         }
-
+        /// <summary>
+        /// Searches for the given CustomerDetails by customerId. If found, it will update that customerdetails with the new information
+        /// </summary>
+        /// <param name="customerDTO"></param>
+        /// <returns></returns>
         public async Task UpdateCustomerDetails(CustomerDTO customerDTO)
         {
             var CustomerToUpdate = await GetCustomerDetailsAsync(customerDTO.CustomerID);
@@ -71,9 +99,14 @@ namespace Soup.OrderSystem.Logic
                 CustomerToUpdate.FirstName = customerDTO.FirstName;
                 CustomerToUpdate.LastName = customerDTO.LastName;
                 CustomerToUpdate.Email = customerDTO.Email;
-                 
+                _context.SaveChangesAsync();
             }
         }
+        /// <summary>
+        /// Searches for the given CustomerDetails by custoemrId. If found, it will that customerdetails with the new information
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public async Task DeleteCustomerDetails(string customerId)
         {
             var CustomerToDelete = await GetCustomerDetailsAsync(customerId);
