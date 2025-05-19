@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class ProductService : IProductService
+    public class ProductService 
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -71,5 +71,6 @@ namespace Soup.OrderSystem.Logic
                 _orderContext.OrderProducts.Remove(await productToDelete);
             }
         }
+
     }
 }

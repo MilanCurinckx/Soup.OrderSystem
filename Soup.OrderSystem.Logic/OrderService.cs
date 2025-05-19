@@ -74,9 +74,53 @@ namespace Soup.OrderSystem.Logic
         public async Task UpdateProductAmount(OrderDTO orderDTO)
         {
             var OrderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID, orderDTO.ProductID);
-            if (OrderToUpdate.ProductAmount != orderDTO.ProductAmount)
+            if (OrderToUpdate.ProductAmount == orderDTO.ProductAmount)
             {
-                OrderToUpdate.ProductAmount = orderDTO.ProductAmount;
+            }
+            if (OrderToUpdate == null)
+            {
+                throw new Exception("ProductAmount could not be updated because order could not be found");
+            }
+            else 
+            {
+                if (OrderToUpdate.ProductAmount == orderDTO.ProductAmount)
+                {}
+                else
+                {
+                    OrderToUpdate.ProductAmount = orderDTO.ProductAmount;
+                    await _orderContext.SaveChangesAsync();
+                } 
+            }
+        }
+
+        /// <summary>
+        /// Updates the status of an order on a switch case basis, for Orderstatus is saved as an Enum
+        /// </summary>
+        /// <param name="orderDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task UpdateOrderStatus(OrderDTO orderDTO)
+        {
+            var orderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID, orderDTO.ProductID);
+            if (orderToUpdate == null)
+            {
+                throw new Exception("Orderstatus could not be updated because order could not be found");
+            }
+            else
+            {
+                //because I can't compare an enum with an int from the DTO, I have to do it like this. Even though the value is an int inside the enum. There's probably a better way to do this, but this works.
+                switch (orderDTO.OrderStatus)
+                {
+                    case (int) OrderStatusEnum.New:
+                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.New; 
+                        break;
+                    case (int) OrderStatusEnum.Delivered:
+                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.Delivered;
+                        break;
+                    case (int) OrderStatusEnum.Canceled:
+                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.Canceled;
+                        break;
+                }
                 await _orderContext.SaveChangesAsync();
             }
         }
@@ -88,7 +132,11 @@ namespace Soup.OrderSystem.Logic
         public async Task DeleteProductDetails(OrderDTO orderDTO)
         {
             var ProductToRemove = await GetOrderDetailsAsync(orderDTO.ProductID, orderDTO.ProductID);
-            if (ProductToRemove != null)
+            if (ProductToRemove == null)
+            {
+                throw new Exception("OrderDetails could not be found");
+            }
+            else 
             {
                 _orderContext.OrderDetails.Remove(ProductToRemove);
                 await _orderContext.SaveChangesAsync();

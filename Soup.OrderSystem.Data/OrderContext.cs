@@ -21,6 +21,7 @@ namespace Soup.OrderSystem.Data
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Products> OrderProducts { get; set; }
+        public DbSet<StockAction> Stock_Actions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
