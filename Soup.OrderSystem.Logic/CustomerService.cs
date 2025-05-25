@@ -2,6 +2,7 @@
 using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {

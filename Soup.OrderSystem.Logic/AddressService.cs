@@ -2,10 +2,11 @@
 using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class AddressService()
+    public class AddressService() : IAddressService
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -77,7 +78,7 @@ namespace Soup.OrderSystem.Logic
             {
                 //did it like this to save bandwith between memory and DB, less transfer less chance of things going wrong in the between
                 if (addressToUpdate.StreetHouse == addressDTO.StreetHouse)
-                {}
+                { }
                 else
                 {
                     addressToUpdate.StreetHouse = addressDTO.StreetHouse;

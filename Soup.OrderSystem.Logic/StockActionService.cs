@@ -2,10 +2,11 @@
 using Soup.Ordersystem.Objects;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class StockActionService
+    public class StockActionService : IStockActionService
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -109,7 +110,7 @@ namespace Soup.OrderSystem.Logic
                 stockRemovedTotal = stockRemovedList.Sum(s => s.Amount);
                 CurrentstockAmount = stockAddedTotal - stockRemovedTotal;
             }
-                return CurrentstockAmount;
+            return CurrentstockAmount;
         }
         /// <summary>
         /// Returns the available stock amount of an item.
@@ -119,7 +120,7 @@ namespace Soup.OrderSystem.Logic
         /// <returns></returns>
         public async Task<int> GetAvailableStockAmountAsync(int productId)
         {
-            var productStockActions = await GetStockActionsByProductAsync (productId);
+            var productStockActions = await GetStockActionsByProductAsync(productId);
             var currentStockAmount = await GetCurrentStockAmountAsync(productId);
             var reservedStockList = new List<StockAction>();
             int reservedStockAmount = 0;

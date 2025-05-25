@@ -5,7 +5,7 @@ Architecture
 Dependency Injection => Singleton vs Scoped vs Transient 
 Lazy loading vs eager loading 
 Repository => EF
-DTO for easy data transfer between front & back-end
+DTO for easy data transfer between front & back-end => If a method requires more than three parameters I used a DTO.
 
 *19/03*: 
 Creation of the project
@@ -39,3 +39,7 @@ Created some of the logic layer alongside a bunch of DTO objects, so now Address
 Between now and the last time I remembered to update this file I finished building the customerservice which was the trickiest one. I made a createUserId method which grabs the highest id from the db and increases it by 1. I was looking at SQL triggers for how to concatenate a 'k' char to the insert when saving a customer to the DB but that seemed just a bit too complicated. Then I remembered I could just concatenate the 'k' in the constructor and not have to worry about it anymore. I save the customerId as an nvarchar anyway. I also made that method private, because frankly, it should only be used in the createcustomer method anyway. 
 Also, when I was making the customerservice I realised I need to grab the addressId somehow when I make it with addressservice. I didn't think of that beforehand, but the fix was simple enough. CreateAddress now returns the Id instead of being void. When I started working on the CreateCustomer method I realised that the CustomerDTO also required the information from AddressDTO, so now CustomerDTO also has the AddressDTO class inside itself. 
 Furthermore, when I created postalcodeservice I made an updatepostalcode method, which was an oopsie on my end. Because I use the actual postalcode as a primary key (they're supposed to be unique anyway). Which means you should NOT be able to update that. If there's an typo in there, it will have to be fixed in the db itself.
+*25/05*
+Continued work on StockActionService after creating the object & db table earlier this week. I completely forgot about StockAction as an object because my first instinct was to just store stockamount in the product object and then update that value through front-end. But seeing as a stock action object was requested I made one against my better judgement. I understand why you would use it, but I personally wouldn't have done it this way. I was at first a bit confused at not having a way to edit or delete them but I guess they also count as logs so you want to keep track of them.
+Am I behind on the schedule I arbitrarly made up in my head? Definitely, but we'll see how much can be done until the deadline.
+Also recreated the interface for AddressService after the change from last week. And created the interface for stockActionService. Turns out you can just use CTRL + R + I if the 'extract' interface option doesn't show up on the quick actions part.
