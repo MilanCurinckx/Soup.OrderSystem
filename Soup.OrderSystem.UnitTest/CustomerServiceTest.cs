@@ -20,7 +20,9 @@ namespace Soup.OrderSystem.UnitTest
         [TestMethod]
         public void GetSingleCustomerDetails()
         {
-            var customerDetails = service.GetCustomerDetailsAsync("t1").Result;
+            List<CustomerDetails> customerList = (List<CustomerDetails>)service.GetCustomerDetailsListAsync().Result;
+            string customerId = customerList[0].CustomerID;
+            var customerDetails = service.GetCustomerDetailsAsync(customerId).Result;
             Assert.IsNotNull(customerDetails);
         }
         [TestMethod]
@@ -32,7 +34,7 @@ namespace Soup.OrderSystem.UnitTest
         [TestMethod]
         public void GetSingleCustomer()
         {
-            var customer = service.GetCustomerAsync("t1").Result;
+            var customer = service.GetCustomerAsync("k1").Result;
             Assert.IsNotNull(customer);
         }
         [TestMethod]

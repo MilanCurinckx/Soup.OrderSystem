@@ -52,3 +52,4 @@ I also learned that apparently you can't do constructor injection inside a testc
 While making the CustomerServiceTests I realised that I apparently hadn't registered it to my Dependency injection? Got that fixed at the least.
 I've been whittling away at logic errors due to my unit testing. The details of which you can find in the commits.
 At least I can tell I'm improving as a programmer because I look at my earlier written logic and see ways in which I could've done it much better.
+Good to know, a list of strings gets sorted alphabetically, which means that k comes before t, which messed up my logic and my tests. Had to go into the database and change that because annoyingly that's the PK. That was a fucking mess to deal with. 
