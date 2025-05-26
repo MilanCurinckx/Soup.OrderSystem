@@ -36,7 +36,7 @@ namespace Soup.OrderSystem.Logic
             }
             else
             {
-                address.PostalCodeId = duplicateAddressCheck.PostalCodeId;
+                address.PostalCodeId = duplicatePostalCodeCheck.PostalCodeID;
             }
             _orderContext.Address.Add(address);
             await _orderContext.SaveChangesAsync();

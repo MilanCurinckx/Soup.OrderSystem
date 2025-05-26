@@ -8,6 +8,6 @@ namespace Soup.Ordersystem.Objects.Customer
         [Key]
         [Column("PostalCode")]
         public string PostalCodeID { get; set; }
-        public string NameOfPlace { get; set; }
+        public string? NameOfPlace { get; set; }
     }
 }

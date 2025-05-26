@@ -9,6 +9,7 @@ namespace Soup.Ordersystem.Objects.Order
         public int OrderId { get; set; }
         [ForeignKey(nameof(Customer))]
         public string CustomerID { get; set; }
+        [Required]
         public OrderStatusEnum OrderStatus { get; set; }
         public virtual Customer.Customer Customer { get; set; }
        

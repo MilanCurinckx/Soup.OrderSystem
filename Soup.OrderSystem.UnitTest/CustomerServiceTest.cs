@@ -1,6 +1,8 @@
-﻿using Soup.OrderSystem.Logic;
+﻿using Soup.Ordersystem.Objects.Customer;
+using Soup.OrderSystem.Logic;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
+using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UnitTest
 {
@@ -34,19 +36,18 @@ namespace Soup.OrderSystem.UnitTest
             Assert.IsNotNull(customer);
         }
         [TestMethod]
-        public void CreateCustomer()
+        public async Task CreateCustomer()
         {
             var totalCustomers = service.GetCustomersAsync();
             var totalCustomerAmount = totalCustomers.Result.Count();
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.FirstName = "TestFirst01";
-            customerDTO.CustomerID = "t3";
             customerDTO.LastName = "TestLast01";
             customerDTO.Email = "email";
             customerDTO.AddressDTO.PostalCodeId = "0001";
-            //customerDTO.AddressDTO.BusNumber = 3;
-            //customerDTO.AddressDTO.StreetHouse = "testStreet99";
-            service.CreateCustomer(customerDTO).Wait();
+            customerDTO.AddressDTO.BusNumber = 3;
+            customerDTO.AddressDTO.StreetHouse = "testStreet99";
+            await service.CreateCustomer(customerDTO);
             var newTotalCustomers = service.GetCustomersAsync();
             var newCustomerAmount = newTotalCustomers.Result.Count();
             totalCustomerAmount++;
@@ -55,12 +56,12 @@ namespace Soup.OrderSystem.UnitTest
         [TestMethod]
         public void DeleteCustomerDetailsAndAddress()
         {
-            var customerList = service.GetCustomersAsync().Result;
-            var latestCustomer = customerList.Last().CustomerId;
-            service.DeleteCustomerDetails(latestCustomer).Wait();
-            var customerAmount = customerList.Count();
-            var newCustomerAmount = service.GetCustomersAsync().Result.Count();
-            Assert.AreNotEqual(newCustomerAmount, customerAmount);
+            List<CustomerDetails> customerList = (List<CustomerDetails>)service.GetCustomerDetailsListAsync().Result;
+            CustomerDetails latestCustomer = customerList.Find(c => c.Email == "email");
+            string latestCustomerId =latestCustomer.CustomerID;
+            service.DeleteCustomerDetails(latestCustomerId).Wait();
+            List<CustomerDetails> newCustomerAmount = (List<CustomerDetails>)service.GetCustomerDetailsListAsync().Result;
+            Assert.AreNotEqual(newCustomerAmount.Count(), customerList.Count());
         }
     }
 }

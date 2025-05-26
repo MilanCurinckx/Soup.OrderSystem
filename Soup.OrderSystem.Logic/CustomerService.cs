@@ -32,11 +32,11 @@ namespace Soup.OrderSystem.Logic
         /// <returns></returns>
         public async Task CreateCustomer(CustomerDTO customerDTO)
         {
-            int customerId = await CreateCustomerID();
+            Address newAddress = await _addressService.CreateAddress(customerDTO.AddressDTO);
+            string customerId = CreateCustomerID().Result.ToString();
             Customer customer = new();
             var id = string.Concat('k' + customerId);
             customer.CustomerId = id;
-            Address newAddress = await _addressService.CreateAddress(customerDTO.AddressDTO);
             customer.AddressId = newAddress.AddressID;
             _context.Add(customer);
             await _context.SaveChangesAsync();
@@ -45,6 +45,7 @@ namespace Soup.OrderSystem.Logic
             customerDetails.FirstName = customerDTO.FirstName;
             customerDetails.LastName = customerDTO.LastName;
             customerDetails.Email = customerDTO.Email;
+            _context.Add(customerDetails);
             await _context.SaveChangesAsync();
         }
         /// <summary>

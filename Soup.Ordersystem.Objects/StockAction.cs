@@ -12,7 +12,9 @@ namespace Soup.Ordersystem.Objects
         [ForeignKey(nameof(Products))]
         public int ProductId { get; set; }
         [Column("StockAction")]
+        [Required]
         public StockActionEnum StockActions { get; set; }
+        [Required]
         public int Amount { get; set; }
         [ForeignKey(nameof(Orders))]
         public int OrderId { get; set; }

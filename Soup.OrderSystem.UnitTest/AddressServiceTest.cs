@@ -43,7 +43,7 @@ namespace Soup.OrderSystem.UnitTest
         [TestMethod]
         public void GetAddressById()
         {
-            var result = service.GetAddressByIdAsync(14).Result;
+            var result = service.GetAddressByIdAsync(13).Result;
             
             Assert.IsNotNull(result);
         }
@@ -58,14 +58,14 @@ namespace Soup.OrderSystem.UnitTest
         [TestMethod]
         public void UpdateAddress()
         {
-            Address addressToUpdate = service.GetAddressByIdAsync(14).Result;
+            Address addressToUpdate = service.GetAddressByIdAsync(13).Result;
             AddressDTO addressDTO = new AddressDTO();
             addressDTO.PostalCodeId = addressToUpdate.PostalCodeId;
             addressDTO.StreetHouse = addressToUpdate.StreetHouse;
             addressDTO.BusNumber = 2;
             addressDTO.AddressID = addressToUpdate.AddressID;
             service.UpdateAddressAsync(addressDTO).Wait();
-            Address updatedAddress = service.GetAddressByIdAsync(14).Result;
+            Address updatedAddress = service.GetAddressByIdAsync(13).Result;
             Assert.IsTrue(updatedAddress.BusNumber == 2);
             if (updatedAddress.BusNumber == 2)
             {

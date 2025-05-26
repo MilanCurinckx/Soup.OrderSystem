@@ -47,4 +47,8 @@ Also recreated the interface for AddressService after the change from last week.
 I only today realised that the deadline got pushed up to next week, giving me even less time to get this out on time. It's not happening. 
 Anyway, unit testing has been kicking my ass. Had to get rid of the constructor in Customer, I just put what it did inside the CreateCustomer method now. 
 Also added dummy data through sql. While doing that I realised I fucked up by making address have customerId as a foreign key, while also having a addressId as a foreign key in Customer. I could've done a many to many table, but I went for the easier option of getting rid of the CustomerId in Address. 
-While unit testing (or rather, integration testing I suppose) 
+While unit testing (or rather, integration testing I suppose) I have ran into multiple issues which have required fixing and me learning how to properly use Async methods.
+I also learned that apparently you can't do constructor injection inside a testclass, so I had to use property injection instead.
+While making the CustomerServiceTests I realised that I apparently hadn't registered it to my Dependency injection? Got that fixed at the least.
+I've been whittling away at logic errors due to my unit testing. The details of which you can find in the commits.
+At least I can tell I'm improving as a programmer because I look at my earlier written logic and see ways in which I could've done it much better.
