@@ -9,13 +9,7 @@ namespace Soup.Ordersystem.Objects.Customer
         [Key]
         public string CustomerId  { get; set; }
         [ForeignKey(nameof(Address))]
-        [Column("addressId")]
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
-        //ctor to concat the customerId properly
-        public Customer(int customerId)
-        {  
-            CustomerId = string.Concat('k'+customerId);
-        }
     }
 }

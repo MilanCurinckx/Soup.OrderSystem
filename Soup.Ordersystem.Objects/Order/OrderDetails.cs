@@ -1,11 +1,15 @@
-﻿using Soup.Ordersystem.Objects.Order;
+﻿using Microsoft.EntityFrameworkCore;
+using Soup.Ordersystem.Objects.Order;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.Ordersystem.Objects
 {
+    [Keyless]
     public class OrderDetails 
     {
-        [ForeignKey(nameof(Customer))]
+        
+        [ForeignKey(nameof(Orders))]
         public int OrderID { get; set; }    
         [ForeignKey(nameof(Products))]
         public int ProductID { get; set; }

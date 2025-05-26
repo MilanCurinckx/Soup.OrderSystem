@@ -43,3 +43,8 @@ Furthermore, when I created postalcodeservice I made an updatepostalcode method,
 Continued work on StockActionService after creating the object & db table earlier this week. I completely forgot about StockAction as an object because my first instinct was to just store stockamount in the product object and then update that value through front-end. But seeing as a stock action object was requested I made one against my better judgement. I understand why you would use it, but I personally wouldn't have done it this way. I was at first a bit confused at not having a way to edit or delete them but I guess they also count as logs so you want to keep track of them.
 Am I behind on the schedule I arbitrarly made up in my head? Definitely, but we'll see how much can be done until the deadline.
 Also recreated the interface for AddressService after the change from last week. And created the interface for stockActionService. Turns out you can just use CTRL + R + I if the 'extract' interface option doesn't show up on the quick actions part.
+*26/05*
+I only today realised that the deadline got pushed up to next week, giving me even less time to get this out on time. It's not happening. 
+Anyway, unit testing has been kicking my ass. Had to get rid of the constructor in Customer, I just put what it did inside the CreateCustomer method now. 
+Also added dummy data through sql. While doing that I realised I fucked up by making address have customerId as a foreign key, while also having a addressId as a foreign key in Customer. I could've done a many to many table, but I went for the easier option of getting rid of the CustomerId in Address. 
+While unit testing (or rather, integration testing I suppose) 

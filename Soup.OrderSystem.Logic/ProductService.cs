@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class ProductService 
+    public class ProductService :IProductService
     {
         private OrderContext _orderContext = new();
         /// <summary>
@@ -18,7 +18,6 @@ namespace Soup.OrderSystem.Logic
         {
             Products newProduct = new();
             newProduct.ProductName = productDTO.ProductName;
-            newProduct.AmountInStock = productDTO.AmountInStock;
             _orderContext.OrderProducts.Add(newProduct);
             await _orderContext.SaveChangesAsync();
         }
@@ -50,7 +49,6 @@ namespace Soup.OrderSystem.Logic
         {
             Products productToUpdate = await GetProductAsync(productDTO.ProductID);
             productToUpdate.ProductName = productDTO.ProductName;
-            productToUpdate.AmountInStock = productDTO.AmountInStock;
             await _orderContext.SaveChangesAsync();
         }
         /// <summary>

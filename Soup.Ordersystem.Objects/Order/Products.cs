@@ -8,7 +8,6 @@ namespace Soup.Ordersystem.Objects.Order
     {
         [Key]
         public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public int AmountInStock { get; set; }
+        public string ProductName { get; set; }        
     }
 }

@@ -23,6 +23,13 @@ namespace Soup.OrderSystem.Logic
             _orderContext.PostalCode.Add(newPostalCode);
             await _orderContext.SaveChangesAsync();
         }
+        public async Task CreatePostalCodeAsync(string postalCode)
+        {
+            PostalCode newPostalCode = new();
+            newPostalCode.PostalCodeID = postalCode;
+            _orderContext.PostalCode.Add(newPostalCode);
+            await _orderContext.SaveChangesAsync();
+        }
         /// <summary>
         /// returns the postalcode corresponding to the given place name, if not found it will return null
         /// </summary>
@@ -68,7 +75,10 @@ namespace Soup.OrderSystem.Logic
         public async Task DeletePostalCodeAsync(string nameOfPlace)
         {
             var postalCodeToDelete = await GetPostalCodeAsync(nameOfPlace);
-            if (postalCodeToDelete != null)
+            if (postalCodeToDelete == null)
+            {
+            }
+            else
             {
                 _orderContext.PostalCode.Remove(postalCodeToDelete);
                 await _orderContext.SaveChangesAsync();

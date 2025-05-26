@@ -10,6 +10,6 @@ namespace Soup.OrderSystem.Logic.DTO
     {
         public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public int AmountInStock { get; set; }
+        
     }
 }

@@ -10,13 +10,15 @@ namespace Soup.OrderSystem.Logic
     {
         private OrderContext _orderContext = new();
         /// <summary>
-        /// Creates a new address with the given data from AddressDTO, if the given combination of street name + house number already is present in the database, it will use that one instead of making a new copy of that data. returns the created address after saving it to the db (for usage in CustomerService)
+        /// Creates a new address with the given data from AddressDTO, if the given combination of street name + house number is present already in the database, it will use that one instead of making a new copy of that data. Same goes for postal code. Returns the created address after saving it to the db (for usage in CustomerService)
         /// </summary>
         /// <param name="addressDTO"></param>
         public async Task<Address> CreateAddress(AddressDTO addressDTO)
         {
+            PostalCodeService postalCodeService = new PostalCodeService();
             Address address = new();
-            var duplicateAddressCheck = await GetAddressByLocationAsync(addressDTO.StreetHouse);
+            var duplicateAddressCheck = _orderContext.Address.Where(a => a.StreetHouse == addressDTO.StreetHouse).FirstOrDefault();
+            var duplicatePostalCodeCheck = _orderContext.PostalCode.Where(p => p.PostalCodeID == addressDTO.PostalCodeId).FirstOrDefault();
             if (duplicateAddressCheck == null)
             {
                 address.StreetHouse = addressDTO.StreetHouse;
@@ -27,8 +29,15 @@ namespace Soup.OrderSystem.Logic
                 address.StreetHouse = duplicateAddressCheck.StreetHouse;
                 address.BusNumber = duplicateAddressCheck.BusNumber;
             }
-            address.CustomerID = addressDTO.CustomerID;
-            address.PostalCodeId = addressDTO.PostalCodeId;
+            if (duplicatePostalCodeCheck == null)
+            {
+                await postalCodeService.CreatePostalCodeAsync(addressDTO.PostalCodeId);
+                address.PostalCodeId = addressDTO.PostalCodeId;
+            }
+            else
+            {
+                address.PostalCodeId = duplicateAddressCheck.PostalCodeId;
+            }
             _orderContext.Address.Add(address);
             await _orderContext.SaveChangesAsync();
             return address;
@@ -36,23 +45,23 @@ namespace Soup.OrderSystem.Logic
         /// <summary>
         /// Returns the address of a specific customer 
         /// </summary>
-        /// <param name="CustomerId"></param>
         /// <returns></returns>
-        public async Task<Address> GetAddressAsync(string CustomerId)
+        public async Task<Address> GetAddressByIdAsync(int addressId)
         {
-            var address = await _orderContext.Address.Where(a => a.CustomerID == CustomerId).FirstOrDefaultAsync();
+            var address = await _orderContext.Address.Where(a => a.AddressID == addressId).FirstAsync();
             return address;
         }
-        /// <summary>
-        /// returns the entire address of a given location (street name + house number) as string 
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns></returns>
-        public async Task<Address> GetAddressByLocationAsync(string location)
-        {
-            var address = await _orderContext.Address.Where(a => a.StreetHouse == location).FirstOrDefaultAsync();
-            return address;
-        }
+        ///// <summary>
+        ///// returns the entire address of a given location
+        ///// </summary>
+        ///// <param name="location"></param>
+        ///// <returns></returns>
+        //public async Task<Address> GetAddressByLocationAsync(string location)
+        //{
+        //    var address = await _orderContext.Address.Where(a => a.StreetHouse == location).FirstAsync();
+        //    return address;
+        //}
+
         /// <summary>
         /// returns all of the addresses as a list 
         /// </summary>
@@ -69,7 +78,7 @@ namespace Soup.OrderSystem.Logic
         /// <returns></returns>
         public async Task UpdateAddressAsync(AddressDTO addressDTO)
         {
-            var addressToUpdate = await GetAddressAsync(addressDTO.CustomerID);
+            var addressToUpdate = await GetAddressByIdAsync(addressDTO.AddressID);
             if (addressToUpdate == null)
             {
                 throw new Exception("Address could not be found");
@@ -105,10 +114,13 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public async Task DeleteAddressAsync(string customerId)
+        public async Task DeleteAddressAsync(int addressId)
         {
-            var addressToDelete = await GetAddressAsync(customerId);
-            if (addressToDelete != null)
+            var addressToDelete = await GetAddressByIdAsync(addressId);
+            if (addressToDelete == null)
+            {
+            }
+            else 
             {
                 _orderContext.Address.Remove(addressToDelete);
                 await _orderContext.SaveChangesAsync();

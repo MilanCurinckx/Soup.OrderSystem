@@ -6,9 +6,9 @@ namespace Soup.OrderSystem.Logic.Interfaces
     public interface IAddressService
     {
         Task<Address> CreateAddress(AddressDTO addressDTO);
-        Task DeleteAddressAsync(string customerId);
-        Task<Address> GetAddressAsync(string CustomerId);
-        Task<Address> GetAddressByLocationAsync(string location);
+        Task DeleteAddressAsync(int addressId);
+        Task<Address> GetAddressByIdAsync(int addressId);
+        //Task<Address> GetAddressByLocationAsync(string location);
         Task<IEnumerable<Address>> GetAddressesToListAsync();
         Task UpdateAddressAsync(AddressDTO addressDTO);
     }

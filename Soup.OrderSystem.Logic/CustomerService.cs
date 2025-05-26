@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Castle.Core.Resource;
+using Microsoft.EntityFrameworkCore;
 using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
@@ -6,45 +7,44 @@ using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class CustomerService
+    public class CustomerService : ICustomerService
     {
         private OrderContext _context = new();
-        private IAddressService _addressService;
-        //constructor injection for addressService
-        public CustomerService(IAddressService addressService)
-        {
-            _addressService = addressService;
-        }
+        private IAddressService _addressService = new AddressService();
+
         /// <summary>
         /// generates a new customerId by looking at the last one in the DB and increasing that by one. this would've been done by EF except for the fact that it's not complete without a 'k' added in front. 
         /// </summary>
         /// <returns></returns>
-        private async Task<int> CreateCustomerID()
+        public async Task<int> CreateCustomerID()
         {
             var customerList = await GetCustomersAsync();
             var latestCustomer = customerList.LastOrDefault().CustomerId;
             latestCustomer = latestCustomer.Substring(1);
             int newCustomerId = int.Parse(latestCustomer);
             newCustomerId++;
-            return newCustomerId;          
+            return newCustomerId;
         }
         /// <summary>
-        /// Creates a new customer to be added, calls upon CreateCustomerId to create a new Id to pass along in the customer constructor where it will add the required char for the id. Also immediately creates a customerDetails which is linked to CustomerId & calls on addressService to create a new Address for the customer (unless the aedress already exists => look at addressservice for that)
+        /// Creates a new customer to be added, calls upon CreateCustomerId to create a new Id which afterwards gets the 'k' char concatenated. Also immediately creates a customerDetails which is linked to CustomerId & calls on addressService to create a new Address for the customer (unless the address already exists => look at addressservice for that)
         /// </summary>
         /// <param name="customerDTO"></param>
         /// <returns></returns>
         public async Task CreateCustomer(CustomerDTO customerDTO)
         {
             int customerId = await CreateCustomerID();
-            Customer customer = new(customerId);
+            Customer customer = new();
+            var id = string.Concat('k' + customerId);
+            customer.CustomerId = id;
+            Address newAddress = await _addressService.CreateAddress(customerDTO.AddressDTO);
+            customer.AddressId = newAddress.AddressID;
+            _context.Add(customer);
             await _context.SaveChangesAsync();
             CustomerDetails customerDetails = new();
             customerDetails.CustomerID = customer.CustomerId;
             customerDetails.FirstName = customerDTO.FirstName;
             customerDetails.LastName = customerDTO.LastName;
             customerDetails.Email = customerDTO.Email;
-            Address newAddress =await _addressService.CreateAddress(customerDTO.AddressDTO);
-            customer.AddressId= newAddress.AddressID; 
             await _context.SaveChangesAsync();
         }
         /// <summary>
@@ -80,9 +80,9 @@ namespace Soup.OrderSystem.Logic
         /// return a list of overy customerdetails in the CustomerDetails table 
         /// </summary>
         /// <returns></returns>
-        public async  Task<IEnumerable<CustomerDetails>>GetCustomerDetailsListAsync()
+        public async Task<IEnumerable<CustomerDetails>> GetCustomerDetailsListAsync()
         {
-           var customerDetailsList = await _context.CustomerDetails.ToListAsync(); 
+            var customerDetailsList = await _context.CustomerDetails.ToListAsync();
             return customerDetailsList;
         }
         /// <summary>
@@ -93,9 +93,9 @@ namespace Soup.OrderSystem.Logic
         public async Task UpdateCustomerDetails(CustomerDTO customerDTO)
         {
             var CustomerToUpdate = await GetCustomerDetailsAsync(customerDTO.CustomerID);
-            if (CustomerToUpdate == null) 
+            if (CustomerToUpdate == null)
             { }
-            else 
+            else
             {
                 CustomerToUpdate.FirstName = customerDTO.FirstName;
                 CustomerToUpdate.LastName = customerDTO.LastName;
