@@ -1,55 +1,95 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Soup.Ordersystem.Objects.Order;
 using Soup.OrderSystem.Data;
-using Soup.OrderSystem.Logic.DTO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class ProductService :IProductService
+    public class ProductService : IProductService
     {
-        private OrderContext _orderContext = new();
+
         /// <summary>
         /// Creates a new product & saves it to the Db
         /// </summary>
-        /// <param name="productDTO"></param>
+        /// <param name="products"></param>
         /// <returns></returns>
-        public async Task CreateProductAsync(ProductDTO productDTO)
+        public void CreateProduct(Product products)
         {
-            Products newProduct = new();
-            newProduct.ProductName = productDTO.ProductName;
-            _orderContext.OrderProducts.Add(newProduct);
-            await _orderContext.SaveChangesAsync();
+            try
+            {
+                Product newProduct = new();
+                newProduct.ProductName = products.ProductName;
+                using (OrderContext context = new())
+                {
+                    context.OrderProducts.Add(newProduct);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while creating the product"+ex.Message);
+            }
         }
         /// <summary>
         /// Returns a single product based on the id given
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Products> GetProductAsync(int id)
+        public Product GetProduct(int id)
         {
-            var product = await _orderContext.OrderProducts.Where(p => p.ProductID == id).FirstOrDefaultAsync();
-            return product;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var product = context.OrderProducts.Where(p => p.ProductID == id).FirstOrDefault();
+                    return product;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the product"+ex.Message);
+            }
         }
         /// <summary>
         /// Returns all of the products in a List
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Products>> GetProductsListAsync()
+        public List<Product> GetProductsList()
         {
-            var productList = await _orderContext.OrderProducts.ToListAsync();
-            return productList;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var productList = context.OrderProducts.ToList();
+                    return productList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the products" + ex.Message);
+            }
         }
         /// <summary>
         /// Updates the product with the given data
         /// </summary>
-        /// <param name="productDTO"></param>
+        /// <param name="products"></param>
         /// <returns></returns>
-        public async Task UpdateProductAsync(ProductDTO productDTO)
+        public void UpdateProduct(Product products)
         {
-            Products productToUpdate = await GetProductAsync(productDTO.ProductID);
-            productToUpdate.ProductName = productDTO.ProductName;
-            await _orderContext.SaveChangesAsync();
+            try
+            {
+                Product productToUpdate = GetProduct(products.ProductID);
+                using (OrderContext context = new())
+                {
+                    productToUpdate.ProductName = products.ProductName;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while updating the product" + ex.Message);
+            }
         }
         /// <summary>
         /// Deletes the product based off the given Id
@@ -57,18 +97,28 @@ namespace Soup.OrderSystem.Logic
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task DeleteProductAsync(int id)
+        public void DeleteProduct(int id)
         {
-            var productToDelete = GetProductAsync(id);
-            if (productToDelete == null)
+            try
             {
-                throw new Exception("Product couldn't be found, are you sure you have the right id?");
+                var productToDelete = GetProduct(id);
+                using (OrderContext context = new())
+                {
+                    if (productToDelete == null)
+                    {
+                        throw new Exception("Product couldn't be found, are you sure you have the right id?");
+                    }
+                    else
+                    {
+                        context.OrderProducts.Remove(productToDelete);
+                        context.SaveChanges();
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _orderContext.OrderProducts.Remove(await productToDelete);
+                throw new Exception("Something went wrong while deleting the product" + ex.Message);
             }
         }
-
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
-using Soup.OrderSystem.Logic.DTO;
 
-namespace Soup.OrderSystem.Logic.Interfaces
+
+namespace Soup.OrderSystem.Logic
 {
     public interface IAddressService
     {
-        Task<Address> CreateAddress(AddressDTO addressDTO);
-        Task DeleteAddressAsync(int addressId);
-        Task<Address> GetAddressByIdAsync(int addressId);
-        //Task<Address> GetAddressByLocationAsync(string location);
-        Task<IEnumerable<Address>> GetAddressesToListAsync();
-        Task UpdateAddressAsync(AddressDTO addressDTO);
+        Ordersystem.Objects.Customer.Address CreateAddress(Ordersystem.Objects.Customer.Address address);
+        void DeleteAddress(int addressId);
+        Ordersystem.Objects.Customer.Address GetAddressById(int addressId);
+        List<Ordersystem.Objects.Customer.Address> GetAddressesToList();
+        void UpdateAddress(Ordersystem.Objects.Customer.Address address);
     }
 }

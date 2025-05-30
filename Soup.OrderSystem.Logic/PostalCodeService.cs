@@ -6,49 +6,110 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class PostalCodeService() : IPostalCodeService
+    public class PostalCodeService : IPostalCodeService
     {
-        private OrderContext _orderContext = new();
+
         /// <summary>
         /// creates a new postalcode entry with the given place name & postalcode
         /// </summary>
         /// <param name="nameOfPlace"></param>
         /// <param name="postalCode"></param>
         /// <returns></returns>
-        public async Task CreatePostalCodeAsync(string nameOfPlace, string postalCode)
+        public void CreatePostalCode(string nameOfPlace, string postalCode)
         {
-            PostalCode newPostalCode = new();
-            newPostalCode.NameOfPlace = nameOfPlace;
-            newPostalCode.PostalCodeID = postalCode;
-            _orderContext.PostalCode.Add(newPostalCode);
-            await _orderContext.SaveChangesAsync();
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    PostalCode newPostalCode = new();
+                    newPostalCode.NameOfPlace = nameOfPlace;
+                    newPostalCode.PostalCodeID = postalCode;
+                    context.PostalCode.Add(newPostalCode);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while creating the postalcode"+ex.Message);
+            }
         }
-        public async Task CreatePostalCodeAsync(string postalCode)
+        /// <summary>
+        /// creates a new postalcode entry with the given postalcode
+        /// </summary>
+        /// <param name="postalCode"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public void CreatePostalCode(string postalCode)
         {
-            PostalCode newPostalCode = new();
-            newPostalCode.PostalCodeID = postalCode;
-            _orderContext.PostalCode.Add(newPostalCode);
-            await _orderContext.SaveChangesAsync();
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    PostalCode newPostalCode = new();
+                    newPostalCode.PostalCodeID = postalCode;
+                    context.PostalCode.Add(newPostalCode);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while creating the postalcode");
+            }
         }
         /// <summary>
         /// returns the postalcode corresponding to the given place name, if not found it will return null
         /// </summary>
         /// <param name="nameOfPlace"></param>
         /// <returns></returns>
-        public async Task<PostalCode> GetPostalCodeAsync(string nameOfPlace)
+        public PostalCode GetPostalCodeByPlaceName(string nameOfPlace)
         {
-            var postalcode = await _orderContext.PostalCode.Where(p => p.NameOfPlace == nameOfPlace).FirstOrDefaultAsync();
-            return postalcode;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var postalcode = context.PostalCode.Where(p => p.NameOfPlace == nameOfPlace).FirstOrDefault();
+                    return postalcode;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the postalcode");
+            }
         }
         /// <summary>
         /// returns the postalcode corresponding to the given postalcode (which is used as the Id), if not found it will return null
         /// </summary>
         /// <param name="postalCodeId"></param>
         /// <returns></returns>
-        public async Task<PostalCode> GetPostalCodeByIdAsync(string postalCodeId)
+        public PostalCode GetPostalCodeById(string postalCodeId)
         {
-            var postalcode = await _orderContext.PostalCode.Where(p => p.PostalCodeID == postalCodeId).FirstOrDefaultAsync();
-            return postalcode;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var postalcode = context.PostalCode.Where(p => p.PostalCodeID == postalCodeId).FirstOrDefault();
+                    return postalcode;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the postalcode");
+            }
+        }
+        public List<PostalCode> GetPostalCodes()
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    List<PostalCode> postalCodes = context.PostalCode.ToList();
+                    return postalCodes;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the postalcodes"+ ex.Message);
+            }
         }
         /// <summary>
         /// searches for the postalcode corresponding with the given place name, if found it checks if the given place name is different from the one in the DB and updates it. 
@@ -72,18 +133,27 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="nameOfPlace"></param>
         /// <returns></returns>
-        public async Task DeletePostalCodeAsync(string nameOfPlace)
+        public void DeletePostalCode(string nameOfPlace)
         {
-            var postalCodeToDelete = await GetPostalCodeAsync(nameOfPlace);
-            if (postalCodeToDelete == null)
+            try
             {
+                var postalCodeToDelete = GetPostalCodeByPlaceName(nameOfPlace);
+                using (OrderContext context = new())
+                {
+                    if (postalCodeToDelete == null)
+                    {
+                    }
+                    else
+                    {
+                        context.PostalCode.Remove(postalCodeToDelete);
+                        context.SaveChanges();
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _orderContext.PostalCode.Remove(postalCodeToDelete);
-                await _orderContext.SaveChangesAsync();
+                throw new Exception("Something went wrong while deleting the PostalCode");
             }
         }
-
     }
 }

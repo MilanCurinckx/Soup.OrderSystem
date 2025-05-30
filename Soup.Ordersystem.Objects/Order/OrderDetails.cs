@@ -16,6 +16,6 @@ namespace Soup.Ordersystem.Objects
         [Required]
         public int ProductAmount { get; set; }
         public virtual Orders Orders { get; set; }
-        public virtual Products Products { get; set; }
+        public virtual Product Products { get; set; }
     }
 }

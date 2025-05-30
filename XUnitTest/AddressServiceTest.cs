@@ -1,31 +1,30 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Logic;
-
-using Soup.OrderSystem.Logic.Interfaces;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Soup.OrderSystem.UnitTest
+namespace Soup.OrderSystem.XunitTests
 {
-    [TestClass]
-    public sealed class AddressServiceTest
+    internal class AddressServiceTest
     {
-        public IAddressService service { get; set; } = new AddressService();
-
-        [TestMethod]
+        private IAddressService service { get; set; } = new AddressService();
+        [Fact]
         public void GetAddressById()
         {
             var result = service.GetAddressById(13);
 
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
-        [TestMethod]
+        [Fact]
         public void GetAddressesToList()
         {
             var result = service.GetAddressesToList();
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
-        [TestMethod]
+        [Fact]
         public void Test1()
         {
             var totalAddresses = service.GetAddressesToList();
@@ -37,39 +36,36 @@ namespace Soup.OrderSystem.UnitTest
             service.CreateAddress(address);
             var newTotalAdresses = service.GetAddressesToList();
             var newAmount = newTotalAdresses.Count();
-            Assert.AreNotEqual(newAmount, amount);
+            Assert.NotEqual(newAmount, amount);
         }
-        [TestMethod]
+        [Fact]
         public void Test2()
         {
             Address addressToUpdate = service.GetAddressById(13);
             addressToUpdate.BusNumber = 2;
             service.UpdateAddress(addressToUpdate);
             Address updatedAddress = service.GetAddressById(13);
-            Assert.IsTrue(updatedAddress.BusNumber == 2);
+            Assert.True(updatedAddress.BusNumber == 2);
             if (updatedAddress.BusNumber == 2)
             {
                 addressToUpdate.BusNumber = 1;
                 service.UpdateAddress(addressToUpdate);
             }
-
         }
-        [TestMethod]
+        [Fact]
         public void Test3()
         {
-
             var findLatestAddress = service.GetAddressesToList().Max(x => x.AddressID);
             try
             {
                 service.DeleteAddress(findLatestAddress);
                 var newTotalAddresses = service.GetAddressesToList().Max(x => x.AddressID);
-                Assert.IsFalse(findLatestAddress == newTotalAddresses);
+                Assert.False(findLatestAddress == newTotalAddresses);
             }
             catch (Exception ex)
             {
-                Assert.Fail("Couldn't remove address because it was still in use by a customer");
+                Assert.Fail("Couldn't remove address because it was still in use by a customer"+ex.Message);
             }
-
         }
     }
 }

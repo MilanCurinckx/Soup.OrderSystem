@@ -1,14 +1,13 @@
 ﻿using Soup.Ordersystem.Objects.Order;
-using Soup.OrderSystem.Logic.DTO;
 
 namespace Soup.OrderSystem.Logic
 {
     public interface IProductService
     {
-        Task CreateProductAsync(ProductDTO productDTO);
-        Task DeleteProductAsync(int id);
-        Task<Products> GetProductAsync(int id);
-        Task<IEnumerable<Products>> GetProductsListAsync();
-        Task UpdateProductAsync(ProductDTO productDTO);
+        void CreateProduct(Product products);
+        void DeleteProduct(int id);
+        Product GetProduct(int id);
+        List<Product> GetProductsList();
+        void UpdateProduct(Product products);
     }
 }

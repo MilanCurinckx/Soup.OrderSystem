@@ -20,7 +20,7 @@ namespace Soup.OrderSystem.Data
         //these are all the tables for Orders
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
-        public DbSet<Products> OrderProducts { get; set; }
+        public DbSet<Product> OrderProducts { get; set; }
         public DbSet<StockAction> Stock_Actions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

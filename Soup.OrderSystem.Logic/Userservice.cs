@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Soup.Ordersystem.Objects.User;
 using Soup.OrderSystem.Data;
-using Soup.OrderSystem.Logic.DTO;
 using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
@@ -12,33 +11,32 @@ namespace Soup.OrderSystem.Logic
         /// <summary>
         /// Saves a user to the database and creates a UserDetails based on the Id from the new user
         /// </summary>
-        /// <param name="userDTO"></param>
+        /// <param name="userDetails"></param>
         /// <returns> </returns>
-        public async Task CreateUserAsync(UserDTO userDTO)
+        public void CreateUser(UserDetails userDetails)
         {
             //first creating a new user
             Users newUser = new();
             _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             //The users class only has Id, and I need to have the same one for Userdetails to link them
-            var latestUser = await GetUserAsync(newUser.UserID);
-            //mapping the DTO to UserDetails while making sure it's getting the same Userid as the one made above 
-            UserDetails userDetails = new();
-            userDetails.UserId = latestUser.UserID;
-            userDetails.FirstName = userDTO.FirstName;
-            userDetails.LastName = userDTO.LastName;
-            userDetails.PassWordHash = userDTO.PassWordHash;
-            _context.UserDetails.Add(userDetails);
-            await _context.SaveChangesAsync();
+            var latestUser = GetUser(newUser.UserID);
+            UserDetails newUserDetails = new();
+            newUserDetails.UserId = latestUser.UserID;
+            newUserDetails.FirstName =userDetails.FirstName;
+            newUserDetails.LastName = userDetails.LastName;
+            newUserDetails.PassWordHash = userDetails.PassWordHash;
+            _context.UserDetails.Add(newUserDetails);
+            _context.SaveChanges();
         }
         /// <summary>
         /// Returns the user of the given Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Users> GetUserAsync(int id)
+        public Users GetUser(int id)
         {
-            var user = await _context.Users.Where(u => u.UserID == id).FirstOrDefaultAsync();
+            var user = _context.Users.Where(u => u.UserID == id).FirstOrDefault();
             return user;
         }
         /// <summary>
@@ -46,32 +44,32 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserDetails> GetUserDetailsAsync(int id)
+        public UserDetails GetUserDetails(int id)
         {
-            var userDetails = await _context.UserDetails.Where(u => u.UserId == id).FirstOrDefaultAsync();
+            var userDetails = _context.UserDetails.Where(u => u.UserId == id).FirstOrDefault();
             return userDetails;
         }
         /// <summary>
         /// Returns the userdetails of every user in the database as an IEnumerable
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<UserDetails>> GetUserListAsync()
+        public List<UserDetails> GetUserList()
         {
-            var UserList = await _context.UserDetails.ToListAsync();
+            var UserList = _context.UserDetails.ToList();
             return UserList;
         }
         /// <summary>
         /// Updates the userdetails of the passed along userDTO, able to update the first name, last name & Password
         /// </summary>
-        /// <param name="userDTO"></param>
+        /// <param name="userDetails"></param>
         /// <returns></returns>
-        public async Task UpdateUserAsync(UserDTO userDTO)
+        public void UpdateUser(UserDetails userDetails)
         {
-            UserDetails userToUpdate = await GetUserDetailsAsync(userDTO.UserId);
-            userToUpdate.FirstName = userDTO.FirstName;
-            userToUpdate.LastName = userDTO.LastName;
-            userToUpdate.PassWordHash = userDTO.PassWordHash;
-            await _context.SaveChangesAsync();
+            UserDetails userToUpdate = GetUserDetails(userDetails.UserId);
+            userToUpdate.FirstName = userDetails.FirstName;
+            userToUpdate.LastName = userDetails.LastName;
+            userToUpdate.PassWordHash = userDetails.PassWordHash;
+            _context.SaveChanges();
 
         }
         /// <summary>
@@ -80,9 +78,9 @@ namespace Soup.OrderSystem.Logic
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task DeleteUserAsync(int id)
+        public void DeleteUser(int id)
         {
-            var userToDelete = await _context.UserDetails.Where(u => u.UserId == id).FirstOrDefaultAsync();
+            UserDetails? userToDelete = _context.UserDetails.Where(u => u.UserId == id).FirstOrDefault();
             if (userToDelete == null)
             {
                 throw new Exception("User couldn't be found, are you sure you have the right id?");
@@ -90,6 +88,7 @@ namespace Soup.OrderSystem.Logic
             else
             {
                 _context.UserDetails.Remove(userToDelete);
+                _context.SaveChanges();
             }
         }
     }

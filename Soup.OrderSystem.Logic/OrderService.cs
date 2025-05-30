@@ -2,7 +2,7 @@
 using Soup.Ordersystem.Objects;
 using Soup.Ordersystem.Objects.Order;
 using Soup.OrderSystem.Data;
-using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {
@@ -11,49 +11,106 @@ namespace Soup.OrderSystem.Logic
     // because order only contains the Id in the database, we need to create it first, and then use that Id in orderdetails to link both of them
     public class OrderService : IOrderService
     {
-        private OrderContext _orderContext = new();
+
         /// <summary>
         /// Creates a new order and also makes an orderdetails to store the first item of the order into.
         /// </summary>
-        /// <param name="orderDTO"></param>
+        /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public async Task CreateOrderAsync(OrderDTO orderDTO)
+        public void CreateOrder(OrderDetails orderDetails)
         {
-            Orders order = new();
-            _orderContext.Orders.Add(order);
-            await _orderContext.SaveChangesAsync();
-            OrderDetails orderDetails = new();
-            orderDetails.OrderID = order.OrderId;
-            orderDetails.ProductID = orderDTO.ProductID;
-            orderDetails.ProductAmount = orderDTO.ProductAmount;
-            _orderContext.OrderDetails.Add(orderDetails);
-            await _orderContext.SaveChangesAsync();
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    Orders order = new();
+                    context.Orders.Add(order);
+                    context.SaveChanges();
+                    OrderDetails newOrderDetails = new();
+                    orderDetails.OrderID = order.OrderId;
+                    orderDetails.ProductID = orderDetails.ProductID;
+                    orderDetails.ProductAmount = orderDetails.ProductAmount;
+                    context.OrderDetails.Add(orderDetails);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while creating the Order");
+            }
+
         }
 
-        //public async Task<Orders> GetOrderAsync(int orderId)
-        //{
-        //    var Order = await _orderContext.Orders.Where(o => o.OrderId == orderId).FirstOrDefaultAsync();
-        //    return Order;
-        //}
+        public Orders GetOrder(int orderId)
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var Order = context.Orders.Where(o => o.OrderId == orderId).FirstOrDefault();
+                    return Order;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while searching for the order" + ex.Message);
+            }
+        }
+        public List<Orders> GetOrderList()
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var orders = context.Orders.ToList();
+                    return orders;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the orders" + ex.Message);
+            }
+        }
         /// <summary>
-        /// returns an Ienumerable of the orderdetails of the given orderId (all of the products in the order)
+        /// returns a List of the orderdetails of the given orderId (all of the products in the order)
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<OrderDetails>> GetOrderDetailsbyOrderAsync(int orderId)
+        public List<OrderDetails> GetOrderDetailsbyOrder(int orderId)
         {
-            var orderDetails = await _orderContext.OrderDetails.Where(o => o.OrderID == orderId).ToListAsync();
-            return orderDetails;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var orderDetails = context.OrderDetails.Where(o => o.OrderID == orderId).ToList();
+                    return orderDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the OrderDetails");
+            }
         }
         /// <summary>
-        /// returns an Ienumerable of the orderdetails of the given productId  (every order that has the item)
+        /// returns a List of the orderdetails of the given productId  (every order that has the item)
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<OrderDetails>> GetOrderDetailsByProductAsync(int productId)
+        public List<OrderDetails> GetOrderDetailsByProduct(int productId)
         {
-            var orderDetails = await _orderContext.OrderDetails.Where(o => o.ProductID == productId).ToListAsync();
-            return orderDetails;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var orderDetails = context.OrderDetails.Where(o => o.ProductID == productId).ToList();
+                    return orderDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the orderdetails");
+            }
+
         }
         /// <summary>
         /// returns a specific Orderdetail of the given product & orderId (the specific product in a specific order)
@@ -61,87 +118,126 @@ namespace Soup.OrderSystem.Logic
         /// <param name="orderId"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task<OrderDetails> GetOrderDetailsAsync(int orderId, int productId)
+        public OrderDetails GetOrderDetails(int orderId, int productId)
         {
-            var orderDetails = await _orderContext.OrderDetails.Where(o => o.OrderID == orderId).FirstOrDefaultAsync(o => o.ProductID == productId);
-            return orderDetails;
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var orderDetails = context.OrderDetails.Where(o => o.OrderID == orderId).FirstOrDefault(o => o.ProductID == productId);
+                    return orderDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the orderdetails");
+            }
         }
         /// <summary>
         /// Updates the amount of a product in a specific order
         /// </summary>
-        /// <param name="orderDTO"></param>
+        /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public async Task UpdateProductAmount(OrderDTO orderDTO)
+        public void UpdateProductAmount(OrderDetails orderDetails)
         {
-            var OrderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID, orderDTO.ProductID);
-            if (OrderToUpdate.ProductAmount == orderDTO.ProductAmount)
+            try
             {
-            }
-            if (OrderToUpdate == null)
-            {
-                throw new Exception("ProductAmount could not be updated because order could not be found");
-            }
-            else 
-            {
-                if (OrderToUpdate.ProductAmount == orderDTO.ProductAmount)
-                {}
-                else
+                var OrderToUpdate = GetOrderDetails(orderDetails.OrderID, orderDetails.ProductID);
+                using (OrderContext context = new())
                 {
-                    OrderToUpdate.ProductAmount = orderDTO.ProductAmount;
-                    await _orderContext.SaveChangesAsync();
-                } 
+                    if (OrderToUpdate.ProductAmount == orderDetails.ProductAmount)
+                    {
+                    }
+                    if (OrderToUpdate == null)
+                    {
+                        throw new Exception("ProductAmount could not be updated because order could not be found");
+                    }
+                    else
+                    {
+                        if (OrderToUpdate.ProductAmount == orderDetails.ProductAmount)
+                        { }
+                        else
+                        {
+                            OrderToUpdate.ProductAmount = orderDetails.ProductAmount;
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the product from the order");
             }
         }
 
         /// <summary>
         /// Updates the status of an order on a switch case basis, for Orderstatus is saved as an Enum
         /// </summary>
-        /// <param name="orderDTO"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task UpdateOrderStatus(OrderDTO orderDTO)
+        public void UpdateOrderStatus(Orders order)
         {
-            var orderToUpdate = await GetOrderDetailsAsync(orderDTO.OrderID, orderDTO.ProductID);
-            if (orderToUpdate == null)
+            try
             {
-                throw new Exception("Orderstatus could not be updated because order could not be found");
-            }
-            else
-            {
-                //because I can't compare an enum with an int from the DTO, I have to do it like this. Even though the value is an int inside the enum. There's probably a better way to do this, but this works.
-                switch (orderDTO.OrderStatus)
+                var orderToUpdate = GetOrder(order.OrderId);
+                using (OrderContext context = new())
                 {
-                    case (int) OrderStatusEnum.New:
-                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.New; 
-                        break;
-                    case (int) OrderStatusEnum.Delivered:
-                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.Delivered;
-                        break;
-                    case (int) OrderStatusEnum.Canceled:
-                        orderToUpdate.Orders.OrderStatus = OrderStatusEnum.Canceled;
-                        break;
+                    if (orderToUpdate == null)
+                    {
+                        throw new Exception("Orderstatus could not be updated because order could not be found");
+                    }
+                    else
+                    {
+                        //because I can't compare an enum with an int from the DTO, I have to do it like this. Even though the value is an int inside the enum. There's probably a better way to do this, but this works.
+                        switch (order.OrderStatus)
+                        {
+                            case OrderStatusEnum.New:
+                                orderToUpdate.OrderStatus = OrderStatusEnum.New;
+                                break;
+                            case OrderStatusEnum.Delivered:
+                                orderToUpdate.OrderStatus = OrderStatusEnum.Delivered;
+                                break;
+                            case OrderStatusEnum.Canceled:
+                                orderToUpdate.OrderStatus = OrderStatusEnum.Canceled;
+                                break;
+                        }
+                        context.SaveChanges();
+                    }
                 }
-                await _orderContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while updating the orderstatus");
             }
         }
         /// <summary>
         /// removes a product from an order
         /// </summary>
-        /// <param name="orderDTO"></param>
+        /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public async Task DeleteProductDetails(OrderDTO orderDTO)
+        public void DeleteProductDetails(OrderDetails orderDetails)
         {
-            var ProductToRemove = await GetOrderDetailsAsync(orderDTO.ProductID, orderDTO.ProductID);
-            if (ProductToRemove == null)
+            try
             {
-                throw new Exception("OrderDetails could not be found");
+                var ProductToRemove = GetOrderDetails(orderDetails.ProductID, orderDetails.ProductID);
+                using (OrderContext context = new())
+                {
+                    if (ProductToRemove == null)
+                    {
+                        throw new Exception("OrderDetails could not be found");
+                    }
+                    else
+                    {
+                        context.OrderDetails.Remove(ProductToRemove);
+                        context.SaveChanges();
+                    }
+                }
             }
-            else 
+            catch (Exception ex)
             {
-                _orderContext.OrderDetails.Remove(ProductToRemove);
-                await _orderContext.SaveChangesAsync();
+                throw new Exception("Something went wrong while deleting the product from the order");
             }
         }
     }
-
 }

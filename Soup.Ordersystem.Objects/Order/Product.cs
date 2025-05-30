@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Soup.Ordersystem.Objects.Order
 {
     [Table("OrderProducts")]
-    public class Products
+    public class Product
     {
         [Key]
         public int ProductID { get; set; }

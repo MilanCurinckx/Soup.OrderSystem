@@ -11,6 +11,9 @@ namespace Soup.Ordersystem.Objects.Customer
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
+        [ForeignKey(nameof(Address))]
+        public int AddressId { get; set; }
+        public virtual Address Address { get; set; }
         public virtual Customer Customer { get; set; }
     }
 }

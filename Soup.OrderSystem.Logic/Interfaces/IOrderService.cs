@@ -1,15 +1,18 @@
 ﻿using Soup.Ordersystem.Objects;
-using Soup.OrderSystem.Logic.DTO;
+using Soup.Ordersystem.Objects.Order;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IOrderService
     {
-        Task CreateOrderAsync(OrderDTO orderDTO);
-        Task DeleteProductDetails(OrderDTO orderDTO);
-        Task<OrderDetails> GetOrderDetailsAsync(int orderId, int productId);
-        Task<IEnumerable<OrderDetails>> GetOrderDetailsbyOrderAsync(int orderId);
-        Task<IEnumerable<OrderDetails>> GetOrderDetailsByProductAsync(int productId);
-        Task UpdateProductAmount(OrderDTO orderDTO);
+        void CreateOrder(OrderDetails orderDetails);
+        void DeleteProductDetails(OrderDetails orderDetails);
+        Orders GetOrder(int orderId);
+        OrderDetails GetOrderDetails(int orderId, int productId);
+        List<OrderDetails> GetOrderDetailsbyOrder(int orderId);
+        List<OrderDetails> GetOrderDetailsByProduct(int productId);
+        List<Orders> GetOrderList();
+        void UpdateOrderStatus(Orders order);
+        void UpdateProductAmount(OrderDetails orderDetails);
     }
 }

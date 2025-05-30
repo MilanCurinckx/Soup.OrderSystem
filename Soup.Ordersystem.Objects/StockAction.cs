@@ -18,7 +18,7 @@ namespace Soup.Ordersystem.Objects
         public int Amount { get; set; }
         [ForeignKey(nameof(Orders))]
         public int OrderId { get; set; }
-        public virtual Products Products { get; set; }
+        public virtual Product Products { get; set; }
         public virtual Orders Orders { get; set; }
     }
     public enum StockActionEnum

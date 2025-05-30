@@ -8,9 +8,5 @@ namespace Soup.Ordersystem.Objects.Customer
     {
         [Key]
         public string CustomerId  { get; set; }
-        [ForeignKey(nameof(Address))]
-        [Required]
-        public int AddressId { get; set; }
-        public virtual Address Address { get; set; }
     }
 }

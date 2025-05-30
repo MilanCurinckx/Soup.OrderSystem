@@ -2,27 +2,31 @@
 using Microsoft.EntityFrameworkCore;
 using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Data;
-using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
 {
     public class CustomerService : ICustomerService
     {
-        private OrderContext _context = new();
-        private IAddressService _addressService = new AddressService();
+
+        private AddressService _addressService { get; set; } = new AddressService();
 
         /// <summary>
         /// generates a new customerId by looking at the last one in the DB and increasing that by one. this would've been done by EF except for the fact that it's not complete without a 'k' added in front. 
         /// </summary>
         /// <returns></returns>
-        public async Task<int> CreateCustomerID()
+        public int CreateCustomerID()
         {
-            var customerList = await GetCustomersAsync();
-            var latestCustomer = customerList.LastOrDefault().CustomerId;
-            latestCustomer = latestCustomer.Substring(1);
-            int newCustomerId = int.Parse(latestCustomer);
-            newCustomerId++;
+            var customerList = GetCustomers();
+            List<int> customerIdList = new List<int>();
+            foreach (var customer in customerList)
+            {
+                string customerId = customer.CustomerId.Substring(1);
+                int id = int.Parse(customerId);
+                customerIdList.Add(id);
+            }
+            int latestCustomer = customerIdList.Max();
+            int newCustomerId = latestCustomer + 1;
             return newCustomerId;
         }
         /// <summary>
@@ -30,95 +34,178 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="customerDTO"></param>
         /// <returns></returns>
-        public async Task CreateCustomer(CustomerDTO customerDTO)
+        public void CreateCustomer(CustomerDetails customer, Ordersystem.Objects.Customer.Address address)
         {
-            Address newAddress = await _addressService.CreateAddress(customerDTO.AddressDTO);
-            string customerId = CreateCustomerID().Result.ToString();
-            Customer customer = new();
-            var id = string.Concat('k' + customerId);
-            customer.CustomerId = id;
-            customer.AddressId = newAddress.AddressID;
-            _context.Add(customer);
-            await _context.SaveChangesAsync();
-            CustomerDetails customerDetails = new();
-            customerDetails.CustomerID = customer.CustomerId;
-            customerDetails.FirstName = customerDTO.FirstName;
-            customerDetails.LastName = customerDTO.LastName;
-            customerDetails.Email = customerDTO.Email;
-            _context.Add(customerDetails);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Ordersystem.Objects.Customer.Address newAddress = _addressService.CreateAddress(address);
+                string customerId = CreateCustomerID().ToString();
+                using (OrderContext context = new OrderContext())
+                {
+                    Customer newCustomer = new();
+                    var id = string.Concat('k' + customerId);
+                    newCustomer.CustomerId = id;
+                    context.Add(newCustomer);
+                    context.SaveChanges();
+                    CustomerDetails customerDetails = new();
+                    customerDetails.CustomerID = newCustomer.CustomerId;
+                    customerDetails.FirstName = customer.FirstName;
+                    customerDetails.LastName = customer.LastName;
+                    customerDetails.Email = customer.Email;
+                    customerDetails.AddressId = newAddress.AddressID;
+                    context.Add(customerDetails);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong during the creation of a new customer"+ex.Message);
+            }
         }
-        /// <summary>
-        /// returns a customer by their id, use this if you want to know what addressId is tied to this customer
-        /// </summary>
-        /// <param name="customerId"></param>
-        /// <returns></returns>
-        public async Task<Customer> GetCustomerAsync(string customerId)
+        public async Task CreateCustomerAsync(CustomerDetails customer, Ordersystem.Objects.Customer.Address address)
         {
-            var customer = await _context.Customer.Where(c => c.CustomerId == customerId).FirstOrDefaultAsync();
-            return customer;
+            try
+            {
+                Ordersystem.Objects.Customer.Address newAddress = _addressService.CreateAddress(address);
+                string customerId = CreateCustomerID().ToString();
+                using (OrderContext context = new OrderContext())
+                {
+                    Customer newCustomer = new();
+                    var id = string.Concat('k' + customerId);
+                    newCustomer.CustomerId = id;
+                    context.Add(newCustomer);
+                    CustomerDetails customerDetails = new();
+                    customerDetails.CustomerID = newCustomer.CustomerId;
+                    customerDetails.FirstName = customer.FirstName;
+                    customerDetails.LastName = customer.LastName;
+                    customerDetails.Email = customer.Email;
+                    customerDetails.AddressId = newAddress.AddressID;
+                    context.Add(customerDetails);
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong during the creation of a new customer" + ex.Message);
+            }
         }
         /// <summary>
         /// returns a list of every customer in the Customer table. This does NOT returns their details, only Id and and addressId for each. Use GetCustomerDetailsList for more details on each customer
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Customer>> GetCustomersAsync()
+        public List<Customer> GetCustomers()
         {
-            var customer = await _context.Customer.ToListAsync();
-            return customer;
+            try
+            {
+                using (OrderContext context = new OrderContext())
+                {
+                    var customer = context.Customer.ToList();
+                    return customer;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the customers from the database");
+            }
+;
         }
         /// <summary>
         /// returns the customerdetails of a specific customer by their id
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public async Task<CustomerDetails> GetCustomerDetailsAsync(string customerId)
+        public CustomerDetails GetCustomerDetails(string customerId)
         {
-            var customerDetails = await _context.CustomerDetails.Where(c => c.CustomerID == customerId).FirstOrDefaultAsync();
-            return customerDetails;
+            try
+            {
+                using (OrderContext context = new OrderContext())
+                {
+                    var customerDetails = context.CustomerDetails.Where(c => c.CustomerID == customerId).FirstOrDefault();
+                    return customerDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the Customerdetails from the database");
+            }
         }
         /// <summary>
         /// return a list of overy customerdetails in the CustomerDetails table 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CustomerDetails>> GetCustomerDetailsListAsync()
+        public List<CustomerDetails> GetCustomerDetailsList()
         {
-            var customerDetailsList = await _context.CustomerDetails.ToListAsync();
-            return customerDetailsList;
+            try
+            {
+                using (OrderContext context = new OrderContext())
+                {
+                    var customerDetailsList = context.CustomerDetails.ToList();
+                    return customerDetailsList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the Customerdetails from the database");
+            }
+
         }
         /// <summary>
         /// Searches for the given CustomerDetails by customerId. If found, it will update that customerdetails with the new information
         /// </summary>
         /// <param name="customerDTO"></param>
         /// <returns></returns>
-        public async Task UpdateCustomerDetails(CustomerDTO customerDTO)
+        public void UpdateCustomerDetails(CustomerDetails customerdetails)
         {
-            var CustomerToUpdate = await GetCustomerDetailsAsync(customerDTO.CustomerID);
-            if (CustomerToUpdate == null)
-            { }
-            else
+            try
             {
-                CustomerToUpdate.FirstName = customerDTO.FirstName;
-                CustomerToUpdate.LastName = customerDTO.LastName;
-                CustomerToUpdate.Email = customerDTO.Email;
-                _context.SaveChangesAsync();
+                var CustomerToUpdate = GetCustomerDetails(customerdetails.CustomerID);
+                using (OrderContext context = new OrderContext())
+                {
+                    if (CustomerToUpdate == null)
+                    { }
+                    else
+                    {
+                        CustomerToUpdate.FirstName = customerdetails.FirstName;
+                        CustomerToUpdate.LastName = customerdetails.LastName;
+                        CustomerToUpdate.Email = customerdetails.Email;
+                        context.Update(CustomerToUpdate);
+                        context.SaveChanges();
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the Customerdetails from the database: " + ex.Message);
+            }
+
         }
         /// <summary>
         /// Searches for the given CustomerDetails by custoemrId. If found, it will that customerdetails with the new information
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public async Task DeleteCustomerDetails(string customerId)
+        public void DeleteCustomerDetails(string customerId)
         {
-            var CustomerToDelete = await GetCustomerDetailsAsync(customerId);
-            if (CustomerToDelete == null)
-            { }
-            else
+            try
             {
-                _context.CustomerDetails.Remove(CustomerToDelete);
-                await _context.SaveChangesAsync();
+                var CustomerToDelete = GetCustomerDetails(customerId);
+                using (OrderContext context = new OrderContext())
+                {
+                    if (CustomerToDelete == null)
+                    { }
+                    else
+                    {
+                        context.CustomerDetails.Remove(CustomerToDelete);
+                        context.SaveChanges();
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while deleting the customerdetails");
+            }
+
+
         }
     }
 }

@@ -53,3 +53,8 @@ While making the CustomerServiceTests I realised that I apparently hadn't regist
 I've been whittling away at logic errors due to my unit testing. The details of which you can find in the commits.
 At least I can tell I'm improving as a programmer because I look at my earlier written logic and see ways in which I could've done it much better.
 Good to know, a list of strings gets sorted alphabetically, which means that k comes before t, which messed up my logic and my tests. Had to go into the database and change that because annoyingly that's the PK. That was a fucking mess to deal with. 
+
+*30/05*
+A bunch of changes because I'm bad at committing when I'm the only one working. 
+Uhhh, bunch of bugfixes due to Unit testing, created AddressServiceTest. CustomerTest, PostalTest, UserTest. Tests work but somehow they don't go off in the correct order when the entire class is ran. Created another Xunit project to see if it was an MsTest issue. It was not. 
+Got rid of the DTO's to see if it was an object problem, did not fix it. Changed the services from async to non-async to see if it would fix the problem, did not fix it. Might make async copies of the services after testing anyway.
