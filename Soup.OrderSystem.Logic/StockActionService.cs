@@ -23,7 +23,7 @@ namespace Soup.OrderSystem.Logic
                     stockAction.Id = stockAction.Id;
                     stockAction.Amount = stockAction.Amount;
                     stockAction.ProductId = stockAction.ProductId;
-                    stockAction.StockActions = stockAction.StockActions;
+                    stockAction.StockActionsEnum = stockAction.StockActionsEnum;
                     stockAction.OrderId = stockAction.OrderId;
                     context.Add(stockAction);
                     context.SaveChanges();
@@ -90,13 +90,13 @@ namespace Soup.OrderSystem.Logic
                     switch (stockAction)
                     {
                         case (int)StockActionEnum.Add:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActions == StockActionEnum.Add).ToList();
+                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Add).ToList();
                             break;
                         case (int)StockActionEnum.Remove:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActions == StockActionEnum.Remove).ToList();
+                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Remove).ToList();
                             break;
                         case (int)StockActionEnum.Reserve:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActions == StockActionEnum.Reserve).ToList();
+                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Reserve).ToList();
                             break;
                     }
                     return stockActionsList;
@@ -146,11 +146,11 @@ namespace Soup.OrderSystem.Logic
             {
                 foreach (var stockAction in productStockActions)
                 {
-                    if (stockAction.StockActions == StockActionEnum.Add)
+                    if (stockAction.StockActionsEnum == StockActionEnum.Add)
                     {
                         stockAddedList.Add(stockAction);
                     }
-                    if (stockAction.StockActions == StockActionEnum.Remove)
+                    if (stockAction.StockActionsEnum == StockActionEnum.Remove)
                     {
                         stockRemovedList.Add(stockAction);
                     }
@@ -182,7 +182,7 @@ namespace Soup.OrderSystem.Logic
             {
                 foreach (var stockAction in productStockActions)
                 {
-                    if (stockAction.StockActions == StockActionEnum.Reserve)
+                    if (stockAction.StockActionsEnum == StockActionEnum.Reserve)
                     {
                         reservedStockList.Add(stockAction);
                     }

@@ -15,7 +15,7 @@ namespace Soup.OrderSystem.XunitTests
             IProductService productService = new ProductService();
             int productId = productService.GetProductsList().First().ProductID;
             stockAction.ProductId = productId;
-            stockAction.StockActions = StockActionEnum.Add;
+            stockAction.StockActionsEnum = StockActionEnum.Add;
             stockAction.OrderId =
             _stockActionService.CreateStockAction(stockAction);
             
