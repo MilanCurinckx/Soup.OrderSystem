@@ -5,7 +5,8 @@ Architecture
 Dependency Injection => Singleton vs Scoped vs Transient 
 Lazy loading vs eager loading 
 Repository => EF
-DTO for easy data transfer between front & back-end => If a method requires more than three parameters I used a DTO.
+DTO for easy data transfer => If a method requires more than three parameters I used a DTO.
+Do enums count as a design pattern?
 
 *19/03*: 
 Creation of the project
