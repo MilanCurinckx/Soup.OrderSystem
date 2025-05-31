@@ -2,6 +2,7 @@
 using Soup.Ordersystem.Objects;
 using Soup.Ordersystem.Objects.Order;
 using Soup.OrderSystem.Data;
+using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Logic
@@ -17,26 +18,28 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public void CreateOrder(OrderDetails orderDetails)
+        public void CreateOrder(OrderDTO orderDTO)
         {
             try
             {
                 using (OrderContext context = new())
                 {
                     Orders order = new();
+                    OrderDetails orderDetails = new OrderDetails();
+                    order.OrderStatus = OrderStatusEnum.New;
+                    order.CustomerID = orderDTO.CustomerId;
                     context.Orders.Add(order);
                     context.SaveChanges();
-                    OrderDetails newOrderDetails = new();
                     orderDetails.OrderID = order.OrderId;
-                    orderDetails.ProductID = orderDetails.ProductID;
-                    orderDetails.ProductAmount = orderDetails.ProductAmount;
+                    orderDetails.ProductID = orderDTO.ProductID;
+                    orderDetails.ProductAmount = orderDTO.ProductAmount;
                     context.OrderDetails.Add(orderDetails);
                     context.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while creating the Order");
+                throw new Exception("Something went wrong while creating the Order"+ ex.Message);
             }
 
         }
@@ -56,13 +59,13 @@ namespace Soup.OrderSystem.Logic
                 throw new Exception("Something went wrong while searching for the order" + ex.Message);
             }
         }
-        public List<Orders> GetOrderList()
+        public List<OrderDetails> GetOrderDetailsList()
         {
             try
             {
                 using (OrderContext context = new())
                 {
-                    var orders = context.Orders.ToList();
+                    var orders = context.OrderDetails.ToList();
                     return orders;
                 }
             }
@@ -88,7 +91,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the OrderDetails");
+                throw new Exception("Something went wrong while retrieving the OrderDetails"+ ex.Message);
             }
         }
         /// <summary>
@@ -108,7 +111,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the orderdetails");
+                throw new Exception("Something went wrong while retrieving the orderdetails" + ex.Message);
             }
 
         }
@@ -130,7 +133,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the orderdetails");
+                throw new Exception("Something went wrong while retrieving the orderdetails" + ex.Message);
             }
         }
         /// <summary>
@@ -150,7 +153,7 @@ namespace Soup.OrderSystem.Logic
                     }
                     if (OrderToUpdate == null)
                     {
-                        throw new Exception("ProductAmount could not be updated because order could not be found");
+                        throw new Exception("Product Amount could not be updated because order could not be found");
                     }
                     else
                     {
@@ -159,6 +162,7 @@ namespace Soup.OrderSystem.Logic
                         else
                         {
                             OrderToUpdate.ProductAmount = orderDetails.ProductAmount;
+                            context.Update(OrderToUpdate);
                             context.SaveChanges();
                         }
                     }
@@ -166,7 +170,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the product from the order");
+                throw new Exception("Something went wrong while retrieving the product from the order" + ex.Message);
             }
         }
 
@@ -190,25 +194,26 @@ namespace Soup.OrderSystem.Logic
                     else
                     {
                         //because I can't compare an enum with an int from the DTO, I have to do it like this. Even though the value is an int inside the enum. There's probably a better way to do this, but this works.
-                        switch (order.OrderStatus)
+                        switch ((int)order.OrderStatus)
                         {
-                            case OrderStatusEnum.New:
+                            case(int) OrderStatusEnum.New:
                                 orderToUpdate.OrderStatus = OrderStatusEnum.New;
                                 break;
-                            case OrderStatusEnum.Delivered:
+                            case (int) OrderStatusEnum.Delivered:
                                 orderToUpdate.OrderStatus = OrderStatusEnum.Delivered;
                                 break;
-                            case OrderStatusEnum.Canceled:
+                            case (int) OrderStatusEnum.Canceled:
                                 orderToUpdate.OrderStatus = OrderStatusEnum.Canceled;
                                 break;
                         }
+                        context.Update(orderToUpdate);
                         context.SaveChanges();
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while updating the orderstatus");
+                throw new Exception("Something went wrong while updating the orderstatus" + ex.Message);
             }
         }
         /// <summary>
@@ -220,7 +225,7 @@ namespace Soup.OrderSystem.Logic
         {
             try
             {
-                var ProductToRemove = GetOrderDetails(orderDetails.ProductID, orderDetails.ProductID);
+                var ProductToRemove = GetOrderDetails(orderDetails.OrderID, orderDetails.ProductID);
                 using (OrderContext context = new())
                 {
                     if (ProductToRemove == null)
@@ -236,7 +241,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while deleting the product from the order");
+                throw new Exception("Something went wrong while deleting the product from the order" + ex.Message);
             }
         }
     }

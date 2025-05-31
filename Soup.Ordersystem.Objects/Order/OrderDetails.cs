@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.Ordersystem.Objects
 {
-    [Keyless]
+    
     public class OrderDetails 
     {
-        
+        [Key]
+        public int OrderdetailsId { get;set;}
         [ForeignKey(nameof(Orders))]
         public int OrderID { get; set; }    
         [ForeignKey(nameof(Products))]

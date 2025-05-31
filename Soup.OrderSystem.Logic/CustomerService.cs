@@ -62,7 +62,7 @@ namespace Soup.OrderSystem.Logic
                 throw new Exception("Something went wrong during the creation of a new customer"+ex.Message);
             }
         }
-        public async Task CreateCustomerAsync(CustomerDetails customer, Ordersystem.Objects.Customer.Address address)
+        public async Task CreateCustomerAsync(CustomerDetails customer,Address address)
         {
             try
             {

@@ -32,7 +32,10 @@ namespace Soup.OrderSystem.XunitTests
         [Fact]
         public void Test3()
         {
-            List<StockAction> stockActionsList = _stockActionService.GetStockActionsByType(1);
+            StockAction stockAction= new StockAction();
+            List<StockAction> stockActions = _stockActionService.GetStockActionsList();
+            stockAction = stockActions.First();
+            List<StockAction> stockActionsList = _stockActionService.GetStockActionsByType(((int)stockAction.StockActionsEnum));
             Assert.NotNull(stockActionsList);
         }
         [Fact]

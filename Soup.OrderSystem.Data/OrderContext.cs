@@ -22,6 +22,11 @@ namespace Soup.OrderSystem.Data
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Product> OrderProducts { get; set; }
         public DbSet<StockAction> Stock_Actions { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Orders>().Property(o => o.OrderStatus).HasConversion<int>();
+            base.OnModelCreating(modelBuilder);
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
