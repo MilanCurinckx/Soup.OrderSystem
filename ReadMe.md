@@ -66,4 +66,7 @@ finished unit testing, will swap back to DTO usage if I have time. I also still 
 Enums were being annoying but I got it working, added an orderdetails PK to the orderdetails table because it got upset that I'm using the same values multiple times for pk.
 Still have not fixed the tests just doing the delete test right after t he create but the tests run individually. 
 Also because of unit testing, I reimplemented the OrderDTO because I needed multiple values, like CustomerId from it. This prevents me from having to remember like 7 different parameters for CreateOrder.
+While trying to fix the enum I also told EF that it should convert the property into an int if it didn't do that before. I'm pretty sure it did already but it doesn't hurt to type it explicitly. I also casted the switch case in the UpdateOrderStatus to ints just in case that was the problem (it wasn't but I'm scared to touch it again because it might just break on me again).
 Also, turns out that data doesn't get updated if you don't do a context.update on them, crazy stuff really.
+Anyway, I'm not getting this done in time between the group project and internship, but we'll just do our best and honestly that's all you can really ask of me. 
+To the person reading this and wondering what I did with all my time, I spent it being mentally ill due to adhd & autism. 
