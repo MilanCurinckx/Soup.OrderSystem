@@ -24,7 +24,6 @@ namespace Soup.OrderSystem.Logic
                     stockAction.Amount = stockAction.Amount;
                     stockAction.ProductId = stockAction.ProductId;
                     stockAction.StockActionsEnum = stockAction.StockActionsEnum;
-                    stockAction.OrderId = stockAction.OrderId;
                     context.Add(stockAction);
                     context.SaveChanges();
                 }
