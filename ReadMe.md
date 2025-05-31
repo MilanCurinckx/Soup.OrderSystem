@@ -59,3 +59,10 @@ A bunch of changes because I'm bad at committing when I'm the only one working.
 Uhhh, bunch of bugfixes due to Unit testing, created AddressServiceTest. CustomerTest, PostalTest, UserTest. Tests work but somehow they don't go off in the correct order when the entire class is ran. Created another Xunit project to see if it was an MsTest issue. It was not. 
 Got rid of the DTO's to see if it was an object problem, did not fix it. Changed the services from async to non-async to see if it would fix the problem, did not fix it. Might make async copies of the services after testing anyway.
 Also checked to see if it was an issue of having multiple copies of EF open, so every Ef method is now put inside a using(), this way it will immediately shut after it performed its task. Was also not the fix. I wanted to see if using the same instance of the service across multiple tests was the issue. Was also not the fix. I also couldn't do constructor injection in the MsTest project classes so I swapped to property injection instead.
+
+*31/05*
+finished unit testing, will swap back to DTO usage if I have time. I also still want to go back to making these methods async because I'm fairly certain they would run just fine.
+Enums were being annoying but I got it working, added an orderdetails PK to the orderdetails table because it got upset that I'm using the same values multiple times for pk.
+Still have not fixed the tests just doing the delete test right after t he create but the tests run individually. 
+Also because of unit testing, I reimplemented the OrderDTO because I needed multiple values, like CustomerId from it. This prevents me from having to remember like 7 different parameters for CreateOrder.
+Also, turns out that data doesn't get updated if you don't do a context.update on them, crazy stuff really.
