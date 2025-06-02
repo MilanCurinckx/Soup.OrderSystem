@@ -71,6 +71,8 @@ Also, turns out that data doesn't get updated if you don't do a context.update o
 Anyway, I'm not getting this done in time between the group project and internship, but we'll just do our best and honestly that's all you can really ask of me. 
 To the person reading this and wondering what I did with all my time, I spent it being mentally ill due to adhd & autism. 
 
-*02/05*
+*02/06*
 Well I created the UI project and then went back to logic and unit testing because task switching is hard. I took copies of AddressService & CustomerService and made it so that they are Async and use DTO's instead. I also created the interfaces for them and added them to the DI. Then I tested them in the unit tests using the same tests and they seem to work without hitch so there's that. Still can't seem to fix the problem of making them run in the correct order, but they work individually.
 Are you supposed to put comments in unit tests to explain what they do? Probably right? I'll get on that. 
+*03/06*
+The passage of time scares me, note to self, it seems like I hadn't made an StockActionDTO when I made the StockAction.

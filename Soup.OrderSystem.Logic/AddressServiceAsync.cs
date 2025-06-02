@@ -125,7 +125,7 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="addressDTO"></param>
         /// <returns></returns>
-        public async void UpdateAddress(AddressDTO addressDTO)
+        public async Task UpdateAddress(AddressDTO addressDTO)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="addressId"></param>
         /// <returns></returns>
-        public async void DeleteAddress(int addressId)
+        public async Task DeleteAddress(int addressId)
         {
             try
             {

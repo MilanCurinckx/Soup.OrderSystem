@@ -1,19 +1,21 @@
-﻿using Soup.Ordersystem.Objects;
+﻿using Microsoft.EntityFrameworkCore;
+using Soup.Ordersystem.Objects;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
+using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.Logic
 {
-    public class StockActionService
+    public class StockActionServiceAsync : IStockActionServiceAsync
     {
 
         /// <summary>
         /// Creates a new stock action and saves it to the db
-        /// </summary>
+        /// </summary>newStockAction
         /// <param name="stockActionDTO"></param>
         /// <returns></returns>
-        public async void CreateStockAction(StockActionDTO stockActionDTO)
+        public async Task CreateStockAction(StockActionDTO stockActionDTO)
         {
             try
             {
@@ -39,13 +41,13 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="stockActionId"></param>
         /// <returns></returns>
-        public StockAction GetStockAction(int stockActionId)
+        public async Task<StockAction> GetStockAction(int stockActionId)
         {
             try
             {
                 using (OrderContext context = new())
                 {
-                    var stockAction = context.Stock_Actions.Where(s => s.Id == stockActionId).FirstOrDefault();
+                    var stockAction = await context.Stock_Actions.Where(s => s.Id == stockActionId).FirstOrDefaultAsync();
                     return stockAction;
                 }
             }
@@ -58,13 +60,13 @@ namespace Soup.OrderSystem.Logic
         /// returns a list of all the stock actions in the db
         /// </summary>
         /// <returns></returns>
-        public List<StockAction> GetStockActionsList()
+        public async Task<List<StockAction>> GetStockActionsList()
         {
             try
             {
                 using (OrderContext context = new())
                 {
-                    var stockActions = context.Stock_Actions.ToList();
+                    var stockActions = await context.Stock_Actions.ToListAsync();
                     return stockActions;
                 }
             }
@@ -79,7 +81,7 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="stockAction"></param>
         /// <returns></returns>
-        public List<StockAction> GetStockActionsByType(int stockAction)
+        public async Task<List<StockAction>> GetStockActionsByType(int stockAction)
         {
             try
             {
@@ -89,13 +91,13 @@ namespace Soup.OrderSystem.Logic
                     switch (stockAction)
                     {
                         case (int)StockActionEnum.Add:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Add).ToList();
+                            stockActionsList = await context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Add).ToListAsync();
                             break;
                         case (int)StockActionEnum.Remove:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Remove).ToList();
+                            stockActionsList = await context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Remove).ToListAsync();
                             break;
                         case (int)StockActionEnum.Reserve:
-                            stockActionsList = context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Reserve).ToList();
+                            stockActionsList = await context.Stock_Actions.Where(s => s.StockActionsEnum == StockActionEnum.Reserve).ToListAsync();
                             break;
                     }
                     return stockActionsList;
@@ -103,7 +105,7 @@ namespace Soup.OrderSystem.Logic
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the stock actions");
+                throw new Exception("Something went wrong while retrieving the stock actions " + ex.Message);
             }
         }
         /// <summary>
@@ -111,19 +113,19 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public List<StockAction> GetStockActionsByProduct(int productId)
+        public async Task<List<StockAction>> GetStockActionsByProduct(int productId)
         {
             try
             {
                 using (OrderContext context = new())
                 {
-                    var stockActions = context.Stock_Actions.Where(s => s.ProductId == productId).ToList();
+                    var stockActions = await context.Stock_Actions.Where(s => s.ProductId == productId).ToListAsync();
                     return stockActions;
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Something went wrong while retrieving the stock actions");
+                throw new Exception("Something went wrong while retrieving the stock actions " + ex.Message);
             }
         }
         /// <summary>
@@ -131,9 +133,9 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public int GetCurrentStockAmount(int productId)
+        public async Task<int> GetCurrentStockAmount(int productId)
         {
-            var productStockActions = GetStockActionsByProduct(productId);
+            var productStockActions = await GetStockActionsByProduct(productId);
             var stockAddedList = new List<StockAction>();
             int stockAddedTotal = 0;
             var stockRemovedList = new List<StockAction>();
@@ -168,10 +170,10 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public int GetAvailableStockAmount(int productId)
+        public async Task<int> GetAvailableStockAmount(int productId)
         {
-            var productStockActions = GetStockActionsByProduct(productId);
-            var currentStockAmount = GetCurrentStockAmount(productId);
+            var productStockActions = await GetStockActionsByProduct(productId);
+            var currentStockAmount = await GetCurrentStockAmount(productId);
             var reservedStockList = new List<StockAction>();
             int reservedStockAmount = 0;
             int availableStockAmount = 0;
@@ -251,4 +253,3 @@ namespace Soup.OrderSystem.Logic
         //}
     }
 }
-

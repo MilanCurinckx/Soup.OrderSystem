@@ -1,49 +1,55 @@
 ﻿using Soup.Ordersystem.Objects;
 using Soup.Ordersystem.Objects.Order;
 using Soup.OrderSystem.Logic;
+using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
+using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.XunitTests
 {
     public class StockActionServiceTest
     {
-        private IStockActionService _stockActionService { get; set; } = new StockActionService();
+        private IStockActionServiceAsync _stockActionService { get; set; } = new StockActionServiceAsync();
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
+            StockActionDTO stockActionDTO = new StockActionDTO();
             StockAction stockAction = new StockAction();
+            StockAction createdStockAction = new StockAction();
+            List<StockAction> stockActionsList = new List<StockAction>();
             IProductService productService = new ProductService();
             int productId = productService.GetProductsList().First().ProductID;
             stockAction.ProductId = productId;
             stockAction.StockActionsEnum = StockActionEnum.Add;
             stockAction.Amount = 1;
             _stockActionService.CreateStockAction(stockAction);
-            StockAction createdStockAction = _stockActionService.GetStockActionsList().Find(x => x.ProductId == productId);
+            stockActionsList = await _stockActionService.GetStockActionsList();
+            createdStockAction= stockActionsList.Find(x => x.ProductId == productId);
             Assert.NotNull(createdStockAction);
         }
         [Fact]
-        public void Test2()
+        public async Task Test2()
         {
-            List<StockAction> stockActionsList = _stockActionService.GetStockActionsList();
+            List<StockAction> stockActionsList = await _stockActionService.GetStockActionsList();
             StockAction stockAction = stockActionsList.First();
-            StockAction getStockAction = _stockActionService.GetStockAction(stockAction.Id);
+            StockAction getStockAction = await _stockActionService.GetStockAction(stockAction.Id);
             Assert.Equal(stockAction.ProductId, getStockAction.ProductId);
         }
         [Fact]
-        public void Test3()
+        public async Task Test3()
         {
             StockAction stockAction= new StockAction();
-            List<StockAction> stockActions = _stockActionService.GetStockActionsList();
+            List<StockAction> stockActions = await _stockActionService.GetStockActionsList();
             stockAction = stockActions.First();
-            List<StockAction> stockActionsList = _stockActionService.GetStockActionsByType(((int)stockAction.StockActionsEnum));
+            List<StockAction> stockActionsList = await _stockActionService.GetStockActionsByType(((int)stockAction.StockActionsEnum));
             Assert.NotNull(stockActionsList);
         }
         [Fact]
-        public void Test4()
+        public async Task Test4()
         {
-            List<StockAction> stockActionsList = _stockActionService.GetStockActionsList();
+            List<StockAction> stockActionsList = await _stockActionService.GetStockActionsList();
             StockAction stockActions = stockActionsList.First();
-            List<StockAction> stockActionsProductList = _stockActionService.GetStockActionsByProduct(stockActions.ProductId);
+            List<StockAction> stockActionsProductList = await _stockActionService.GetStockActionsByProduct(stockActions.ProductId);
             Assert.NotNull(stockActionsProductList);
         }
     }

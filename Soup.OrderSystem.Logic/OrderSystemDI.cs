@@ -20,10 +20,15 @@ namespace Soup.OrderSystem.Logic
             builder.Services.AddSingleton<IProductService,ProductService>();
             builder.Services.AddSingleton<IUserservice,Userservice>();
             builder.Services.AddSingleton<ICustomerService, CustomerService>();
-            builder.Services.AddSingleton<IStockActionService,StockActionService>();
+            //builder.Services.AddSingleton<IStockActionService,StockActionService>();
 
             builder.Services.AddSingleton<ICustomerServiceAsync,CustomerServiceAsync>();
             builder.Services.AddSingleton<IAddressServiceAsync, AddressServiceAsync>();
+            builder.Services.AddSingleton<IPostalCodeServiceAsync, PostalCodeServiceAsync>();
+            builder.Services.AddSingleton<IOrderServiceAsync, OrderServiceAsync>();
+            builder.Services.AddSingleton<IProductServiceAsync, ProductServiceAsync>();
+            builder.Services.AddSingleton<IStockActionServiceAsync, StockActionServiceAsync>();
+            builder.Services.AddSingleton<IUserServiceAsync, UserServiceAsync>();
             var build = builder.Build();
             
         }

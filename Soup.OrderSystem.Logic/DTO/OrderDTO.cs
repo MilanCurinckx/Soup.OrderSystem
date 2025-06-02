@@ -8,7 +8,7 @@ namespace Soup.OrderSystem.Logic.DTO
     {   
         public string CustomerId { get; set; }
         public int OrderID { get; set; }
-        public int OrderStatus { get; set; }
+        public OrderStatusEnum OrderStatus { get; set; }
         public int ProductID { get; set; }
         public int ProductAmount { get; set; }
     }

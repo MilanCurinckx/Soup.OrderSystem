@@ -1,39 +1,41 @@
 using Soup.OrderSystem.Logic;
 using Soup.Ordersystem.Objects.Customer;
+using System.Threading.Tasks;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.XunitTests;
 
 public class PostalServiceTest
 {
-    private IPostalCodeService _postalCodeService {  get; set; } = new PostalCodeService();
+    private IPostalCodeServiceAsync _postalCodeService {  get; set; } = new PostalCodeServiceAsync();
     [Fact]
-    public void Test1()
+    public async Task Test1()
     {
         _postalCodeService.CreatePostalCode(postalCode: "postalTest", nameOfPlace: "testPlace");
-        PostalCode postalCode = _postalCodeService.GetPostalCodeById("postalTest");
+        PostalCode postalCode = await _postalCodeService.GetPostalCodeById("postalTest");
         Assert.NotNull(postalCode);
     }
     [Fact]
-    public void Test2()
+    public async Task Test2()
     {
-        PostalCode postalCodeId = _postalCodeService.GetPostalCodeById("PostalTest");
-        PostalCode postalCodePlace = _postalCodeService.GetPostalCodeByPlaceName("testPlace");
+        PostalCode postalCodeId = await _postalCodeService.GetPostalCodeById("PostalTest");
+        PostalCode postalCodePlace =await _postalCodeService.GetPostalCodeByPlaceName("testPlace");
         Assert.Equal(postalCodeId.PostalCodeID, postalCodePlace.PostalCodeID);
     }
     [Fact]
-    public void Test3()
+    public async Task Test3()
     {
-        List<PostalCode> postalList = _postalCodeService.GetPostalCodes();
+        List<PostalCode> postalList = await _postalCodeService.GetPostalCodes();
         Assert.NotNull(postalList);
     }
     [Fact]
-    public void Test4()
+    public async Task Test4()
     {
         IPostalCodeService postalCodeService = new PostalCodeService();
         List<PostalCode> postalList = postalCodeService.GetPostalCodes();
         PostalCode postalCode = postalList.Last();
-        _postalCodeService.DeletePostalCode(postalCode.NameOfPlace);
-        PostalCode? postalCodeNull = _postalCodeService.GetPostalCodeById(postalCode.PostalCodeID);
+        await _postalCodeService.DeletePostalCode(postalCode.NameOfPlace);
+        PostalCode? postalCodeNull = await _postalCodeService.GetPostalCodeById(postalCode.PostalCodeID);
         Assert.Null(postalCodeNull);
     }
 }

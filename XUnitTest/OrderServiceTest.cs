@@ -14,14 +14,15 @@ namespace Soup.OrderSystem.XunitTests
 {
     public class OrderServiceTest
     {
-        private IOrderService _orderService {  get; set; } = new OrderService();
+        private IOrderServiceAsync _orderService {  get; set; } = new OrderServiceAsync();
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
             OrderDetails details = new OrderDetails();
             IProductService productService = new ProductService();
             ICustomerService customerService = new CustomerService();
-            OrderDetails? newOrderDetails = new OrderDetails();
+            List<OrderDetails> newOrderDetailsList = new List<OrderDetails>();
+            OrderDetails newOrderDetails = new OrderDetails();
             List<Customer> customerList = new List<Customer>();
             Customer customer = new Customer();
             Product product = new Product();
@@ -37,84 +38,103 @@ namespace Soup.OrderSystem.XunitTests
             orderDTO.ProductAmount = 1;
             _orderService.CreateOrder(orderDTO);
 
-            newOrderDetails = _orderService.GetOrderDetailsList().Last();
+            newOrderDetailsList = await _orderService.GetOrderDetailsList();
+            newOrderDetails = newOrderDetailsList.Last();
             Assert.NotNull(newOrderDetails);
         }
         [Fact]
-        public void Test2()
+        public async Task Test2()
         {
+            List<OrderDetails> detailsList = new List<OrderDetails>();
             OrderDetails details = new OrderDetails();
-            details = _orderService.GetOrderDetailsList().Last();
-            Orders orders = _orderService.GetOrder(details.OrderID);
+            detailsList = await _orderService.GetOrderDetailsList();
+            details = detailsList.Last();
+            Orders orders = await _orderService.GetOrder(details.OrderID);
             Assert.NotNull(orders);
         }
         [Fact]
-        public void Test3()
+        public async Task Test3()
         {
-            OrderDetails details = new OrderDetails();
+            List<OrderDetails> detailsList = new List<OrderDetails>();
             OrderDetails orderDetails = new OrderDetails();
-            details = _orderService.GetOrderDetailsList().Last();
-            orderDetails = _orderService.GetOrderDetails(details.OrderID, details.ProductID);
-            Assert.NotNull(orderDetails);
+            OrderDetails getOrderdetails = new OrderDetails();
+            detailsList = await _orderService.GetOrderDetailsList();
+            orderDetails = detailsList.Last();
+            getOrderdetails = await _orderService.GetOrderDetails(orderDetails.OrderID, orderDetails.ProductID);
+            Assert.NotNull(getOrderdetails);
         }
         [Fact]
-        public void Test4()
+        public async Task Test4()
         {
-            OrderDetails details = new OrderDetails();
-            List<OrderDetails> orderDetails = new List<OrderDetails>();
-            details =_orderService.GetOrderDetailsList().Last();
-            orderDetails = _orderService.GetOrderDetailsbyOrder(details.OrderID);
-            Assert.NotNull(orderDetails);
+            List<OrderDetails> details = new List<OrderDetails>();
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            OrderDetails orderDetails = new OrderDetails();
+            details =await _orderService.GetOrderDetailsList();
+            orderDetails= details.Last();
+            orderDetailsList = await _orderService.GetOrderDetailsbyOrder(orderDetails.OrderID);
+            Assert.NotNull(orderDetailsList);
         }
         [Fact]
-        public void Test5()
+        public async Task Test5()
         {
-            OrderDetails details = new OrderDetails();
-            List<OrderDetails> orderDetails = new List<OrderDetails>();
-            details = _orderService.GetOrderDetailsList().Last();
-            orderDetails = _orderService.GetOrderDetailsByProduct(details.ProductID);
-            Assert.NotNull(orderDetails);
+            List<OrderDetails> details = new List<OrderDetails>();
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            OrderDetails orderDetailsLast = new OrderDetails();
+            details = await _orderService.GetOrderDetailsList();
+            orderDetailsLast = details.Last();
+            orderDetailsList = await _orderService.GetOrderDetailsByProduct(orderDetailsLast.ProductID);
+            Assert.NotNull(orderDetailsList);
         }
         [Fact]
-        public void Test6()
+        public async Task Test6()
         {
+            OrderDTO orderDTO = new OrderDTO();
             OrderDetails details = new OrderDetails();
             Orders orders = new Orders();
             Orders foundOrder = new Orders();
             Orders updatedOrder = new Orders();
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
-            orderDetailsList = _orderService.GetOrderDetailsList();
+            orderDetailsList = await _orderService.GetOrderDetailsList();
             details= orderDetailsList.Last();
             orders.OrderId = details.OrderID;
-            foundOrder = _orderService.GetOrder(details.OrderID);
+            foundOrder = await _orderService.GetOrder(details.OrderID);
             foundOrder.OrderStatus = OrderStatusEnum.Canceled;
-            _orderService.UpdateOrderStatus(foundOrder);
-            updatedOrder = _orderService.GetOrder(foundOrder.OrderId);
+            orderDTO.OrderID = foundOrder.OrderId;
+            orderDTO.OrderStatus = (int)foundOrder.OrderStatus;
+            await _orderService.UpdateOrderStatus(orderDTO);
+            updatedOrder = await _orderService.GetOrder(foundOrder.OrderId);
             Assert.Equal(foundOrder.OrderStatus, updatedOrder.OrderStatus);
         }
         [Fact]
-        public void Test7()
+        public async Task Test7()
         {
+            OrderDTO orderDTO = new OrderDTO();
             OrderDetails details= new OrderDetails();
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             OrderDetails updatedDetails = new OrderDetails();
-            orderDetailsList= _orderService.GetOrderDetailsList();
+            orderDetailsList= await _orderService.GetOrderDetailsList();
             details = orderDetailsList.Last();
             details.ProductAmount = 2;
-            _orderService.UpdateProductAmount(details);
-            updatedDetails = _orderService.GetOrderDetails(details.OrderID,details.ProductID);
+            orderDTO.OrderID= details.OrderID;
+            orderDTO.ProductID = details.ProductID;
+            orderDTO.ProductAmount = details.ProductAmount;
+            await _orderService.UpdateProductAmount(orderDTO);
+            updatedDetails = await _orderService.GetOrderDetails(details.OrderID,details.ProductID);
             Assert.Equal(details.ProductAmount, updatedDetails.ProductAmount);
         }
         [Fact]
-        public void Test8()
+        public async Task Test8()
         {
+            OrderDTO orderDTO = new OrderDTO();
             OrderDetails details= new OrderDetails();
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             OrderDetails? deletedOrderDetails = new OrderDetails();
-            orderDetailsList = _orderService.GetOrderDetailsList();
+            orderDetailsList = await _orderService.GetOrderDetailsList();
             details = orderDetailsList.Last();
-            _orderService.DeleteProductDetails(details);
-            deletedOrderDetails = _orderService.GetOrderDetails(details.OrderID,details.ProductID);
+            orderDTO.OrderID= details.OrderID;
+            orderDTO.ProductID = details.ProductID;
+            await _orderService.DeleteOrderDetails(orderDTO);
+            deletedOrderDetails = await _orderService.GetOrderDetails(details.OrderID,details.ProductID);
             Assert.Null(deletedOrderDetails);
         }
     }

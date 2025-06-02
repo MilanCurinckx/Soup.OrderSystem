@@ -1,6 +1,8 @@
 ﻿using Soup.Ordersystem.Objects.Order;
 using Soup.Ordersystem.Objects.User;
 using Soup.OrderSystem.Logic;
+using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +14,28 @@ namespace Soup.OrderSystem.XunitTests
 
     public class ProductServiceTest
     {
-        private IProductService _productService { get; set; } = new ProductService();
+        private IProductServiceAsync _productService { get; set; } = new ProductServiceAsync();
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
-            Product product = new Product();
+            ProductDTO product = new ProductDTO();
+            List<Product> productsList = new List<Product>();
+            Product createdProduct = new Product();
             product.ProductName = "Test";
             _productService.CreateProduct(product);
-            Product createdProduct = _productService.GetProductsList().Last();
+            productsList = await _productService.GetProductsList();
+            createdProduct = productsList.Last();
             Assert.NotNull(createdProduct);
         }
         [Fact]
-        public void Test2()
+        public async Task Test2()
         {
-            Product product = _productService.GetProductsList().Last();
+            List<Product> productList = new List<Product>();
+            List<Product> updatedProductList = new List<Product>();
+            Product product = new Product();
+            Product updatedProduct = new Product();
+            productList = await _productService.GetProductsList();
+            product = productList.Last();
             if (product.ProductName == "Test")
             {
                 product.ProductName = "updated";
@@ -34,15 +44,19 @@ namespace Soup.OrderSystem.XunitTests
             {
                 product.ProductName = "Test";
             }
-            _productService.UpdateProduct(product);
-            Product updatedProduct = _productService.GetProductsList().Last();
+            await _productService.UpdateProduct(product);
+            updatedProductList = await _productService.GetProductsList();
+            updatedProduct = updatedProductList.Last();
             Assert.NotEqual(product.ProductName, updatedProduct.ProductName);
         }
         [Fact]
-        public void Test3()
+        public async Task Test3()
         {
-            Product product = _productService.GetProductsList().Last();
-            _productService.DeleteProduct(product.ProductID);
+            List<Product> productList = new List<Product>();
+            Product product = new Product();
+            productList = await _productService.GetProductsList();
+            product = productList.Last();
+            await _productService.DeleteProduct(product.ProductID);
         }
     }
 }
