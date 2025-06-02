@@ -8,6 +8,10 @@ Repository => EF
 DTO for easy data transfer => If a method requires more than three parameters I used a DTO.
 Do enums count as a design pattern?
 
+KNOWN ISSUES: 
+The unit tests sometimes run in the wrong order when you run all of them, they worked perfectly fine individually though(at least when I checked last time)
+
+Diary (I suppose? You can use this to see when I worked on the program): 
 *19/03*: 
 Creation of the project
 *20/03*: 
@@ -75,4 +79,8 @@ To the person reading this and wondering what I did with all my time, I spent it
 Well I created the UI project and then went back to logic and unit testing because task switching is hard. I took copies of AddressService & CustomerService and made it so that they are Async and use DTO's instead. I also created the interfaces for them and added them to the DI. Then I tested them in the unit tests using the same tests and they seem to work without hitch so there's that. Still can't seem to fix the problem of making them run in the correct order, but they work individually.
 Are you supposed to put comments in unit tests to explain what they do? Probably right? I'll get on that. 
 *03/06*
-The passage of time scares me, note to self, it seems like I hadn't made an StockActionDTO when I made the StockAction.
+The passage of time scares me, note to self: it seems like I hadn't made an StockActionDTO when I made the StockAction.Except for the fact that I'm blind and realised I made it already right after typing the previous sentence. Uhh, I finished the API controllers and it boots. So yippee on that one at the least. I also created an MVC project but I need to look at previous projects again to see how that shit worked again. 
+Oh right I also did some more testing to make sure that all of it worked properly in unit testing if I swapped to the async methods. Stuff seemed to work properly so that's good. Once more I'm scared to dig too deep in case it breaks even more. But my methods work so it's an Xunit problem if that happens.
+Is it overkill to leave the normal services in the program when I'm not even using them? Probably but there's no way to access them so they're basically gathering dust (some are probably still tied to unit tests though but that's beside the point). They're also not as refined(?) as the async methods, they don't make use of DTO's and some even have logic errors in them so yeah definitely not using them. 
+Also while I remember, some of the names I gave in this project are frankly really bad, like the ones for address. I don't know why I struggled so hard to give it a proper name but I'm not touching that anymore. I'm aware it's bad. Same with the OrderProducts table in the database. I can see how that would be confusing. Orderdetails isn't an exactly clear name either but at least I give proper explanation of that one in OrderService.
+It annoys me how much time I spend trying to remember how to do something, but I can't really feel bad about when I think about how much bloody stuff I've learnt/saw these last few months. I just wish I did a better job of archiving projects. It's annoying have to trudge through so many projects with ambiguous names on Github. But at least I uploaded them to github,usually with comments on the stuff introduced.
