@@ -21,6 +21,9 @@ namespace Soup.OrderSystem.Logic
             builder.Services.AddSingleton<IUserservice,Userservice>();
             builder.Services.AddSingleton<ICustomerService, CustomerService>();
             builder.Services.AddSingleton<IStockActionService,StockActionService>();
+
+            builder.Services.AddSingleton<ICustomerServiceAsync,CustomerServiceAsync>();
+            builder.Services.AddSingleton<IAddressServiceAsync, AddressServiceAsync>();
             var build = builder.Build();
             
         }

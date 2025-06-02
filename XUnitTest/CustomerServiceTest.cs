@@ -1,5 +1,6 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Logic;
+using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,30 +12,29 @@ namespace Soup.OrderSystem.XunitTests
 {
     public class CustomerServiceTest
     {
-        private ICustomerService _customerService { get; set; } = new CustomerService();
+        private ICustomerServiceAsync _customerService { get; set; } = new CustomerServiceAsync();
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
-            List<Customer> CustomerList = _customerService.GetCustomers();
+            CustomerDTO newCustomer = new();
+            List<Customer> CustomerList =await _customerService.GetCustomers();
             int totalCustomers = CustomerList.Count;
-            CustomerDetails newCustomer = new();
             newCustomer.FirstName = "FirstNameTest";
             newCustomer.LastName = "LastNameTest";
             newCustomer.Email = "emailTest";
-            Address address = new Address();
-            address.StreetHouse = "address";
-            address.BusNumber = 69;
-            address.PostalCodeId = "0001";
-            _customerService.CreateCustomer(newCustomer, address);
-            List<Customer> newCustomerList = _customerService.GetCustomers();
+            newCustomer.AddressDTO.StreetHouse = "address";
+            newCustomer.AddressDTO.BusNumber = 69;
+            newCustomer.AddressDTO.PostalCodeId = "0001";
+            await _customerService.CreateCustomer(newCustomer);
+            List<Customer> newCustomerList = await _customerService.GetCustomers();
             int newTotalCustomers = newCustomerList.Count;
             Assert.NotEqual(totalCustomers, newTotalCustomers);
         }
         [Fact]
-        public void Test2()
+        public async Task Test2()
         {
-
-            List<CustomerDetails> customerDetails = _customerService.GetCustomerDetailsList();
+            CustomerDTO customer = new();
+            List<CustomerDetails> customerDetails = await _customerService.GetCustomerDetailsList();
             CustomerDetails customerToUpdate = customerDetails.Where(c => c.FirstName == "FirstNameTest").Last();
             if (customerToUpdate != null)
             {
@@ -51,23 +51,28 @@ namespace Soup.OrderSystem.XunitTests
                     customerToUpdate.Email = updateString1;
                     teststring = updateString1;
                 }
-                _customerService.UpdateCustomerDetails(customerToUpdate);
-                CustomerDetails updatedCustomer = _customerService.GetCustomerDetails(customerToUpdate.CustomerID);
+                customer.CustomerID = customerToUpdate.CustomerID;
+                customer.FirstName = customerToUpdate.FirstName;
+                customer.LastName = customerToUpdate.LastName;
+                customer.Email = customerToUpdate.Email;
+                customer.AddressId = customer.AddressId;
+                await _customerService.UpdateCustomerDetails(customer);
+                CustomerDetails updatedCustomer =await _customerService.GetCustomerDetails(customer.CustomerID);
                 Assert.True(updatedCustomer.Email == teststring);
             }
         }
         [Fact]
-        public void Test3()
+        public async Task Test3()
         {
-            ICustomerService customerService = new CustomerService();
-            List<CustomerDetails> customerDetails = customerService.GetCustomerDetailsList();
+            
+            List<CustomerDetails> customerDetails = await _customerService.GetCustomerDetailsList();
             int currentAmount = customerDetails.Count;
             CustomerDetails customerToUpdate = customerDetails.Where(c => c.FirstName == "FirstNameTest").FirstOrDefault();
             if (customerToUpdate != null)
             {
-                customerService.DeleteCustomerDetails(customerToUpdate.CustomerID);
+               await _customerService.DeleteCustomerDetails(customerToUpdate.CustomerID);
             }
-            List<CustomerDetails> newCustomerDetails = customerService.GetCustomerDetailsList();
+            List<CustomerDetails> newCustomerDetails = await _customerService.GetCustomerDetailsList();
             int newAmount = newCustomerDetails.Count;
             Assert.NotEqual(currentAmount, newAmount);
         }

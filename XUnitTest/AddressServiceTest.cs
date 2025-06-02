@@ -1,5 +1,7 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
 using Soup.OrderSystem.Logic;
+using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,59 +10,68 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.XunitTests
 {
-    internal class AddressServiceTest
+    public class AddressServiceTest
     {
-        private IAddressService service { get; set; } = new AddressService();
+        private IAddressServiceAsync service { get; set; } = new AddressServiceAsync ();
         [Fact]
-        public void GetAddressById()
+        public async void GetAddressById()
         {
-            var result = service.GetAddressById(13);
+            var result = await service.GetAddressById(13);
 
             Assert.NotNull(result);
         }
         [Fact]
-        public void GetAddressesToList()
+        public async void GetAddressesToList()
         {
-            var result = service.GetAddressesToList();
+            var result =await service.GetAddressesToList();
             Assert.NotNull(result);
         }
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
-            var totalAddresses = service.GetAddressesToList();
+            var totalAddresses = await service.GetAddressesToList();
             var amount = totalAddresses.Count();
-            Address address = new Address();
+            AddressDTO address = new AddressDTO();
             address.PostalCodeId = "0001";
             address.StreetHouse = "testStreet3";
             address.BusNumber = 1;
-            service.CreateAddress(address);
-            var newTotalAdresses = service.GetAddressesToList();
+            await service.CreateAddress(address);
+            var newTotalAdresses = await service.GetAddressesToList();
             var newAmount = newTotalAdresses.Count();
-            Assert.NotEqual(newAmount, amount);
+            Assert.NotEqual(amount, newAmount);
         }
         [Fact]
-        public void Test2()
+        public async void Test2()
         {
-            Address addressToUpdate = service.GetAddressById(13);
+            AddressDTO addressDTO = new AddressDTO();
+            Address addressToUpdate = await service.GetAddressById(13);
             addressToUpdate.BusNumber = 2;
-            service.UpdateAddress(addressToUpdate);
-            Address updatedAddress = service.GetAddressById(13);
+            addressDTO.AddressID = addressToUpdate.AddressID;
+            addressDTO.StreetHouse= addressToUpdate.StreetHouse;
+            addressDTO.BusNumber = addressToUpdate.BusNumber;
+            addressDTO.AddressID = addressToUpdate.AddressID;
+            service.UpdateAddress(addressDTO);
+            Address updatedAddress = await service.GetAddressById(13);
             Assert.True(updatedAddress.BusNumber == 2);
             if (updatedAddress.BusNumber == 2)
             {
                 addressToUpdate.BusNumber = 1;
-                service.UpdateAddress(addressToUpdate);
+                service.UpdateAddress(addressDTO);
             }
         }
         [Fact]
-        public void Test3()
+        public async Task Test3()
         {
-            var findLatestAddress = service.GetAddressesToList().Max(x => x.AddressID);
+            List<Address> addressList = await service.GetAddressesToList();
+            int addressId= addressList.Max(x => x.AddressID);
+            List<Address> newAddressList = new();
+            int newAddressTotal = new();
             try
             {
-                service.DeleteAddress(findLatestAddress);
-                var newTotalAddresses = service.GetAddressesToList().Max(x => x.AddressID);
-                Assert.False(findLatestAddress == newTotalAddresses);
+                service.DeleteAddress(addressId);
+                addressList =await service.GetAddressesToList();
+                newAddressTotal =addressList.Max(x => x.AddressID);
+                Assert.False(addressId == newAddressTotal);
             }
             catch (Exception ex)
             {
