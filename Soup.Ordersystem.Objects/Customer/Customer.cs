@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Soup.Ordersystem.Objects.Customer
+namespace Soup.OrderSystem.Objects.Customer
 {
     [Table("Customer")]
     public class Customer

@@ -1,10 +1,11 @@
 ﻿using Soup.OrderSystem.Logic;
-using Soup.Ordersystem.Objects.User;
+using Soup.OrderSystem.Objects.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.XunitTests
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Soup.Ordersystem.Objects.User
+namespace Soup.OrderSystem.Objects.User
 {
     public class Users
     {

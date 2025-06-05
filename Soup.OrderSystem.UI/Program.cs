@@ -38,10 +38,6 @@ namespace Soup.OrderSystem.UI
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapControllerRoute(
-                name: "User",
-                pattern: "{controller=User}/{action=Create}"
-                );
             app.Run();
         }
     }

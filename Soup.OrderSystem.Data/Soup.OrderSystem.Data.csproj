@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Soup.Ordersystem.Objects\Soup.Ordersystem.Objects.csproj" />
+    <ProjectReference Include="..\Soup.Ordersystem.Objects\Soup.OrderSystem.Objects.csproj" />
   </ItemGroup>
 
 </Project>

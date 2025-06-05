@@ -1,5 +1,5 @@
 using Soup.OrderSystem.Logic;
-using Soup.Ordersystem.Objects.Customer;
+using Soup.OrderSystem.Objects.Customer;
 using System.Threading.Tasks;
 using Soup.OrderSystem.Logic.Interfaces;
 
@@ -11,7 +11,7 @@ public class PostalServiceTest
     [Fact]
     public async Task Test1()
     {
-        _postalCodeService.CreatePostalCode(postalCode: "postalTest", nameOfPlace: "testPlace");
+        await _postalCodeService.CreatePostalCode(postalCode: "postalTest", nameOfPlace: "testPlace");
         PostalCode postalCode = await _postalCodeService.GetPostalCodeById("postalTest");
         Assert.NotNull(postalCode);
     }
@@ -34,7 +34,7 @@ public class PostalServiceTest
         IPostalCodeService postalCodeService = new PostalCodeService();
         List<PostalCode> postalList = postalCodeService.GetPostalCodes();
         PostalCode postalCode = postalList.Last();
-        await _postalCodeService.DeletePostalCode(postalCode.NameOfPlace);
+        await _postalCodeService.DeletePostalCode(postalCode.NameOfPlace!);
         PostalCode? postalCodeNull = await _postalCodeService.GetPostalCodeById(postalCode.PostalCodeID);
         Assert.Null(postalCodeNull);
     }

@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.Ordersystem.Objects", "Soup.Ordersystem.Objects\Soup.Ordersystem.Objects.csproj", "{64BE5C2C-A620-4AEB-8007-E79AABCE259D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Objects", "Soup.Ordersystem.Objects\Soup.OrderSystem.Objects.csproj", "{64BE5C2C-A620-4AEB-8007-E79AABCE259D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup.OrderSystem.Logic", "Soup.OrderSystem.Logic\Soup.OrderSystem.Logic.csproj", "{7FBE93FC-4522-469C-AD50-EF101AFB9F77}"
 EndProject

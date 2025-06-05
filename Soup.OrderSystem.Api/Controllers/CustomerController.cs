@@ -33,7 +33,7 @@ namespace Soup.OrderSystem.Api.Controllers
         [HttpGet("GetCustomerDetail")]
         public async Task<IActionResult> GetCustomerDetail(string customerId)
         {
-            var customerDetails = _customerService.GetCustomerDetails(customerId);
+            var customerDetails = await _customerService.GetCustomerDetails(customerId);
             return Ok(customerDetails);
         }
         [HttpPatch]

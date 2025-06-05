@@ -1,8 +1,8 @@
-﻿using Soup.Ordersystem.Objects;
-using Soup.Ordersystem.Objects.Order;
+﻿
 using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Objects.Order;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IOrderServiceAsync
     {

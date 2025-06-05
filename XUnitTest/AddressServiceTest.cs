@@ -1,7 +1,8 @@
-﻿using Soup.Ordersystem.Objects.Customer;
+﻿
 using Soup.OrderSystem.Logic;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
+using Soup.OrderSystem.Objects.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,13 +51,13 @@ namespace Soup.OrderSystem.XunitTests
             addressDTO.StreetHouse= addressToUpdate.StreetHouse;
             addressDTO.BusNumber = addressToUpdate.BusNumber;
             addressDTO.AddressID = addressToUpdate.AddressID;
-            service.UpdateAddress(addressDTO);
+            await service.UpdateAddress(addressDTO);
             Address updatedAddress = await service.GetAddressById(13);
             Assert.True(updatedAddress.BusNumber == 2);
             if (updatedAddress.BusNumber == 2)
             {
                 addressToUpdate.BusNumber = 1;
-                service.UpdateAddress(addressDTO);
+                await service.UpdateAddress(addressDTO);
             }
         }
         [Fact]
@@ -68,7 +69,7 @@ namespace Soup.OrderSystem.XunitTests
             int newAddressTotal = new();
             try
             {
-                service.DeleteAddress(addressId);
+                await service.DeleteAddress(addressId);
                 addressList =await service.GetAddressesToList();
                 newAddressTotal =addressList.Max(x => x.AddressID);
                 Assert.False(addressId == newAddressTotal);

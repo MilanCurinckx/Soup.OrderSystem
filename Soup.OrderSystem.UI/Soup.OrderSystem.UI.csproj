@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Soup.OrderSystem.Logic\Soup.OrderSystem.Logic.csproj" />
-    <ProjectReference Include="..\Soup.Ordersystem.Objects\Soup.Ordersystem.Objects.csproj" />
+    <ProjectReference Include="..\Soup.Ordersystem.Objects\Soup.OrderSystem.Objects.csproj" />
   </ItemGroup>
 
 </Project>

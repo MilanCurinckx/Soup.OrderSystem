@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.Ordersystem.Objects.Customer;
+using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
@@ -21,25 +21,8 @@ namespace Soup.OrderSystem.Logic
                 {
                     PostalCodeService postalCodeService = new PostalCodeService();
                     Address newAddress = new();
-                    //check whether this address already exists in the database
-                    Address? duplicateAddressCheck = context.Address.Where(a => a.StreetHouse == addressDTO.StreetHouse).FirstOrDefault();
                     //check whether this postalcode already exists in the database 
                     PostalCode? duplicatePostalCodeCheck = context.PostalCode.Where(p => p.PostalCodeID == addressDTO.PostalCodeId).FirstOrDefault();
-                    //if the addresss doesn't exist yet, then the address provided from the DTO is used to make a new address
-                    if (duplicateAddressCheck == null)
-                    {
-                        newAddress.StreetHouse = addressDTO.StreetHouse;
-                        newAddress.BusNumber = addressDTO.BusNumber;
-                        await context.Address.AddAsync(newAddress);
-                    }
-                    //if the address does exist in the database already, then we don't need to make a new one with the same values and can just use the already existing values in the database. 
-                    else
-                    {
-                        newAddress.StreetHouse = duplicateAddressCheck.StreetHouse;
-                        newAddress.BusNumber = duplicateAddressCheck.BusNumber;
-                        newAddress.AddressID = duplicateAddressCheck.AddressID;
-                    }
-                    //same logic as the address check
                     if (duplicatePostalCodeCheck == null)
                     {
                         postalCodeService.CreatePostalCode(addressDTO.PostalCodeId);
@@ -49,6 +32,7 @@ namespace Soup.OrderSystem.Logic
                     {
                         newAddress.PostalCodeId = duplicatePostalCodeCheck.PostalCodeID;
                     }
+                    await context.Address.AddAsync(newAddress);
                     await context.SaveChangesAsync();
                     return newAddress;
                 }

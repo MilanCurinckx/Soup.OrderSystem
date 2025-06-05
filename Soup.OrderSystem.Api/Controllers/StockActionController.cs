@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Soup.Ordersystem.Objects;
-using Soup.OrderSystem.Logic;
 using Soup.OrderSystem.Logic.DTO;
+using Soup.OrderSystem.Logic.Interfaces;
 
 namespace Soup.OrderSystem.Api.Controllers
 {

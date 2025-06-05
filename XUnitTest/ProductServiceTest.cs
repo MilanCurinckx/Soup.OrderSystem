@@ -1,5 +1,5 @@
-﻿using Soup.Ordersystem.Objects.Order;
-using Soup.Ordersystem.Objects.User;
+﻿using Soup.OrderSystem.Objects.Order;
+using Soup.OrderSystem.Objects.User;
 using Soup.OrderSystem.Logic;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
@@ -22,7 +22,7 @@ namespace Soup.OrderSystem.XunitTests
             List<Product> productsList = new List<Product>();
             Product createdProduct = new Product();
             product.ProductName = "Test";
-            _productService.CreateProduct(product);
+            await _productService.CreateProduct(product);
             productsList = await _productService.GetProductsList();
             createdProduct = productsList.Last();
             Assert.NotNull(createdProduct);
@@ -33,6 +33,7 @@ namespace Soup.OrderSystem.XunitTests
             List<Product> productList = new List<Product>();
             List<Product> updatedProductList = new List<Product>();
             Product product = new Product();
+            ProductDTO productDTO = new ProductDTO();
             Product updatedProduct = new Product();
             productList = await _productService.GetProductsList();
             product = productList.Last();
@@ -44,7 +45,9 @@ namespace Soup.OrderSystem.XunitTests
             {
                 product.ProductName = "Test";
             }
-            await _productService.UpdateProduct(product);
+            productDTO.ProductID = product.ProductID;
+            productDTO.ProductName = product.ProductName;
+            await _productService.UpdateProduct(productDTO);
             updatedProductList = await _productService.GetProductsList();
             updatedProduct = updatedProductList.Last();
             Assert.NotEqual(product.ProductName, updatedProduct.ProductName);

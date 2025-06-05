@@ -1,4 +1,4 @@
-﻿using Soup.Ordersystem.Objects.Customer;
+﻿using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Logic.DTO;
 
 namespace Soup.OrderSystem.Logic.Interfaces

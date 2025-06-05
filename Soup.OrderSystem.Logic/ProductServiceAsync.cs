@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.Ordersystem.Objects.Order;
+using Soup.OrderSystem.Objects.Order;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;

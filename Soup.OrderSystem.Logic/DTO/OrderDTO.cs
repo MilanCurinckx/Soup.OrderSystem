@@ -1,5 +1,6 @@
 ﻿using Soup.Ordersystem.Objects.Customer;
 using Soup.Ordersystem.Objects.Order;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Soup.OrderSystem.Logic.DTO
@@ -10,6 +11,7 @@ namespace Soup.OrderSystem.Logic.DTO
         public int OrderID { get; set; }
         public OrderStatusEnum OrderStatus { get; set; }
         public int ProductID { get; set; }
+        [Range(0, int.MaxValue)]
         public int ProductAmount { get; set; }
     }
 }

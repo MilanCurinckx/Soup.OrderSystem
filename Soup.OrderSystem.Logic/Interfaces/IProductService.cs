@@ -1,6 +1,6 @@
-﻿using Soup.Ordersystem.Objects.Order;
+﻿using Soup.OrderSystem.Objects.Order;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IProductService
     {

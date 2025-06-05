@@ -3,6 +3,7 @@ using Soup.Ordersystem.Objects;
 using Soup.Ordersystem.Objects.Customer;
 using Soup.Ordersystem.Objects.Order;
 using Soup.Ordersystem.Objects.User;
+using Soup.OrderSystem.Objects.Order;
 
 
 namespace Soup.OrderSystem.Data
@@ -30,7 +31,7 @@ namespace Soup.OrderSystem.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseLazyLoadingProxies().UseSqlServer(DatabaseKey.Key);
+            optionsBuilder.UseSqlServer(DatabaseKey.Key);
             //because I keep forgetting what the lazyloading actually does
             //https://www.linkedin.com/pulse/entity-framework-core-lazy-loading-vs-eager-muhammad-mazhar-s0kof/
            

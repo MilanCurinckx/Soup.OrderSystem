@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.Ordersystem.Objects.Customer;
+using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Data;
+using Soup.OrderSystem.Logic.Interfaces;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations.Schema;
 

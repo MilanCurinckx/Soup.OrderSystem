@@ -1,8 +1,8 @@
-﻿using Soup.Ordersystem.Objects.Order;
+﻿using Soup.OrderSystem.Objects.Order;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Soup.Ordersystem.Objects
+namespace Soup.OrderSystem.Objects
 {
     public class StockAction
     {

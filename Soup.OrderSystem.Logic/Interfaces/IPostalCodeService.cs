@@ -1,6 +1,6 @@
-﻿using Soup.Ordersystem.Objects.Customer;
+﻿using Soup.OrderSystem.Objects.Customer;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IPostalCodeService
     {

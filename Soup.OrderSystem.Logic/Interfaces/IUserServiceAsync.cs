@@ -1,7 +1,7 @@
-﻿using Soup.Ordersystem.Objects.User;
+﻿using Soup.OrderSystem.Objects.User;
 using Soup.OrderSystem.Logic.DTO;
 
-namespace Soup.OrderSystem.Logic
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IUserServiceAsync
     {

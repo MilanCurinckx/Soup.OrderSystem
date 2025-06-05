@@ -1,5 +1,5 @@
-﻿using Soup.Ordersystem.Objects;
-using Soup.Ordersystem.Objects.Order;
+﻿using Soup.OrderSystem.Objects;
+using Soup.OrderSystem.Objects.Order;
 using Soup.OrderSystem.Logic;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
@@ -14,17 +14,17 @@ namespace Soup.OrderSystem.XunitTests
         public async Task Test1()
         {
             StockActionDTO stockActionDTO = new StockActionDTO();
-            StockAction stockAction = new StockAction();
+            StockActionDTO stockAction = new();
             StockAction createdStockAction = new StockAction();
             List<StockAction> stockActionsList = new List<StockAction>();
             IProductService productService = new ProductService();
             int productId = productService.GetProductsList().First().ProductID;
             stockAction.ProductId = productId;
-            stockAction.StockActionsEnum = StockActionEnum.Add;
+            stockAction.StockActions = StockActionEnum.Add;
             stockAction.Amount = 1;
-            _stockActionService.CreateStockAction(stockAction);
+            await _stockActionService.CreateStockAction(stockAction);
             stockActionsList = await _stockActionService.GetStockActionsList();
-            createdStockAction= stockActionsList.Find(x => x.ProductId == productId);
+            createdStockAction = stockActionsList.Find(x => x.ProductId == productId);
             Assert.NotNull(createdStockAction);
         }
         [Fact]

@@ -1,5 +1,5 @@
-﻿using Soup.Ordersystem.Objects.User;
-namespace Soup.OrderSystem.Logic
+﻿using Soup.OrderSystem.Objects.User;
+namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface IUserservice
     {

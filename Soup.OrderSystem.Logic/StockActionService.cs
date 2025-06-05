@@ -1,4 +1,4 @@
-﻿using Soup.Ordersystem.Objects;
+﻿using Soup.OrderSystem.Objects;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;

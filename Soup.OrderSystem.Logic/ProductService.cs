@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.Ordersystem.Objects.Order;
+using Soup.OrderSystem.Objects.Order;
 using Soup.OrderSystem.Data;
+using Soup.OrderSystem.Logic.Interfaces;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
