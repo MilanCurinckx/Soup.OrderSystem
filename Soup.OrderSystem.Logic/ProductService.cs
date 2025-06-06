@@ -84,6 +84,7 @@ namespace Soup.OrderSystem.Logic
                 using (OrderContext context = new())
                 {
                     productToUpdate.ProductName = products.ProductName;
+                    context.Update(productToUpdate);
                     context.SaveChanges();
                 }
             }

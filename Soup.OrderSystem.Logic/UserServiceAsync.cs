@@ -119,6 +119,7 @@ namespace Soup.OrderSystem.Logic
                     userToUpdate.FirstName = userDTO.FirstName;
                     userToUpdate.LastName = userDTO.LastName;
                     userToUpdate.PassWordHash = userDTO.PassWordHash;
+                    _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                 }
             }

@@ -1,27 +1,34 @@
-﻿@using Soup.Ordersystem.Objects.User
-@model List<UserDetails>
+﻿@using Soup.OrderSystem.Logic.DTO
+@model List<UserDTO>
 @{
     ViewData["Title"] = "View";
 }
 
 <p>These are all the users registered</p>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
-            <th name="edit"></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (UserDetails item in Model)
+        @foreach (UserDTO item in Model)
         {
             <tr>
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
-                <td> <button asp-action="Update" asp-route-id="@item.UserId">Update information</button></td>
+                <td> 
+                    <a class="btn btn-info" asp-controller="User" asp-action="Update" asp-route-id="@item.UserId">Update information</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.UserId">Remove</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
 

@@ -12,14 +12,14 @@ namespace Soup.OrderSystem.Logic
         /// Creates a new address with the given data from AddressDTO, if the given combination of street name + house number is present already in the database, it will use that one instead of making a new copy of that data. Same goes for postal code. Returns the created address after saving it to the db (for usage in CustomerService)
         /// </summary>
         /// <param name="addressDTO"></param>
-        public Ordersystem.Objects.Customer.Address CreateAddress(Ordersystem.Objects.Customer.Address address)
+        public Address CreateAddress(OrderSystem.Objects.Customer.Address address)
         {
             try
             {
                 using (OrderContext context = new())
                 {
                     PostalCodeService postalCodeService = new PostalCodeService();
-                    Ordersystem.Objects.Customer.Address newAddress = new();
+                    OrderSystem.Objects.Customer.Address newAddress = new();
                     var duplicateAddressCheck = context.Address.Where(a => a.StreetHouse == address.StreetHouse).FirstOrDefault();
                     var duplicatePostalCodeCheck = context.PostalCode.Where(p => p.PostalCodeID == address.PostalCodeId).FirstOrDefault();
                     if (duplicateAddressCheck == null)
@@ -56,7 +56,7 @@ namespace Soup.OrderSystem.Logic
         /// Returns the address of a specific customer 
         /// </summary>
         /// <returns></returns>
-        public Ordersystem.Objects.Customer.Address GetAddressById(int addressId)
+        public OrderSystem.Objects.Customer.Address GetAddressById(int addressId)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Soup.OrderSystem.Logic
         /// returns all of the addresses as a list 
         /// </summary>
         /// <returns></returns>
-        public List<Ordersystem.Objects.Customer.Address> GetAddressesToList()
+        public List<OrderSystem.Objects.Customer.Address> GetAddressesToList()
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public void UpdateAddress(Ordersystem.Objects.Customer.Address address)
+        public void UpdateAddress(OrderSystem.Objects.Customer.Address address)
         {
             try
             {

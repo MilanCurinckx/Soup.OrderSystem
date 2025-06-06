@@ -5,8 +5,8 @@ namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface ICustomerService
     {
-        void CreateCustomer(CustomerDetails customer, Ordersystem.Objects.Customer.Address address);
-        Task CreateCustomerAsync(CustomerDetails customer, Ordersystem.Objects.Customer.Address address);
+        void CreateCustomer(CustomerDetails customer,Address address);
+        Task CreateCustomerAsync(CustomerDetails customer,Address address);
         int CreateCustomerID();
         void DeleteCustomerDetails(string customerId);
         CustomerDetails GetCustomerDetails(string customerId);

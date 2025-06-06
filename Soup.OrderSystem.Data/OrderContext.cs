@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Soup.Ordersystem.Objects;
-using Soup.Ordersystem.Objects.Customer;
-using Soup.Ordersystem.Objects.Order;
-using Soup.Ordersystem.Objects.User;
+using Soup.OrderSystem.Objects;
+using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Objects.Order;
+using Soup.OrderSystem.Objects.User;
+
 
 
 namespace Soup.OrderSystem.Data

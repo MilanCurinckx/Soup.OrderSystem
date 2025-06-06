@@ -1,14 +1,14 @@
-﻿@model Soup.OrderSystem.Objects.User.UserDetails
+﻿@model Soup.OrderSystem.Logic.DTO.UserDTO
 @{
     ViewData["Title"] = "Update";
 }
 <h1>Update User</h1>
-<h4>User</h4>
-<hr/>
+<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <form asp-action="Update" method="post">
+        <div class="form-group">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.UserId"/>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -20,17 +20,18 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             @*//TODO: implement login so user can only update pw is they are logged in*@
-@*             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="PassWordHash" class="control-label"></label>
                 <input asp-for="PassWordHash" class="form-control" />
                 <span asp-validation-for="PassWordHash" class="text-danger"></span>
-            </div> *@
+            </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" value="Save" class="btn btn-primary mt-4">Ok</button>
             </div>
             <div>
-                <a asp-action="GetUsers">Back to List</a>
+                <a class="link-secondary mt-4" asp-action="GetUsers">Go Back</a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
+

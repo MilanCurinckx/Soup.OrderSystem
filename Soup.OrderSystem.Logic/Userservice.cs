@@ -70,6 +70,7 @@ namespace Soup.OrderSystem.Logic
             userToUpdate.FirstName = userDetails.FirstName;
             userToUpdate.LastName = userDetails.LastName;
             userToUpdate.PassWordHash = userDetails.PassWordHash;
+            _context.Update(userToUpdate);
             _context.SaveChanges();
 
         }

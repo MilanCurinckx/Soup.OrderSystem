@@ -34,11 +34,11 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="customerDTO"></param>
         /// <returns></returns>
-        public void CreateCustomer(CustomerDetails customer, Ordersystem.Objects.Customer.Address address)
+        public void CreateCustomer(CustomerDetails customer, Address address)
         {
             try
             {
-                Ordersystem.Objects.Customer.Address newAddress = _addressService.CreateAddress(address);
+                Address newAddress = _addressService.CreateAddress(address);
                 string customerId = CreateCustomerID().ToString();
                 using (OrderContext context = new OrderContext())
                 {
@@ -66,7 +66,7 @@ namespace Soup.OrderSystem.Logic
         {
             try
             {
-                Ordersystem.Objects.Customer.Address newAddress = _addressService.CreateAddress(address);
+                Address newAddress = _addressService.CreateAddress(address);
                 string customerId = CreateCustomerID().ToString();
                 using (OrderContext context = new OrderContext())
                 {

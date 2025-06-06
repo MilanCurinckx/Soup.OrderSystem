@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Soup.Ordersystem.Objects.Customer;
+using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using System.Threading.Tasks;

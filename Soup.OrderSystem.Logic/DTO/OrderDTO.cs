@@ -1,5 +1,5 @@
-﻿using Soup.Ordersystem.Objects.Customer;
-using Soup.Ordersystem.Objects.Order;
+﻿using Soup.OrderSystem.Objects.Customer;
+using Soup.OrderSystem.Objects.Order;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
