@@ -8,7 +8,7 @@ namespace Soup.OrderSystem.Logic.Interfaces
         Task<Address> CreateAddress(AddressDTO addressDTO);
         Task DeleteAddress(int addressId);
         Task<Address> GetAddressById(int addressId);
-        Task<Address> GetAddressByLocationAsync(string location);
+        Task<List<Address>> GetAddressByPostalCode(string location);
         Task<List<Address>> GetAddressesToList();
         Task UpdateAddress(AddressDTO addressDTO);
     }

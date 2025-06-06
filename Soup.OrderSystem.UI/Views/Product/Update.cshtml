@@ -1,0 +1,26 @@
+﻿@model Soup.OrderSystem.Logic.DTO.ProductDTO
+@{
+    ViewData["Title"] = "Update";
+}
+<h1>Update Product Name</h1>
+<hr />
+<div class="row">
+    <form asp-action="Update" method="post">
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.ProductID"/>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" value="Save" class="btn btn-primary mt-4">Ok</button>
+            </div>
+            <div>
+                <a class="link-secondary mt-4" asp-action="GetUsers">Go Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+

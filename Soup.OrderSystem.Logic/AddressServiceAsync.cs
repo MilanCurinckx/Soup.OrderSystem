@@ -10,7 +10,7 @@ namespace Soup.OrderSystem.Logic
     {
 
         /// <summary>
-        /// Creates a new address with the given data from AddressDTO, if the given combination of street name + house number is present already in the database, it will use that one instead of making a new copy of that data. Same goes for postal code. Returns the created address after saving it to the db (for usage in CustomerService)
+        /// Creates a new address with the given data from AddressDTO. Checks if the postalcode already existed in the database, if true, it prevents creating a copy of that postalcode. Returns the created address after saving it to the db (for usage in CustomerService)
         /// </summary>
         /// <param name="addressDTO"></param>
         public async Task<Address> CreateAddress(AddressDTO addressDTO)
@@ -32,6 +32,8 @@ namespace Soup.OrderSystem.Logic
                     {
                         newAddress.PostalCodeId = duplicatePostalCodeCheck.PostalCodeID;
                     }
+                    newAddress.StreetHouse = addressDTO.StreetHouse;
+                    newAddress.BusNumber = addressDTO.BusNumber;
                     await context.Address.AddAsync(newAddress);
                     await context.SaveChangesAsync();
                     return newAddress;
@@ -44,7 +46,7 @@ namespace Soup.OrderSystem.Logic
 
         }
         /// <summary>
-        /// Returns the address of a specific customer 
+        /// Returns the address by id
         /// </summary>
         /// <returns></returns>
         public async Task<Address> GetAddressById(int addressId)
@@ -64,17 +66,17 @@ namespace Soup.OrderSystem.Logic
 
         }
         /// <summary>
-        /// returns the entire address of a given location
+        /// returns the entire address of a given Postalcode
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="postalcode"></param>
         /// <returns></returns>
-        public async Task<Address> GetAddressByLocationAsync(string location)
+        public async Task<List<Address>> GetAddressByPostalCode(string postalcode)
         {
             try
             {
                 using (OrderContext context = new())
                 {
-                    var address = await context.Address.Where(a => a.StreetHouse == location).FirstAsync();
+                    var address = await context.Address.Where(a => a.PostalCodeId == postalcode).ToListAsync();
                     return address;
                 }
             }

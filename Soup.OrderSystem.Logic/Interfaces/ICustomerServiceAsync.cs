@@ -5,7 +5,7 @@ namespace Soup.OrderSystem.Logic.Interfaces
 {
     public interface ICustomerServiceAsync
     {
-        Task CreateCustomer(CustomerDTO customer);
+        Task CreateCustomer(CustomerDTO customer, AddressDTO addressDTO);
         Task<int> CreateCustomerID();
         Task DeleteCustomerDetails(string customerId);
         Task<CustomerDetails?> GetCustomerDetails(string customerId);

@@ -1,0 +1,41 @@
+﻿
+@model List<CustomerModel>
+@{
+    ViewData["Title"] = "View";
+}
+
+<p>These are all the users registered</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Bus nr.</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (CustomerModel item in Model)
+        {
+            <tr>
+                <td>@item.CustomerID</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.StreetHouse</td>
+                <td>@item.BusNumber</td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Customer" asp-action="Update" asp-route-id="@item.CustomerID">Update information</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Customer" asp-action="Delete" asp-route-id="@item.CustomerID">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -34,11 +34,6 @@ namespace Soup.OrderSystem.UI.Controllers
             ).ToList();
             return View(userDTOs);
         }
-        public async Task<IActionResult> GetUser()
-        {
-            return View();
-        }
-       
         public async Task<IActionResult> Update(int id) 
         {
             UserDTO userDTO = new();
@@ -49,7 +44,6 @@ namespace Soup.OrderSystem.UI.Controllers
             userDTO.PassWordHash = user.PassWordHash;
             return View(userDTO);
         }
-
         public async Task<ActionResult> Delete(int id)
         {
             await _userServiceAsync.DeleteUser(id);
@@ -61,12 +55,8 @@ namespace Soup.OrderSystem.UI.Controllers
             if (ModelState.IsValid)
             {
                 await _userServiceAsync.CreateUser(userDTO);
-                return RedirectToAction("GetUsers");
             }
-            else
-            {
-                return View(userDTO);
-            }
+            return RedirectToAction("GetUsers");
         }
         [HttpPost]
         public async Task<IActionResult> Update(UserDTO userDTO)

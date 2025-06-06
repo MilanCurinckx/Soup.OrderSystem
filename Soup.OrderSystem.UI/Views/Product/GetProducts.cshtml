@@ -1,0 +1,35 @@
+﻿@using Soup.OrderSystem.Logic.DTO
+@model List<ProductDTO>
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>These are all the products that have been registered in the system</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Amount in stock</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProductDTO item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                @*  TODO: add amount in stock here *@
+                <td></td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Product" asp-action="Update" asp-route-id="@item.ProductID">Update information</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@item.ProductID">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

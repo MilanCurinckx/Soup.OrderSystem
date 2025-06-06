@@ -30,7 +30,7 @@ namespace Soup.OrderSystem.Api.Controllers
         [Route("GetLocation")]
         public async Task<IActionResult> GetLocation(string location)
         {
-            var address = await _addressServiceAsync.GetAddressByLocationAsync(location);
+            var address = await _addressServiceAsync.GetAddressByPostalCode(location);
             return Ok(address);
         }
         [HttpGet("GetList")]

@@ -32,15 +32,15 @@ namespace Soup.OrderSystem.Logic
             return newCustomerId;
         }
         /// <summary>
-        /// Creates a new customer to be added, calls upon CreateCustomerId to create a new Id which afterwards gets the 'k' char concatenated. Also immediately creates a customerDetails which is linked to CustomerId & calls on addressService to create a new Address for the customer (unless the address already exists => look at addressservice for that)
+        /// Creates a new customer to be added, calls upon CreateCustomerId to create a new Id which afterwards gets the 'k' char concatenated. Also immediately creates a customerDetails which is linked to CustomerId & calls on addressService to create a new Address for the customer.
         /// </summary>
         /// <param name="customerDTO"></param>
         /// <returns></returns>
-        public async Task CreateCustomer(CustomerDTO customer)
+        public async Task CreateCustomer(CustomerDTO customer,AddressDTO addressDTO)
         {
             try
             {
-                Address newAddress = await _addressService.CreateAddress(customer.AddressDTO);
+                Address newAddress = await _addressService.CreateAddress(addressDTO);
                 int createdId = await CreateCustomerID();
                 string customerId = createdId.ToString();
                 using (OrderContext context = new OrderContext())

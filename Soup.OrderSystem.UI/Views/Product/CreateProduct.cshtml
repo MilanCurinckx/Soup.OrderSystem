@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+@model Soup.OrderSystem.Logic.DTO.ProductDTO
+<form method="Post" asp-controller="Product" asp-action="Create">
+    <div class="form-group">
+        <h1>Create Product</h1>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ProductName" class="control-label mt-4">Name:</label>
+            <input type="text" class="form-control" asp-for="ProductName" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Ok</button>
+    </div>
+</form>

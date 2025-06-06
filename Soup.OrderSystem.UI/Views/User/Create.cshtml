@@ -4,7 +4,7 @@
 @model Soup.OrderSystem.Logic.DTO.UserDTO
 <form method="Post" asp-action="Create">
     <div class="form-group">
-        <h1>Create User</h1>
+        <h1>Register User</h1>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="FirstName" class="control-label mt-4">First name:</label>
@@ -18,10 +18,10 @@
         </div>
         <div class="form-group">
             <label asp-for="PassWordHash" class="control-label mt-4">Password</label>
-            <input type="text" class="form-control" asp-for="PassWordHash" />
+            <input type="password" class="form-control" asp-for="PassWordHash" />
             <span asp-validation-for="PassWordHash" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary mt-4">Create user</button>
+        <button type="submit" class="btn btn-primary mt-4">Save</button>
     </div>
 </form>
 
