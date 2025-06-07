@@ -6,8 +6,11 @@ Dependency Injection => Singleton vs Scoped vs Transient
 Lazy loading vs eager loading 
 Repository => EF
 DTO for easy data transfer => If a method requires more than three parameters I used a DTO.
+ViewModel
 Do enums count as a design pattern?
-
+TODO:
+-Show amount of products in stock in stockController/view
+-Mail asking about PP
 KNOWN ISSUES: 
 The unit tests sometimes run in the wrong order when you run all of them, they worked perfectly fine individually though(at least when I checked last time)
 
@@ -68,7 +71,7 @@ Also checked to see if it was an issue of having multiple copies of EF open, so 
 *31/05*
 finished unit testing, will swap back to DTO usage if I have time. I also still want to go back to making these methods async because I'm fairly certain they would run just fine.
 Enums were being annoying but I got it working, added an orderdetails PK to the orderdetails table because it got upset that I'm using the same values multiple times for pk.
-Still have not fixed the tests just doing the delete test right after t he create but the tests run individually. 
+Still have not fixed the tests just doing the delete test right after the create but the tests run individually. 
 Also because of unit testing, I reimplemented the OrderDTO because I needed multiple values, like CustomerId from it. This prevents me from having to remember like 7 different parameters for CreateOrder.
 While trying to fix the enum I also told EF that it should convert the property into an int if it didn't do that before. I'm pretty sure it did already but it doesn't hurt to type it explicitly. I also casted the switch case in the UpdateOrderStatus to ints just in case that was the problem (it wasn't but I'm scared to touch it again because it might just break on me again).
 Also, turns out that data doesn't get updated if you don't do a context.update on them, crazy stuff really.
@@ -84,3 +87,13 @@ Oh right I also did some more testing to make sure that all of it worked properl
 Is it overkill to leave the normal services in the program when I'm not even using them? Probably but there's no way to access them so they're basically gathering dust (some are probably still tied to unit tests though but that's beside the point). They're also not as refined(?) as the async methods, they don't make use of DTO's and some even have logic errors in them so yeah definitely not using them. 
 Also while I remember, some of the names I gave in this project are frankly really bad, like the ones for address. I don't know why I struggled so hard to give it a proper name but I'm not touching that anymore. I'm aware it's bad. Same with the OrderProducts table in the database. I can see how that would be confusing. Orderdetails isn't an exactly clear name either but at least I give proper explanation of that one in OrderService.
 It annoys me how much time I spend trying to remember how to do something, but I can't really feel bad about when I think about how much bloody stuff I've learnt/saw these last few months. I just wish I did a better job of archiving projects. It's annoying have to trudge through so many projects with ambiguous names on Github. But at least I uploaded them to github,usually with comments on the stuff introduced.
+
+*07/06*
+Thursday really took the wind out my sails having to present that miserable pile of garbage. Went home and took a nap to make myself feel better, it hardly worked. It feels like my anxiety spikes whenever I'm trying to learn something and it doesn't come to me immediately. I hate feeling like that because it means that trying to remember anything about mvc made me feel miserable. Not great. Thankfully, we've made progress. I made three controllers and some crud views. Also fixed an annoying namespace issue. I am not using my api for my UI, instead I will just call upon the repository. As for why I did it this way, all of my stuff is async, so it should be able to run multithreaded & still receive inputs from the api. I guess the api is technically just collecting dust for now, but it could be used for third party applications. 
+After thursday I also feel like I might've misunderstood how you make use of DTO's, and have been shooting myself in the foot by using them. If I had known what I know now back when I made the logic, I'd immediately have written the methods to return dto's instead of actual objects. Because now my methods take dto's and return objects instead. It's not the end of the world, albeit slightly annoying having to check what inputs are required for a method, because you just see "oh this address method requires an addressDTO", like no shit it does. Thankfully, the user/customer doesn't have to worry about that, the required fields will be provided. 
+Speaking of input fields, I'm surprised how easy validation is through asp & bootstrap so far. The biggest hurdle has been my anxiety and my own stupidity.
+Also, because this will keep bothering me if I don't write it down, I disagree with the statement that what I make here is disconnected from me. I'm not an ai that spews out shitty code, I'm still a person and I have bad days and good days. Unfortunately, it has been mostly bad days since the start of this year. There's an argument to be made on separating personal and work life, but even then there's only so much I can do before I shut down entirely and burn out.
+Oh and before I forget, I asked yoni about the db key seeing as it's still hosted on his server, and he suggested that I just export the db structure from ssms. So I'm going to put a reminder to myself to get that done.
+Also need to send a mail asking whether or not I need to send the PP for the presentation along. 
+I think that it's pretty certain that I won't get to implementing security, but I'm okay with my progress on UI so far.
+Oh there's still no comments on UnitTests, but I consider that to be pretty low priority for now.
