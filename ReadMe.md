@@ -11,6 +11,7 @@ Do enums count as a design pattern?
 TODO:
 -Show amount of products in stock in stockController/view
 -Mail asking about PP
+-Make export of DB, create script to add some dummy data maybe? Or could just let profs do it through UI if all works well. 
 KNOWN ISSUES: 
 The unit tests sometimes run in the wrong order when you run all of them, they worked perfectly fine individually though(at least when I checked last time)
 
