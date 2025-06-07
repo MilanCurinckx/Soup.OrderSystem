@@ -98,3 +98,4 @@ Oh and before I forget, I asked yoni about the db key seeing as it's still hoste
 Also need to send a mail asking whether or not I need to send the PP for the presentation along. 
 I think that it's pretty certain that I won't get to implementing security, but I'm okay with my progress on UI so far.
 Oh there's still no comments on UnitTests, but I consider that to be pretty low priority for now.
+Oh one final thing, I finally got around to using the .select method from linq, which I thought was pretty cool, I took a list of one object and turned it into a list of another object.
