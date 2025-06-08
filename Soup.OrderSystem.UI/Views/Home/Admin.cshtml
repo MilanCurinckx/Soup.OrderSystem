@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+
+}
+<h1 class="display-4 text-white">Admin overview</h1>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Products</h4>
+                    <p class="card-text">Manage products:</p>
+                    <a asp-action="GetProducts" asp-controller="Product" class="btn btn-primary">Overview</a>
+                    <a asp-action="CreateProduct" asp-controller="Product" class="btn btn-primary">Register new product</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Users</h4>
+                    <p class="card-text">Manage Users:</p>
+                    <a asp-action="GetUsers" asp-controller="User" class="btn btn-primary">Overview</a>
+                    <a asp-action="Create" asp-controller="User" class="btn btn-primary">Register new user</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Customers</h5>
+                    <p class="card-text">Manage Customers</p>
+                    <a asp-action="GetCustomers" asp-controller="Customer" class="btn btn-primary">Overview</a>
+                    <a asp-action="CreateCustomer" asp-controller="Customer" class="btn btn-primary">Register new user</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

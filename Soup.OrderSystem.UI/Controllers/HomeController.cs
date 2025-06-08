@@ -1,4 +1,6 @@
+using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
+using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.UI.Models;
 using System.Diagnostics;
 
@@ -15,7 +17,7 @@ namespace Soup.OrderSystem.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Overview","Product");
         }
 
         public IActionResult Privacy()
@@ -27,6 +29,10 @@ namespace Soup.OrderSystem.UI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult Admin()
+        {
+            return View();
         }
     }
 }

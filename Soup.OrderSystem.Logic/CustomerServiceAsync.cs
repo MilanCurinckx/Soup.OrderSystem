@@ -1,5 +1,4 @@
-﻿using Castle.Core.Resource;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;

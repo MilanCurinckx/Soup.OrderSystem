@@ -17,15 +17,16 @@ namespace Soup.OrderSystem.XunitTests
         public async Task Test1()
         {
             CustomerDTO newCustomer = new();
+            AddressDTO addressDTO = new AddressDTO();
             List<Customer> CustomerList =await _customerService.GetCustomers();
             int totalCustomers = CustomerList.Count;
             newCustomer.FirstName = "FirstNameTest";
             newCustomer.LastName = "LastNameTest";
             newCustomer.Email = "emailTest";
-            newCustomer.AddressDTO.StreetHouse = "address";
-            newCustomer.AddressDTO.BusNumber = 69;
-            newCustomer.AddressDTO.PostalCodeId = "0001";
-            await _customerService.CreateCustomer(newCustomer);
+            addressDTO.StreetHouse = "address";
+            addressDTO.BusNumber = 69;
+            addressDTO.PostalCodeId = "0001";
+            await _customerService.CreateCustomer(newCustomer,addressDTO);
             List<Customer> newCustomerList = await _customerService.GetCustomers();
             int newTotalCustomers = newCustomerList.Count;
             Assert.NotEqual(totalCustomers, newTotalCustomers);

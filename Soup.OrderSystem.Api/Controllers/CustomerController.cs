@@ -14,9 +14,9 @@ namespace Soup.OrderSystem.Api.Controllers
             _customerService = customer;
         }
         [HttpPost]
-        public async Task Create(CustomerDTO customerDTO)
+        public async Task Create(CustomerDTO customerDTO,AddressDTO addressDTO)
         {
-           await _customerService.CreateCustomer(customerDTO);
+           await _customerService.CreateCustomer(customerDTO, addressDTO);
         }
         [HttpGet]
         public async Task<IActionResult>GetCustomersList()

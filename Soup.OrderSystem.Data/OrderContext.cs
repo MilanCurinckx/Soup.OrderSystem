@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 using Soup.OrderSystem.Objects;
 using Soup.OrderSystem.Objects.Customer;
 using Soup.OrderSystem.Objects.Order;
@@ -25,7 +26,6 @@ namespace Soup.OrderSystem.Data
         public DbSet<StockAction> Stock_Actions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Orders>().Property(o => o.OrderStatus).HasConversion<int>();
             base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

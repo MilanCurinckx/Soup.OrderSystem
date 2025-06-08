@@ -11,6 +11,7 @@ namespace Soup.OrderSystem.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddSingleton<ICustomerServiceAsync, CustomerServiceAsync>();
             builder.Services.AddSingleton<IAddressServiceAsync, AddressServiceAsync>();
             builder.Services.AddSingleton<IPostalCodeServiceAsync, PostalCodeServiceAsync>();
@@ -34,7 +35,6 @@ namespace Soup.OrderSystem.UI
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -20,6 +20,18 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Overview()
+        {
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            List<Product> ProductList = await _service.GetProductsList();
+            productDTOs = ProductList.Select(p => new ProductDTO
+            {
+                ProductID = p.ProductID,
+                ProductName = p.ProductName
+            }
+            ).ToList();
+            return View(productDTOs);
+        }
         public async Task<IActionResult> GetProducts()
         {
             List<ProductDTO> productDTOs = new List<ProductDTO>();
@@ -48,7 +60,7 @@ namespace Soup.OrderSystem.UI.Controllers
             return RedirectToAction("GetProducts");
         }
         [HttpPost]
-        public async Task<IActionResult> Create(ProductDTO productDTO)
+        public async Task<IActionResult> CreateProduct(ProductDTO productDTO)
         {
             if (ModelState.IsValid)
             {

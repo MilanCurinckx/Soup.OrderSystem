@@ -20,6 +20,17 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(UserDTO userDTO)
+        {
+            
+            return View();
+        }
         public async Task<IActionResult> GetUsers()
         {
             List<UserDTO> userDTOs = new List<UserDTO>();

@@ -99,3 +99,6 @@ Also need to send a mail asking whether or not I need to send the PP for the pre
 I think that it's pretty certain that I won't get to implementing security, but I'm okay with my progress on UI so far.
 Oh there's still no comments on UnitTests, but I consider that to be pretty low priority for now.
 Oh one final thing, I finally got around to using the .select method from linq, which I thought was pretty cool, I took a list of one object and turned it into a list of another object.
+
+*08/06*
+Awful day, I spent most of it just fumbling with html, and being stumped on how to even make a shopping cart, it was then I realised "oh wait, I need a login for the shopping cart" because my shopping cart is me creating an order, which requires a customerId. Which means I need to find a way to get Identity working with my current user. I looked at the doc from moodle, but I'm clearly doing something wrong because it's giving an error on the override. I'm glad I at least managed to get mvc working with some bootstrap slapped onto that. 

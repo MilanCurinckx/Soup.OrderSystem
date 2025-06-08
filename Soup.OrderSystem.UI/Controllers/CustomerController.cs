@@ -21,6 +21,10 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             return View();
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
         public IActionResult CreateCustomer()
         {
             return View();
