@@ -35,10 +35,13 @@ The unit tests sometimes run in the wrong order when you run all of them, they w
 The unit tests & api might be broken on some methods.  
 
 Diary/Documentation (You can use this to see when I worked on the program): 
+
 *19/03*: 
 Creation of the project
+
 *20/03*: 
 normalisation
+
 *21/03**: 
 Creating the different objects, put them in different folders because it was annoying to find stuff when they were just scattered in the project. 
 		  Also created this README file
