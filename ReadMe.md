@@ -6,14 +6,14 @@ Dependency Injection => Singleton vs Scoped vs Transient
 Lazy loading vs eager loading 
 Repository => EF
 DTO for easy data transfer => If a method requires more than three parameters I used a DTO.
-ViewModel
+ViewModels
 Do enums count as a design pattern?
+
 TODO:
--Show amount of products in stock in stockController/view
--Mail asking about PP
--Make export of DB, create script to add some dummy data maybe? Or could just let profs do it through UI if all works well. 
+
 KNOWN ISSUES: 
 The unit tests sometimes run in the wrong order when you run all of them, they worked perfectly fine individually though(at least when I checked last time)
+
 
 Diary (I suppose? You can use this to see when I worked on the program): 
 *19/03*: 
@@ -77,7 +77,6 @@ Also because of unit testing, I reimplemented the OrderDTO because I needed mult
 While trying to fix the enum I also told EF that it should convert the property into an int if it didn't do that before. I'm pretty sure it did already but it doesn't hurt to type it explicitly. I also casted the switch case in the UpdateOrderStatus to ints just in case that was the problem (it wasn't but I'm scared to touch it again because it might just break on me again).
 Also, turns out that data doesn't get updated if you don't do a context.update on them, crazy stuff really.
 Anyway, I'm not getting this done in time between the group project and internship, but we'll just do our best and honestly that's all you can really ask of me. 
-To the person reading this and wondering what I did with all my time, I spent it being mentally ill due to adhd & autism. 
 
 *02/06*
 Well I created the UI project and then went back to logic and unit testing because task switching is hard. I took copies of AddressService & CustomerService and made it so that they are Async and use DTO's instead. I also created the interfaces for them and added them to the DI. Then I tested them in the unit tests using the same tests and they seem to work without hitch so there's that. Still can't seem to fix the problem of making them run in the correct order, but they work individually.
@@ -95,7 +94,6 @@ After thursday I also feel like I might've misunderstood how you make use of DTO
 Speaking of input fields, I'm surprised how easy validation is through asp & bootstrap so far. The biggest hurdle has been my anxiety and my own stupidity.
 Also, because this will keep bothering me if I don't write it down, I disagree with the statement that what I make here is disconnected from me. I'm not an ai that spews out shitty code, I'm still a person and I have bad days and good days. Unfortunately, it has been mostly bad days since the start of this year. There's an argument to be made on separating personal and work life, but even then there's only so much I can do before I shut down entirely and burn out.
 Oh and before I forget, I asked yoni about the db key seeing as it's still hosted on his server, and he suggested that I just export the db structure from ssms. So I'm going to put a reminder to myself to get that done.
-Also need to send a mail asking whether or not I need to send the PP for the presentation along. 
 I think that it's pretty certain that I won't get to implementing security, but I'm okay with my progress on UI so far.
 Oh there's still no comments on UnitTests, but I consider that to be pretty low priority for now.
 Oh one final thing, I finally got around to using the .select method from linq, which I thought was pretty cool, I took a list of one object and turned it into a list of another object.

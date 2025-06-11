@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
+using Soup.OrderSystem.Objects;
 using Soup.OrderSystem.Objects.Order;
 using Soup.OrderSystem.UI.Models;
 using System.Threading.Tasks;
@@ -13,9 +14,10 @@ namespace Soup.OrderSystem.UI.Controllers
     {
         private IOrderServiceAsync _orderServiceAsync;
         private IStockActionServiceAsync _stockActionServiceAsync;
-        public OrderController(IOrderServiceAsync orderServiceAsync )
+        public OrderController(IOrderServiceAsync orderServiceAsync,IStockActionServiceAsync stockActionService)
         {
             _orderServiceAsync = orderServiceAsync;
+            _stockActionServiceAsync = stockActionService;
         }
         public IActionResult CreateOrder()
         {
@@ -43,9 +45,24 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(combinedOrdersList);
         }
-        public IActionResult DeleteOrder()
+        public async Task<IActionResult> DeleteOrder(int id)
         {
-            return View();
+            Orders orders = new();
+            List<OrderDetails> orderDetails = new();
+            List<StockAction> stockActions = new();
+            orders = await _orderServiceAsync.GetOrder(id);
+            orderDetails = await _orderServiceAsync.GetOrderDetailsByOrder(id);
+            stockActions = await _stockActionServiceAsync.GetStockActionByOrder(id);
+            foreach(StockAction stockAction in stockActions)
+            {
+               await _stockActionServiceAsync.DeleteStockAction(stockAction.Id);
+            }
+            foreach(OrderDetails orderDetail in orderDetails)
+            {
+                await _orderServiceAsync.DeleteOrderDetails(orderDetail.OrderID,orderDetail.ProductID);
+            }
+            await _orderServiceAsync.DeleteOrder(id);
+            return View("GetOrders");
         }
         public IActionResult ChangeOrderStatus()
         {

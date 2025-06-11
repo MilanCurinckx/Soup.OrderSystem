@@ -277,16 +277,39 @@ namespace Soup.OrderSystem.Logic
         {
             try
             {
-                var ProductToRemove = await GetOrderDetails(orderId,productId);
+                var orderToRemove = await GetOrderDetails(orderId,productId);
                 using (OrderContext context = new())
                 {
-                    if (ProductToRemove == null)
+                    if (orderToRemove == null)
                     {
                         throw new Exception("OrderDetails could not be found");
                     }
                     else
                     {
-                        context.OrderDetails.Remove(ProductToRemove);
+                        context.OrderDetails.Remove(orderToRemove);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while deleting the product from the order" + ex.Message);
+            }
+        }
+        public async Task DeleteOrder(int orderId)
+        {
+            try
+            {
+                var orderToRemove = await GetOrder(orderId);
+                using (OrderContext context = new())
+                {
+                    if (orderToRemove == null)
+                    {
+                        throw new Exception("Order could not be found");
+                    }
+                    else
+                    {
+                        context.Orders.Remove(orderToRemove);
                         await context.SaveChangesAsync();
                     }
                 }

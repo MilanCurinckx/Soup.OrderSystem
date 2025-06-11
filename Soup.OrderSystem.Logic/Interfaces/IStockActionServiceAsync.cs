@@ -13,5 +13,6 @@ namespace Soup.OrderSystem.Logic.Interfaces
         Task<List<StockAction>> GetStockActionsByType(int stockActionType);
         Task<List<StockAction>> GetStockActionsList();
         Task<List<StockAction>> GetStockActionByOrder(int OrderId);
+        Task DeleteStockAction(int stockActionId);
     }
 }
