@@ -14,11 +14,11 @@ namespace Soup.OrderSystem.Logic
     {
 
         /// <summary>
-        /// Creates a new order and also makes an orderdetails to store the first item of the order into.
+        /// Creates a new order 
         /// </summary>
         /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public async Task CreateOrder(OrderDTO orderDTO)
+        public async Task<int> CreateOrder(string customerId)
         {
             try
             {
@@ -27,14 +27,10 @@ namespace Soup.OrderSystem.Logic
                     Orders order = new();
                     OrderDetails orderDetails = new OrderDetails();
                     order.OrderStatus = OrderStatusEnum.New;
-                    order.CustomerID = orderDTO.CustomerId;
+                    order.CustomerID = customerId;
                     context.Orders.Add(order);
                     await context.SaveChangesAsync();
-                    orderDetails.OrderID = order.OrderId;
-                    orderDetails.ProductID = orderDTO.ProductID;
-                    orderDetails.ProductAmount = orderDTO.ProductAmount;
-                    context.OrderDetails.Add(orderDetails);
-                    await context.SaveChangesAsync();
+                    return order.OrderId;
                 }
             }
             catch (Exception ex)
@@ -43,7 +39,32 @@ namespace Soup.OrderSystem.Logic
             }
 
         }
-
+        /// <summary>
+        /// Add a product to the order
+        /// </summary>
+        /// <param name="orderDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task CreateOrderDetails(OrderDTO orderDTO)
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    OrderDetails orderDetails = new OrderDetails();
+                    orderDetails.OrderID = orderDTO.OrderID;
+                    orderDetails.ProductID = orderDTO.ProductID;
+                    orderDetails.ProductAmount = orderDTO.ProductAmount;
+                    context.OrderDetails.Add(orderDetails);
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while adding the product to the order" + ex.Message);
+            }
+           
+        }
         public async Task<Orders> GetOrder(int orderId)
         {
             try
@@ -84,7 +105,7 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public async Task<List<OrderDetails>> GetOrderDetailsbyOrder(int orderId)
+        public async Task<List<OrderDetails>> GetOrderDetailsByOrder(int orderId)
         {
             try
             {
@@ -132,7 +153,7 @@ namespace Soup.OrderSystem.Logic
             {
                 using (OrderContext context = new())
                 {
-                    var orderDetails = await context.OrderDetails.Where(o => o.OrderID == orderId).FirstOrDefaultAsync(o => o.ProductID == productId);
+                    var orderDetails = await context.OrderDetails.Where(o => o.OrderID == orderId && o.ProductID == productId).FirstOrDefaultAsync();
                     return orderDetails;
                 }
             }
@@ -226,11 +247,11 @@ namespace Soup.OrderSystem.Logic
         /// </summary>
         /// <param name="orderDTO"></param>
         /// <returns></returns>
-        public async Task DeleteOrderDetails(OrderDTO orderDTO)
+        public async Task DeleteOrderDetails(int orderId, int productId )
         {
             try
             {
-                var ProductToRemove = await GetOrderDetails(orderDTO.OrderID, orderDTO.ProductID);
+                var ProductToRemove = await GetOrderDetails(orderId,productId);
                 using (OrderContext context = new())
                 {
                     if (ProductToRemove == null)

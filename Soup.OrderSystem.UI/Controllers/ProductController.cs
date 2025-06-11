@@ -1,24 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using Soup.OrderSystem.Objects.Order;
+using Soup.OrderSystem.UI.Models;
+using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
+
     public class ProductController : Controller
     {
         private IProductServiceAsync _service;
-        public ProductController(IProductServiceAsync service)
+        private IStockActionServiceAsync _actionService;
+        
+        public ProductController(IProductServiceAsync service, IStockActionServiceAsync actionService)
         {
             _service = service;
+            _actionService = actionService;
         }
         public IActionResult Products()
         {
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateProduct()
         {
             return View();
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            OrderProductModel orderProductModel = new();
+            Product product = new();
+            product = await _service.GetProduct(id);
+            int currentStockAmount = await _actionService.GetCurrentStockAmount(product.ProductID);
+            int availableStockAmount = await _actionService.GetAvailableStockAmount(product.ProductID);
+            orderProductModel.ProductName = product.ProductName;
+            orderProductModel.ProductID = id;
+            orderProductModel.AmountInStock = currentStockAmount;
+            orderProductModel.AvailableStock = availableStockAmount;
+            return View(orderProductModel);
         }
         public async Task<IActionResult> Overview()
         {
@@ -32,20 +55,28 @@ namespace Soup.OrderSystem.UI.Controllers
             ).ToList();
             return View(productDTOs);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProducts()
         {
-            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            List<OrderProductModel> productDTOs = new List<OrderProductModel>();
             List<Product> ProductList = await _service.GetProductsList();
-            productDTOs = ProductList.Select(p => new ProductDTO
+            int currentStockAmount = 0;
+            int availableStockAmount = 0;
+            foreach (Product product in ProductList)
             {
-                ProductID = p.ProductID,
-                ProductName = p.ProductName
+                currentStockAmount = await _actionService.GetCurrentStockAmount(product.ProductID);
+                availableStockAmount = await _actionService.GetAvailableStockAmount(product.ProductID);
+                OrderProductModel orderProductModel = new OrderProductModel();
+                orderProductModel.ProductID = product.ProductID;
+                orderProductModel.ProductName = product.ProductName;
+                orderProductModel.AmountInStock = currentStockAmount;
+                orderProductModel.AvailableStock = availableStockAmount;
+                productDTOs.Add(orderProductModel);
             }
-            ).ToList();
             return View(productDTOs);
         }
-       
-        public async Task<IActionResult> Update(int id) 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update(int id)
         {
             ProductDTO productDTO = new();
             Product product = await _service.GetProduct(id);
@@ -53,12 +84,13 @@ namespace Soup.OrderSystem.UI.Controllers
             productDTO.ProductName = product.ProductName;
             return View(productDTO);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             await _service.DeleteProduct(id);
             return RedirectToAction("GetProducts");
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDTO productDTO)
         {
@@ -72,6 +104,7 @@ namespace Soup.OrderSystem.UI.Controllers
                 return View(productDTO);
             }
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(ProductDTO ProductDTO)
         {

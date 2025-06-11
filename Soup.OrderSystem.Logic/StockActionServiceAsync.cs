@@ -4,6 +4,7 @@ using Soup.OrderSystem.Data;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using System.Threading.Tasks;
+using Soup.OrderSystem.Objects.Order;
 
 namespace Soup.OrderSystem.Logic
 {
@@ -26,6 +27,7 @@ namespace Soup.OrderSystem.Logic
                     newStockAction.Amount = stockActionDTO.Amount;
                     newStockAction.ProductId = stockActionDTO.ProductId;
                     newStockAction.StockActionsEnum = stockActionDTO.StockActions;
+                    newStockAction.OrderId = stockActionDTO.OrderId;
                     context.Add(newStockAction);
                     await context.SaveChangesAsync();
                 }
@@ -54,6 +56,27 @@ namespace Soup.OrderSystem.Logic
             catch (Exception ex)
             {
                 throw new Exception("Something went wrong while retrieving the stock action " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Returns a list of every stock action that an order has.
+        /// </summary>
+        /// <param name="OrderId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<List<StockAction>> GetStockActionByOrder(int OrderId)
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    List<StockAction> stockActionList = await context.Stock_Actions.Where(s => s.OrderId == OrderId).ToListAsync();
+                    return stockActionList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the stock Actions" + ex.Message);
             }
         }
         /// <summary>
@@ -238,18 +261,35 @@ namespace Soup.OrderSystem.Logic
         //        await _orderContext.SaveChangesAsync();
         //    }
         //}
-        //public async Task DeleteStockAction(int stockActionId)
-        //{
-        //    var stockActionToDelete = await GetStockActionAsync(stockActionId);
-        //    if (stockActionToDelete == null)
-        //    {
-        //        throw new Exception("Stock action could not be found");
-        //    }
-        //    else
-        //    {
-        //        _orderContext.Stock_Actions.Remove(stockActionToDelete);
-        //        await _orderContext.SaveChangesAsync();
-        //    }
-        //}
+        /// <summary>
+        /// Deletes a stock action
+        /// </summary>
+        /// <param name="stockActionId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task DeleteStockAction(int stockActionId)
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var stockActionToDelete = await GetStockAction(stockActionId);
+                    if (stockActionToDelete == null)
+                    {
+                        throw new Exception("Stock action could not be found");
+                    }
+                    else
+                    {
+                        context.Stock_Actions.Remove(stockActionToDelete);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong while retrieving the stock actions " + ex.Message);
+            }
+           
+        }
     }
 }

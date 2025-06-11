@@ -1,5 +1,5 @@
 ﻿@using Soup.OrderSystem.Logic.DTO
-@model List<ProductDTO>
+@model List<OrderProductModel>
 @{
     ViewData["Title"] = "View";
 }
@@ -8,19 +8,24 @@
 <table class="table">
     <thead>
         <tr>
-            <th>First Name</th>
-            <th>Amount in stock</th>
+            <th>Name</th>
+            <th># in stock</th>
+            <th># available in stock</th>
+            <th>Edit stock</th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (ProductDTO item in Model)
+        @foreach (OrderProductModel item in Model)
         {
             <tr>
                 <td>@item.ProductName</td>
-                @*  TODO: add amount in stock here *@
-                <td></td>
+                <td>@item.AmountInStock</td>
+                <td>@item.AvailableStock</td>
+                <td>
+                    <a class="btn btn-link" asp-controller="StockAction" asp-action="CreateStockAction" asp-route-id="@item.ProductID">Edit stock</a>
+                </td>
                 <td>
                     <a class="btn btn-info" asp-controller="Product" asp-action="Update" asp-route-id="@item.ProductID">Update information</a>
                 </td>

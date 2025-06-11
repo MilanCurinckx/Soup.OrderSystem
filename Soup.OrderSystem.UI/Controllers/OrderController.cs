@@ -1,16 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Soup.OrderSystem.Logic.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
-        private readonly IOrderServiceAsync _orderService;
-        public OrderController(IOrderServiceAsync service)
+       
+        public OrderController()
         {
-            _orderService = service;
+            
         }
-        public IActionResult Add(int id)
+        public IActionResult CreateOrder()
+        {
+            return View();
+        }
+        public IActionResult getOrders()
+        {
+            return View();
+        }
+        public IActionResult DeleteOrder()
+        {
+            return View();
+        }
+        public IActionResult ChangeOrderStatus()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateOrder()
         {
             return View();
         }

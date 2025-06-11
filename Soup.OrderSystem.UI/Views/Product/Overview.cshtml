@@ -11,7 +11,8 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">@product.ProductName</h4>
-                    <a asp-action="Add" asp-controller="Order" asp-route-id="@product.ProductID" class="btn btn-primary">Buy</a>
+                    <a asp-action="Add" asp-controller="ShoppingCart" asp-route-id="@product.ProductID" class="btn btn-primary">Add to Cart</a>
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@product.ProductID" class="btn btn-primary">Details</a>
                 </div>
             </div>
         </div>

@@ -35,8 +35,9 @@ namespace Soup.OrderSystem.XunitTests
             orderDTO.ProductID = product.ProductID;
             orderDTO.CustomerId = customer.CustomerId;
             orderDTO.ProductAmount = 1;
-            await _orderService.CreateOrder(orderDTO);
-
+            int orderId =await _orderService.CreateOrder(orderDTO.CustomerId);
+            orderDTO.OrderID = orderId;
+            await _orderService.CreateOrderDetails(orderDTO);
             newOrderDetailsList = await _orderService.GetOrderDetailsList();
             newOrderDetails = newOrderDetailsList.Last();
             Assert.NotNull(newOrderDetails);
@@ -70,7 +71,7 @@ namespace Soup.OrderSystem.XunitTests
             OrderDetails orderDetails = new OrderDetails();
             details = await _orderService.GetOrderDetailsList();
             orderDetails = details.Last();
-            orderDetailsList = await _orderService.GetOrderDetailsbyOrder(orderDetails.OrderID);
+            orderDetailsList = await _orderService.GetOrderDetailsByOrder(orderDetails.OrderID);
             Assert.NotNull(orderDetailsList);
         }
         [Fact]
@@ -132,7 +133,7 @@ namespace Soup.OrderSystem.XunitTests
             details = orderDetailsList.Last();
             orderDTO.OrderID = details.OrderID;
             orderDTO.ProductID = details.ProductID;
-            await _orderService.DeleteOrderDetails(orderDTO);
+            await _orderService.DeleteOrderDetails(orderDTO.OrderID,orderDTO.ProductID);
             deletedOrderDetails = await _orderService.GetOrderDetails(details.OrderID, details.ProductID);
             Assert.Null(deletedOrderDetails);
         }

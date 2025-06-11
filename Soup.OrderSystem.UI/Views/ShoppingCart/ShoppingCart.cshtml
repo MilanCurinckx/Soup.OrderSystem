@@ -1,0 +1,32 @@
+﻿@model List<OrderProductModel>
+@{
+    ViewData["Title"] = "Shopping cart";
+}
+
+<h1>Shopping cart</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col"># in cart</ths>
+            <th scope="col">Name</th>
+            <th scope="col">Update Amount</th>
+            <th scope="col">Remove from cart</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (OrderProductModel item in Model)
+        {
+            <tr>
+                <td scope="row">@item.ProductAmount</td>
+                <td scope="row">@item.ProductName</td>
+                <td scope="row">
+                    <a class="btn btn-primary" asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductID">Update</a>
+                </td>
+                <td scope="row">
+                    <a class="btn btn-danger" asp-controller="ShoppingCart" asp-action="Remove" asp-route-id="@item.ProductID">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

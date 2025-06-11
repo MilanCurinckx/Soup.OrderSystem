@@ -1,5 +1,6 @@
 using Soup.OrderSystem.Logic.Interfaces;
 using Soup.OrderSystem.Logic;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Soup.OrderSystem.UI
 {
@@ -10,8 +11,29 @@ namespace Soup.OrderSystem.UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            }
+            );
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Login/CustomerLogin";
+                    options.AccessDeniedPath = "/Login/Forbidden";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.SlidingExpiration = true;
+                });
+            builder.Services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy("Admin", policy => policy.RequireClaim("Admin","true"));
+                });
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddSingleton<ICustomerServiceAsync, CustomerServiceAsync>();
             builder.Services.AddSingleton<IAddressServiceAsync, AddressServiceAsync>();
             builder.Services.AddSingleton<IPostalCodeServiceAsync, PostalCodeServiceAsync>();
@@ -33,11 +55,16 @@ namespace Soup.OrderSystem.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Product}/{action=Overview}/{id?}");
             app.Run();
         }
     }

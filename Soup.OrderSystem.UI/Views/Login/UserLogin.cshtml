@@ -1,4 +1,4 @@
-﻿@model Soup.OrderSystem.Logic.DTO.UserDTO
+﻿@model Soup.OrderSystem.UI.Models.UserModel
 <head>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -9,13 +9,14 @@
 <div class="sidenav">
     <div class="login-main-text">
         <h2>Application<br> Login Page</h2>
-        <p>Login or register from here to access.</p>
+        <p>Login or register from here to access Admin.</p>
     </div>
 </div>
 <div class="main">
     <div class="col-md-6 col-sm-12">
         <div class="login-form">
-            <form method="post" asp-controller="User" asp-action="Login">
+            <p class="alert-danger">@ViewData["Error"]</p>
+            <form method="post" asp-controller="Login" asp-action="UserLogin">
                 <div class="form-group">
                     <label asp-for="FirstName" class="control-label">First name:</label>
                     <input type="text" class="form-control" asp-for="FirstName" />

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/Soup.OrderSystem.UI.styles.css" asp-append-version="true" />
     <style>
         body {
-            background-color:lightslategray;
+            background-color: cadetblue;
         }
     </style>
 </head>
@@ -22,19 +22,38 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar navbar-collapse navbar-expand-lg navbar-dark d-sm-inline-flex justify-content-between">
+                <div class="navbar navbar-collapse navbar-expand-lg navbar-dark d-sm-inline-flex">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Product" asp-action="Overview">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Customer" asp-action="Login">Login</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Customer" asp-action="CreateCustomer">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="" asp-action="">Register</a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form asp-action="Logout" asp-controller="Login" method="post">
+                                    @if (User.IsInRole("Customer"))
+                                    {
+                                        <button type="submit" class="nav-link text-white">Logout as Customer</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="nav-link text-white">Logout as User</button>
+                                    }
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-controller="Login" asp-action="CustomerLogin" class="nav-link text-white">Login</a>
+                            }
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Login">Admin</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="UserLogin">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="ShoppingCart" asp-action="ShoppingCart">ShoppingCart</a>
                         </li>
                     </ul>
                 </div>

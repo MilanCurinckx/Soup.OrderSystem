@@ -1,0 +1,40 @@
+﻿<h1>Login Test</h1>
+<div>
+    <div>
+
+
+        <div>
+            <p>
+                Currently, the user is @(User.Identity?.Name ?? "Anonymous")
+            </p>
+        </div>
+        @if(User.Identity?.IsAuthenticated ?? false)
+        {
+            <p>Welcome</p>
+            <form asp-action="Logout" asp-controller="Login" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        }
+        else
+        {
+            
+        }
+
+</div>
+<h2>
+    Claims
+</h2>
+@if(User.Claims.Any())
+{
+    <ul>
+        @foreach(var claim in User.Claims)
+        {
+            <li>@claim.ToString()</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No claims found</p>
+}
+</div>

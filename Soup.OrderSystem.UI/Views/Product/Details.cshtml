@@ -1,0 +1,28 @@
+﻿@model OrderProductModel
+
+<h1>
+    Product details
+</h1>
+<form method="post" asp-action="UpdateAmount" asp-controller="ShoppingCart">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <bold> <h4 class="card-title">@Model.ProductName</h4></bold>
+                <input hidden asp-for="@Model.ProductID" />
+                <h5 class="card-subtitle">Out of @Model.AmountInStock products, only @Model.AvailableStock are still available for order</h5>
+                @if(User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-outline-dark mt-3" asp-action="ManageStock" asp-controller="StockAction" asp-route-id="@Model.ProductID">Manage stock</a>
+                }
+                <p class="card-text text-lg-center mt-3">A delicious can of soup!</p>
+                <div class="form-group">
+                    <label asp-for="ProductAmount" class="control-label mt-4">Amount:</label>
+                    <input type="number" min="1" asp-for="ProductAmount"/>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add to cart</button>
+            <p class="alert-danger">@ViewData["Error"]</p>
+        </div>
+    </div>
+</form>

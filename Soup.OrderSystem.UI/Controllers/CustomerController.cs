@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using Soup.OrderSystem.Objects.Customer;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
-
+    [Authorize(Roles = "Admin")]
     public class CustomerController : Controller
     {
         private ICustomerServiceAsync _customerServiceAsync;
@@ -18,10 +19,6 @@ namespace Soup.OrderSystem.UI.Controllers
             _addressServiceAsync = addressService;
         }
         public IActionResult Customers()
-        {
-            return View();
-        }
-        public IActionResult Login()
         {
             return View();
         }
@@ -43,7 +40,15 @@ namespace Soup.OrderSystem.UI.Controllers
                 addressDTO.PostalCodeId = customerModel.PostalCodeId;
                 addressDTO.StreetHouse = customerModel.StreetHouse;
                 await _customerServiceAsync.CreateCustomer(customerDTO, addressDTO);
-                return RedirectToAction("GetCustomers");
+                if (User.Identity?.IsAuthenticated == true)
+                {
+                    return RedirectToAction("GetCustomers");
+                }
+                else
+                {
+                    return RedirectToAction("CustomerLogin", "Login");
+                }
+
             }
             else
             {

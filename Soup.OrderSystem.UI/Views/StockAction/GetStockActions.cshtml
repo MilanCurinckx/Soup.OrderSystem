@@ -1,0 +1,30 @@
+﻿@using Soup.OrderSystem.Logic.DTO
+@model List<StockActionDTO>
+@{
+    ViewData["Title"] = "Overview";
+}
+
+<p>These are all the stock actions currently saved</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>OrderId</th>
+            <th>ProductId</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StockActionDTO item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OrderId</td>
+                <td>@item.ProductId</td>
+                <td>@item.Amount</td>
+                <td>@item.StockActions</td>
+            </tr>
+        }
+    </tbody>
+</table>

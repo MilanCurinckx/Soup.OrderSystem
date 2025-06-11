@@ -10,12 +10,16 @@ namespace Soup.OrderSystem.Objects
         [Column("Stock_ActionsId")]
         public int Id { get; set; }
         [ForeignKey(nameof(Products))]
+        [Required]
         public int ProductId { get; set; }
         [Column("StockAction")]
         [Required]
         public StockActionEnum StockActionsEnum { get; set; }
         [Required]
         public int Amount { get; set; }
+        [ForeignKey(nameof(Orders))]
+        public int OrderId { get; set; }
+        public virtual Orders Orders { get; set; }
         public virtual Product Products { get; set; }
     }
     public enum StockActionEnum

@@ -24,6 +24,7 @@ namespace Soup.OrderSystem.Data
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<Product> OrderProducts { get; set; }
         public DbSet<StockAction> Stock_Actions { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

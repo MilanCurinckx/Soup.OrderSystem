@@ -16,16 +16,18 @@ namespace Soup.OrderSystem.Api.Controllers
         [HttpPost]
         public async Task Create(OrderDTO orderDTO)
         {
-            await _orderServiceAsync.CreateOrder(orderDTO);
+            var Id = await _orderServiceAsync.CreateOrder(orderDTO.CustomerId);
+            orderDTO.OrderID = Id;
+            await _orderServiceAsync.CreateOrderDetails(orderDTO);
         }
         [HttpGet]
         public async Task<IActionResult> GetOrder(int orderId)
         {
-           var order= await _orderServiceAsync.GetOrder(orderId);
-           return Ok(order);
+            var order = await _orderServiceAsync.GetOrder(orderId);
+            return Ok(order);
         }
         [HttpGet("GetOrderDetailList")]
-        public async Task<IActionResult>GetOrderDetailList()
+        public async Task<IActionResult> GetOrderDetailList()
         {
             var orderList = await _orderServiceAsync.GetOrderDetailsList();
             return Ok(orderList);
@@ -33,7 +35,7 @@ namespace Soup.OrderSystem.Api.Controllers
         [HttpGet("GetOrderDetailsbyOrder")]
         public async Task<IActionResult> GetOrderDetailsbyOrder(int orderId)
         {
-            var orderList = await _orderServiceAsync.GetOrderDetailsbyOrder(orderId);
+            var orderList = await _orderServiceAsync.GetOrderDetailsByOrder(orderId);
             return Ok(orderList);
         }
         [HttpGet("GetOrderDetailsByProduct")]
@@ -51,17 +53,17 @@ namespace Soup.OrderSystem.Api.Controllers
         [HttpPatch("UpdateProductAmount")]
         public async Task UpdateProductAmount(OrderDTO orderDTO)
         {
-           await _orderServiceAsync.UpdateProductAmount(orderDTO);
+            await _orderServiceAsync.UpdateProductAmount(orderDTO);
         }
         [HttpPatch("UpdateOrderStatus")]
         public async Task UpdateOrderStatus(OrderDTO orderDTO)
         {
-           await _orderServiceAsync.UpdateOrderStatus(orderDTO);
+            await _orderServiceAsync.UpdateOrderStatus(orderDTO);
         }
         [HttpDelete]
-        public async Task DeleteOrderDetails(OrderDTO orderDTO)
+        public async Task DeleteOrderDetails(int orderId, int productId)
         {
-            await _orderServiceAsync.DeleteOrderDetails(orderDTO);
+            await _orderServiceAsync.DeleteOrderDetails(orderId, productId);
         }
     }
 }

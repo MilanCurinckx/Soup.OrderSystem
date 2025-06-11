@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Soup.OrderSystem.Logic.DTO;
 using Soup.OrderSystem.Logic.Interfaces;
 using Soup.OrderSystem.Objects.User;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private IUserServiceAsync _userServiceAsync;
@@ -18,17 +22,6 @@ namespace Soup.OrderSystem.UI.Controllers
         }
         public IActionResult Create()
         {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Login(UserDTO userDTO)
-        {
-            
             return View();
         }
         public async Task<IActionResult> GetUsers()
@@ -45,7 +38,7 @@ namespace Soup.OrderSystem.UI.Controllers
             ).ToList();
             return View(userDTOs);
         }
-        public async Task<IActionResult> Update(int id) 
+        public async Task<IActionResult> Update(int id)
         {
             UserDTO userDTO = new();
             UserDetails user = await _userServiceAsync.GetUserDetails(id);
