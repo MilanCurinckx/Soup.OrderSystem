@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class CustomerController : Controller
     {
         private ICustomerServiceAsync _customerServiceAsync;
@@ -55,6 +55,7 @@ namespace Soup.OrderSystem.UI.Controllers
                 return View(customerModel);
             }
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCustomers()
         {
             List<CustomerModel> customerModelsList = new();
@@ -75,6 +76,7 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(customerModelsList);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(string id)
         {
             CustomerDetails customerDetails = new CustomerDetails();
@@ -93,6 +95,7 @@ namespace Soup.OrderSystem.UI.Controllers
             return View(customerModel);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCustomer(CustomerModel customerModel)
         {
             AddressDTO addressDTO = new AddressDTO();
@@ -110,6 +113,7 @@ namespace Soup.OrderSystem.UI.Controllers
             await _addressServiceAsync.UpdateAddress(addressDTO);
             return RedirectToAction("GetCustomers");
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             await _customerServiceAsync.DeleteCustomerDetails(id);

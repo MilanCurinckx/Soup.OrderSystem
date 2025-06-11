@@ -102,3 +102,10 @@ Oh one final thing, I finally got around to using the .select method from linq, 
 
 *08/06*
 Awful day, I spent most of it just fumbling with html, and being stumped on how to even make a shopping cart, it was then I realised "oh wait, I need a login for the shopping cart" because my shopping cart is me creating an order, which requires a customerId. Which means I need to find a way to get Identity working with my current user. I looked at the doc from moodle, but I'm clearly doing something wrong because it's giving an error on the override. I'm glad I at least managed to get mvc working with some bootstrap slapped onto that. 
+*9-11/06*
+Read github commits for work done these last few days. But apparently I didn't even NEED UNIT TESTS??? Fuck me. Anyway it was probably a good idea to have those anyway seeing as they caught a bunch of logic errors. Speaking of logic errors, not me spending 20 minutes figuring out why my method doesn't work, only to realise I put the parameters in the wrong order. Good job me. 
+Ui is coming along, it's ugly for now and I'll probably won't have time to fix it anyway. Don't know if I'll get dashboard done, shouldn't be too hard with all the pieces I've already built. On that note, my Controllers are a fucking MESS. If I had more time I'd definitely would have made a utility class for UI alone. ALSO, MY DTO'S WERE WASTED(?) because I'm using Models anyway. Well they at least are somewhat functional because the models inherit from them. Once again, bad(?) name on OrderProductModel, definitely too long and still kind of vague.
+Now that I'm using my own logic more, man was it a mistake to make everything take DTO'S. I constantly have to go back to my own logic to check what I actually need. Not going to do that again next time. 
+I've also discovered that my most productive hours are apparently from 23:00 to 04:00. Which definitely isn't healthy but I once again fit the stereotype I guess.
+OH I still need to put comments on all my controller methods as well.
+And do the CRUD for Orders, thankfully that shouldn't take too long anyway.

@@ -16,5 +16,6 @@ namespace Soup.OrderSystem.Logic.Interfaces
         Task UpdateOrderStatus(OrderDTO orderDTO);
         Task UpdateProductAmount(OrderDTO orderDTO);
         Task CreateOrderDetails(OrderDTO orderDTO);
+        Task<List<Orders>> GetOrderList();
     }
 }

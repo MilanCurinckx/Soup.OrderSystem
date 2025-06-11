@@ -1,0 +1,39 @@
+﻿@model List<OrderProductModel>
+@{
+    ViewData["Title"] = "View";
+}
+
+<p>These are all the users registered</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Customer Id</th>
+            <th>Product Id</th>
+            <th>Product amount</th>
+            <th>OrderStatus</th>
+            <th></th>
+            <th></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (OrderProductModel item in Model)
+        {
+            <tr>
+                <td>@item.OrderId</td>
+                <td>@item.CustomerId</td>
+                <td>@item.ProductID</td>
+                <td>@item.ProductAmount</td>
+                <td>@item.OrderStatus</td>
+                <td>
+                   @*  <a class="btn btn-info" asp-controller="Order" asp-action="Update" asp-route-id="@item.OrderId">Update information</a> *@
+                </td>
+                <td>
+                   @*  <a class="btn btn-danger" asp-controller="Order" asp-action="Delete" asp-route-id="@item.OrderId">Remove</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

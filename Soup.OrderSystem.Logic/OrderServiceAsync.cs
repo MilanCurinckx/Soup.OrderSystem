@@ -65,6 +65,13 @@ namespace Soup.OrderSystem.Logic
             }
            
         }
+        /// <summary>
+        /// retrieve a single ORDER, not orderDetail based on the given Id. the order contains an Id and the OrderStatus.
+        /// </summary>
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<Orders> GetOrder(int orderId)
         {
             try
@@ -78,6 +85,25 @@ namespace Soup.OrderSystem.Logic
             catch (Exception ex)
             {
                 throw new Exception("Something went wrong while searching for the order" + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Retrieves a list containing every single Order. Each order contains an Id and the OrderStatus.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Orders>> GetOrderList()
+        {
+            try
+            {
+                using (OrderContext context = new())
+                {
+                    var OrderList = await context.Orders.ToListAsync();
+                    return OrderList;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something when wrong while retrieving the orders" + ex.Message);
             }
         }
         /// <summary>

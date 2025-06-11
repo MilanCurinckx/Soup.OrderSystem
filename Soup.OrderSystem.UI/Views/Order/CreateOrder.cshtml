@@ -1,0 +1,24 @@
+﻿@using Soup.OrderSystem.Objects.Order
+@model Soup.OrderSystem.UI.Models.OrderProductModel
+<form method="Post" asp-controller="Customer" asp-action="CreateCustomer">
+    <div class="form-group">
+        <h1>Add Customer</h1>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ProductID" class="control-label mt-4">Product Id</label>
+            <input type="text" class="form-control" asp-for="ProductID" />
+            <span asp-validation-for="ProductID" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OrderId" class="control-label mt-4">Order Id</label>
+            <input type="text" class="form-control" asp-for="OrderId" />
+            <span asp-validation-for="OrderId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OrderStatus" class="control-label mt-4">Order Status:</label>
+            <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatusEnum>()"></select>
+            <span asp-validation-for="OrderStatus" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Ok</button>
+    </div>
+</form>

@@ -19,7 +19,9 @@ namespace Soup.OrderSystem.UI.Models
         public int AvailableStock { get; set; }
         public int AmountInStock { get; set; }
         public int OrderId { get; set; }
+        public string CustomerId {  get; set; }
         [Required]
         public StockActionEnum StockAction { get; set; }
+        public OrderStatusEnum OrderStatus { get; set; }
     }
 }
