@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Soup.OrderSystem.UI.Controllers
 {
-    
+
     public class CustomerController : Controller
     {
         private ICustomerServiceAsync _customerServiceAsync;
@@ -18,14 +18,25 @@ namespace Soup.OrderSystem.UI.Controllers
             _customerServiceAsync = service;
             _addressServiceAsync = addressService;
         }
+        //unused method, do ignore
         public IActionResult Customers()
         {
             return View();
         }
+        /// <summary>
+        /// redirect to view
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CreateCustomer()
         {
             return View();
         }
+        /// <summary>
+        /// Creates a new customer. If parameters are invalid you get sent back to the form.
+        /// If successful you get sent back to the main page
+        /// </summary>
+        /// <param name="customerModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(CustomerModel customerModel)
         {
@@ -40,21 +51,17 @@ namespace Soup.OrderSystem.UI.Controllers
                 addressDTO.PostalCodeId = customerModel.PostalCodeId;
                 addressDTO.StreetHouse = customerModel.StreetHouse;
                 await _customerServiceAsync.CreateCustomer(customerDTO, addressDTO);
-                if (User.Identity?.IsAuthenticated == true)
-                {
-                    return RedirectToAction("GetCustomers");
-                }
-                else
-                {
-                    return RedirectToAction("CustomerLogin", "Login");
-                }
-
+                return RedirectToAction("Overview", "Products");
             }
             else
             {
                 return View(customerModel);
             }
         }
+        /// <summary>
+        /// Shows a list of every customer
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCustomers()
         {
@@ -76,6 +83,11 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(customerModelsList);
         }
+        /// <summary>
+        /// Grabs the details of a customer to put into a form for UpdateCustomer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(string id)
         {
@@ -94,6 +106,11 @@ namespace Soup.OrderSystem.UI.Controllers
             customerModel.PostalCodeId = address.PostalCodeId;
             return View(customerModel);
         }
+        /// <summary>
+        /// Updates a customer and redirects to 
+        /// </summary>
+        /// <param name="customerModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCustomer(CustomerModel customerModel)
@@ -113,6 +130,11 @@ namespace Soup.OrderSystem.UI.Controllers
             await _addressServiceAsync.UpdateAddress(addressDTO);
             return RedirectToAction("GetCustomers");
         }
+        /// <summary>
+        /// Deletes a customer 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {

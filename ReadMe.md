@@ -1,4 +1,3 @@
-TODO: make proper layout for this
 Going to keep track of the design patterns used here:
 Constructor Injection
 Architecture
@@ -9,13 +8,33 @@ DTO for easy data transfer => If a method requires more than three parameters I 
 ViewModels
 Do enums count as a design pattern?
 
-TODO:
+GET STARTED: 
+1. Import the database onto your computer
+   if you don't know how to import a backpac file, check this website https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/data-tier-applications/import-bacpac-file-create-new-database?view=sql-server-ver17&tabs=import-wizard
+2. Go to Soup.OrderSystem.Data, go to the OrderContext file, in there, go to the OnConfiguring method and change DatabaseKey.database key to your own database key.
+3. run the project and pray it works 
+
+Some extra information: 
+- Do NOT delete the customer with Id "k1", this is the id that is used by users (admins) to perform certain functions in the program.
+- If you delete every admin, you will have to insert them into the database, you cannot create an admin through UI. 
+- There are two admins currently saved in the database, one of them has the following credentials 
+
+Credentials 
+First name: Johnny
+Last name : Tester
+Password: 123Test
+
+
+
+
+
+
 
 KNOWN ISSUES: 
 The unit tests sometimes run in the wrong order when you run all of them, they worked perfectly fine individually though(at least when I checked last time)
+The unit tests & api might be broken on some methods.  
 
-
-Diary (I suppose? You can use this to see when I worked on the program): 
+Diary/Documentation (You can use this to see when I worked on the program): 
 *19/03*: 
 Creation of the project
 *20/03*: 
@@ -107,3 +126,28 @@ Now that I'm using my own logic more, man was it a mistake to make everything ta
 I've also discovered that my most productive hours are apparently from 23:00 to 04:00. Which definitely isn't healthy but I once again fit the stereotype I guess.
 OH I still need to put comments on all my controller methods as well.
 And do the CRUD for Orders, thankfully that shouldn't take too long anyway.
+
+*11/06*
+Final update for this project (at least I hope)
+Couldn't get the Crud or Dashboard done, because I underestimated how much time goes into a powerpoint. Oh well. I added all the things I didn't get done to a slide on the powerpoint, all in all not too bad.
+For anyone reading this I'll add the unfinished items here as well: 
+
+Api: 
+- missing one or two methods that I had to add after making the UI (which is poor planning on my end I will admit)
+- There's no login on API yet
+- I haven't tested the API as much as I would've liked to. I don't know if the input validation on that thing is good enough yet.
+
+UI:
+- Dashboard is missing
+- UI just doesn't look great in general, needs css to make it look not like this. 
+- There's no check out for the shopping cart yet
+- Admin can't update any orders yet, I've made the code for deleting an order but something was breaking while I was testing it out so I put it in comment for now.
+- I didn't test create order in Admin so I don't know if that one actually works. 
+- There's no way to create an Admin if you delete all of them. 
+- Some admin functions will break if you delete the admin customer with id "k1".
+- You can only delete stock actions by delete an order or remove the item from your cart.
+- Admins can reserve stock actions when creating a stock action.
+
+All in all, I'm surprised by how much work I still got done in the little time I had remaining. I got a mostly functional UI and figured out how to do the login system successfully. Figured out how to do the shopping cart as well!. 
+I'm aware that there's a bunch of code that requires cleaning up, but that would take time that I do not have at the moment. Same goes for the unit tests, I'm pretty sure at least some of them will break. Same for api.
+Just need to add boot instructions & export the database along with the powerpoint and we're good.

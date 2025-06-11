@@ -16,14 +16,19 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             _userServiceAsync = userServiceAsync;
         }
-        public IActionResult Users()
-        {
-            return View();
-        }
+        //unused method
+        //public IActionResult Users()
+        //{
+        //    return View();
+        //}
         public IActionResult Create()
         {
             return View();
         }
+        /// <summary>
+        /// get a list of all users & converts them to a list of UserDTO's to return
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetUsers()
         {
             List<UserDTO> userDTOs = new List<UserDTO>();
@@ -38,6 +43,11 @@ namespace Soup.OrderSystem.UI.Controllers
             ).ToList();
             return View(userDTOs);
         }
+        /// <summary>
+        /// loads the userdetails required to update a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Update(int id)
         {
             UserDTO userDTO = new();
@@ -48,11 +58,21 @@ namespace Soup.OrderSystem.UI.Controllers
             userDTO.PassWordHash = user.PassWordHash;
             return View(userDTO);
         }
+        /// <summary>
+        /// deletes a user with the given Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Delete(int id)
         {
             await _userServiceAsync.DeleteUser(id);
             return RedirectToAction("Users");
         }
+        /// <summary>
+        /// Creates a User and redirects to the List of users
+        /// </summary>
+        /// <param name="userDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(UserDTO userDTO)
         {
@@ -62,6 +82,11 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return RedirectToAction("GetUsers");
         }
+        /// <summary>
+        /// updates a user and redirects to the list of getUsers.
+        /// </summary>
+        /// <param name="userDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Update(UserDTO userDTO)
         {

@@ -25,6 +25,10 @@ namespace Soup.OrderSystem.UI.Controllers
             _orderService = orderService;
             _productService = productService;
         }
+        /// <summary>
+        /// get a list of every stock action and converting it to a list of StockActionDTO's to return
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetStockActions()
         {
             List<StockActionDTO> stockActionDTOs = new List<StockActionDTO>();
@@ -40,6 +44,11 @@ namespace Soup.OrderSystem.UI.Controllers
             }).ToList();
             return View(stockActionDTOs);
         }
+        /// <summary>
+        /// passes along a OrderProductModel with ProductId & ProductName to the view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> CreateStockAction(int id)
         {
             OrderProductModel model = new OrderProductModel();
@@ -49,6 +58,12 @@ namespace Soup.OrderSystem.UI.Controllers
             model.ProductName = product.ProductName;
             return View(model);
         }
+        //accidental duplicate method apparently. Not going to fix it now because both are used in views.
+        /// <summary>
+        /// get a list of every stock action and converting it to a list of StockActionDTO's to return 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> ManageStock(int id)
         {   
             List<StockAction> stockActionsList = new List<StockAction>();
@@ -64,13 +79,18 @@ namespace Soup.OrderSystem.UI.Controllers
             }).ToList();
             return View(stockActionDTOs);
         }
+        /// <summary>
+        /// Creates a stock action, if an order hasn't been created yet, create one using the customer id "k1" which is designated to be the admin's customerId. Then redirects to main page.
+        /// </summary>
+        /// <param name="orderProductModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateStockAction(OrderProductModel orderProductModel)
         {
             int ? orderId = HttpContext.Session.GetInt32("OrderId");
             if (orderId == null)
             {
-                
+                //
                 HttpContext.Session.SetInt32("OrderId", await _orderService.CreateOrder("k1"));
                 orderId = HttpContext.Session.GetInt32("OrderId");
             }
@@ -80,7 +100,7 @@ namespace Soup.OrderSystem.UI.Controllers
             stockActionDTO.ProductId = orderProductModel.ProductID;
             stockActionDTO.OrderId = notNullId;
             stockActionDTO.StockActions = orderProductModel.StockAction;
-            _stockActionService.CreateStockAction(stockActionDTO);
+            await _stockActionService.CreateStockAction(stockActionDTO);
             return RedirectToAction("Overview", "product");
         }
     }

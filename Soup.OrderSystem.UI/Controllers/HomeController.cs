@@ -31,6 +31,10 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        /// <summary>
+        /// shows the admin page
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles ="Admin")]
         public IActionResult Admin()
         {

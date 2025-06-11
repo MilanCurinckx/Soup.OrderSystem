@@ -20,16 +20,22 @@ namespace Soup.OrderSystem.UI.Controllers
             _service = service;
             _actionService = actionService;
         }
-        public IActionResult Products()
-        {
-            return View();
-        }
+        //unused method
+        //public IActionResult Products()
+        //{
+        //    return View();
+        //}
 
         [Authorize(Roles = "Admin")]
         public IActionResult CreateProduct()
         {
             return View();
         }
+        /// <summary>
+        /// Finds the product that the user clicked on and passes along the details required.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int id)
         {
             OrderProductModel orderProductModel = new();
@@ -43,6 +49,10 @@ namespace Soup.OrderSystem.UI.Controllers
             orderProductModel.AvailableStock = availableStockAmount;
             return View(orderProductModel);
         }
+        /// <summary>
+        /// Gets a list of products and converts them to a list of ProductDTO's to return
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Overview()
         {
             List<ProductDTO> productDTOs = new List<ProductDTO>();
@@ -55,6 +65,10 @@ namespace Soup.OrderSystem.UI.Controllers
             ).ToList();
             return View(productDTOs);
         }
+        /// <summary>
+        /// gets a list of products and converts them into a list of OrderProductModels to return
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetProducts()
         {
@@ -75,6 +89,11 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(productDTOs);
         }
+        /// <summary>
+        /// gets the Product the user clicked on and returns the required details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
@@ -84,12 +103,22 @@ namespace Soup.OrderSystem.UI.Controllers
             productDTO.ProductName = product.ProductName;
             return View(productDTO);
         }
+        /// <summary>
+        /// gets the product the user clicked on and deletes it, then redirects it the GetProducts page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             await _service.DeleteProduct(id);
             return RedirectToAction("GetProducts");
         }
+        /// <summary>
+        /// Creates a new product, if the credentials are valid it redirects to the GetProducts page, if not valid, it returns to the form
+        /// </summary>
+        /// <param name="productDTO"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDTO productDTO)
@@ -104,6 +133,11 @@ namespace Soup.OrderSystem.UI.Controllers
                 return View(productDTO);
             }
         }
+        /// <summary>
+        /// updates a product, if the credentials are valid it redirects to the GetProducts page, if not valid, it returns to the form
+        /// </summary>
+        /// <param name="ProductDTO"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(ProductDTO ProductDTO)

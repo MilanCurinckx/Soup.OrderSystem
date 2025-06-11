@@ -22,7 +22,11 @@ namespace Soup.OrderSystem.UI.Controllers
             _productService = productService;
             _stockActionService = stockActionService;
         }
-
+        /// <summary>
+        /// Adds a single amount of a product to an order. Has checks whether an order has been created yet or not, and whether there's already a copy of that item in the shopping cart. if not, create a new copy of that item and add it to the shopping cart.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Add(int id)
         {
             StockActionDTO actionDTO = new StockActionDTO();
@@ -32,8 +36,9 @@ namespace Soup.OrderSystem.UI.Controllers
             int amountToAdd = 1;
             string customerId = "";
             int? orderId = HttpContext.Session.GetInt32("OrderId");
+            //if an order has not been created yet
             if (orderId == null)
-            {
+            {   //if a customer is logged in, create a new order and save the id in the session
                 if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
                 {
                     customerId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -46,7 +51,7 @@ namespace Soup.OrderSystem.UI.Controllers
                 }
             }
             int notNullOrderId = orderId.Value;
-
+            //get the order that is created this session and create an orderdetails if it didn't exist yet
             orderDetails = await _orderService.GetOrderDetails(notNullOrderId, id);
             if (orderDetails == null)
             {
@@ -66,14 +71,20 @@ namespace Soup.OrderSystem.UI.Controllers
             await _stockActionService.CreateStockAction(actionDTO);
             return RedirectToAction("ShoppingCart");
         }
+        /// <summary>
+        /// Get every orderdetail related to this order in a list and converts them to a list of OrderProductModels to return
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ShoppingCart()
         {
             List<OrderProductModel> productModels = new List<OrderProductModel>();
+            //check if an order has already been created, if not, log in to create an order
             int? orderId = HttpContext.Session.GetInt32("OrderId");
             if (orderId == null)
             {
                 return RedirectToAction("CustomerLogin", "Login");
             }
+            //if an order has already been created
             else
             {
                 int notNullOrder = orderId.Value;
@@ -94,6 +105,13 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(productModels);
         }
+        /// <summary>
+        /// Adds or updates an amount of a product to the customer's shopping cart. Check in place to see if an order has already been created (required). 
+        /// Check in place to see if that item has already been added to cart and requires the amount to be updated, or if it's added to the cart for the first time with a certain amount. 
+        /// If checks are passed, Create a stock action to update stock. Redirects to ShoppingCart
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateAmount(OrderProductModel model)
         {
@@ -102,12 +120,15 @@ namespace Soup.OrderSystem.UI.Controllers
             OrderDetails orderDetails = new();
             string customerId = "";
             int stockCheck = 0;
+            //check if there are enough items available in stock to perform this action
             stockCheck = await _stockActionService.GetAvailableStockAmount(model.ProductID);
             if (stockCheck < stockActionDTO.Amount)
             {
                 ViewData["Error"] = "Not enough items in stock for this operation, please add fewer items";
                 return View("Details", model);
             }
+
+            //check if an order has been created, if not, create one if a customer is logged in.
             int? orderId = HttpContext.Session.GetInt32("OrderId");
             if (orderId == null)
             {
@@ -123,7 +144,9 @@ namespace Soup.OrderSystem.UI.Controllers
                 }
             }
             int notNullOrder = orderId.Value;
+            //check whether an orderdetail already exists of this item in the shopping cart or not
             orderDetails = await _orderService.GetOrderDetails(orderId: notNullOrder, productId: model.ProductID);
+            //if it's the first time this item is added to a shopping cart, create a new OrderDetail to add to cart
             if (orderDetails == null)
             {
                 orderDTO.OrderID = notNullOrder;
@@ -136,13 +159,17 @@ namespace Soup.OrderSystem.UI.Controllers
             orderDTO.ProductID = model.ProductID;
             orderDTO.OrderID = notNullOrder;
             await _orderService.UpdateProductAmount(orderDTO);
+            //create a new stock action to update stock
             stockActionDTO.OrderId = notNullOrder;
             stockActionDTO.ProductId = model.ProductID;
+            //check whether the amount updated means that more items were taken from stock or if items were returned to stock
+            //if more products were taken from stock
             if (model.ProductID > orderDetails.ProductAmount)
             {
                 stockActionDTO.Amount = model.ProductAmount - orderDetails.ProductAmount;
                 stockActionDTO.StockActions = Objects.StockActionEnum.Reserve;
             }
+            //if items were returned to stock
             else
             {
                 stockActionDTO.Amount = orderDetails.ProductAmount - model.ProductAmount;
@@ -151,6 +178,11 @@ namespace Soup.OrderSystem.UI.Controllers
             await _stockActionService.CreateStockAction(stockActionDTO);
             return RedirectToAction("ShoppingCart");
         }
+        /// <summary>
+        /// Removes an orderdetail from an order and redirects back to the shopping cart
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Remove(int id)
         {
             int? orderId = HttpContext.Session.GetInt32("OrderId");

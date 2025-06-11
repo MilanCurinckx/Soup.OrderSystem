@@ -23,6 +23,10 @@ namespace Soup.OrderSystem.UI.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Get a list of every order & orderDetails, and then maps the values of both of those lists into an OrderProductModel, each of those added to a list to return 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetOrders()
         {
             List<OrderProductModel> combinedOrdersList = new List<OrderProductModel>();
@@ -45,6 +49,11 @@ namespace Soup.OrderSystem.UI.Controllers
             }
             return View(combinedOrdersList);
         }
+        /// <summary>
+        /// gets the order by Id, and each OrderDetail & StockAction, deletes every stock action & orderDetail related to that order, and then deletes the order itself. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DeleteOrder(int id)
         {
             Orders orders = new();
@@ -64,16 +73,23 @@ namespace Soup.OrderSystem.UI.Controllers
             await _orderServiceAsync.DeleteOrder(id);
             return View("GetOrders");
         }
+        //unfinished method
         public IActionResult ChangeOrderStatus()
         {
             return View();
         }
+        /// <summary>
+        /// Creates a new Order with the given values
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderProductModel model)
         {
             OrderDTO orderDTO = new OrderDTO();
             StockActionDTO stockActionDTO = new StockActionDTO();
             int orderId = 0;
+            //because you would be logged in as a user, you wouldn't have a customerId saved in the session. So I designated this customerId as the admin customer id.
             orderId = await _orderServiceAsync.CreateOrder("k1");
             orderDTO.OrderStatus = model.OrderStatus;
             orderDTO.OrderID = orderId;
